@@ -11,14 +11,25 @@
   <body>
     <header>
       <h1>Balance Forecast</h1>
+      <% if current_user %>
+        <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+      <% end %>
     </header>
     
     <main role="main">
+      <% if notice.present? %>
+        <p class="notice"><%= notice %></p>
+      <% end %>
+
+      <% if alert.present? %>
+        <p class="alert"><%= alert %></p>
+      <% end %>
+
       <%= yield %>
     </main>
 
     <footer>
-      
+
     </footer>
   </body>
 </html>
