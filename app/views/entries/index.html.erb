@@ -1,1 +1,8 @@
 <p>Index</p>
+
+<% @entries.each do |entry| %>
+  <%= entry.date %>
+  <%= entry.description %>
+  $<%= (entry.amount / 100.00).round %>
+  <%= entry.frequency %><br />
+<% end %>
