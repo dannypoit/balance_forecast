@@ -1,13 +1,55 @@
-<p>Index</p>
-
 <% if current_user %> <!-- can take this conditional out later when index only shows when user is logged in -->
   <p>Current balance: $<%= (current_user.current_balance / 100.00).round %></p>
 <% end %>
 
-<% @entries.each do |entry| %>
-  <%= entry.date %>
-  <%= entry.description %>
-  $<%= (entry.amount / 100.00).round %>
-  <%= entry.frequency %><br />
-<% end %>
-
+<div class="container">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">
+          Date
+        </th>
+        <th scope="col">
+          Description
+        </th>
+        <th scope="col">
+          Frequency
+        </th>
+        <th scope="col">
+          Amount
+        </th>
+        <th scope="col">
+          Balance
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% new_balance = nil %> <!-- not sure if needed yet -->
+      <% @entries.each do |entry| %>
+        <tr>
+          <td>
+            <%= entry.date %>
+          </td>
+          <td>
+            <%= entry.description %>
+          </td>
+          <td>
+            <%= entry.frequency %>
+          </td>
+          <td>
+            $<%= (entry.amount / 100.00).round %>
+          </td>
+          <td>
+            <% if current_user %> <!-- can take this conditional out later when index only shows when user is logged in -->
+              <% if new_balance.nil? %>
+                <% new_balance = (current_user.current_balance / 100.00).round %>
+              <% end %>
+              <% new_balance = new_balance - (entry.amount / 100.00).round %>
+              $<%= new_balance %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
