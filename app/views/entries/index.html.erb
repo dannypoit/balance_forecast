@@ -1,5 +1,9 @@
 <p>Index</p>
 
+<% if current_user %> <!-- can take this conditional out later when index only shows when user is logged in -->
+  <p>Current balance: $<%= (current_user.current_balance / 100.00).round %></p>
+<% end %>
+
 <% @entries.each do |entry| %>
   <%= entry.date %>
   <%= entry.description %>
