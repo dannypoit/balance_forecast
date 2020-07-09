@@ -1,16 +1,19 @@
-<h2>Forgot your password?</h2>
+<body style="display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-top: 40px; padding-bottom: 40px; background-color: #f5f5f5;" class="text-center">
+  
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'form-signin' }) do |f| %>
+    <h5 class="h5 mb-0">Balance Forecast</h5>
+    <h3 class="h3 mb-3 font-weight-normal">Forgot your password?</h3>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control mb-4" %>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
+    <%= f.submit "Send me reset instructions", class: 'btn btn-lg btn-primary btn-block mb-4' %>
 
-<%= render "devise/shared/links" %>
+    <%= link_to "Sign up", new_user_registration_path, class: 'mr-4' %>
+
+    <%= link_to "Log in", new_user_session_path %>
+  <% end %>
+
+  
+</body>
