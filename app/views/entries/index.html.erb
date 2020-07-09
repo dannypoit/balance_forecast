@@ -1,6 +1,14 @@
 <header>
   <h1>Balance Forecast</h1>
   <% if current_user %>
+    <div class="dropdown d-inline">
+      <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Settings
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <%= link_to 'Change e-mail or password', edit_user_registration_path(current_user), class: 'dropdown-item' %>
+      </div>
+    </div>
     <%= link_to "Log out", destroy_user_session_path, method: :delete %>
   <% else %>
     <%= link_to "Log In", new_user_session_path %>
