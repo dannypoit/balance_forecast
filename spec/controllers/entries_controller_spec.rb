@@ -2,13 +2,16 @@ require 'rails_helper'
 
 RSpec.describe EntriesController, type: :controller do
   describe "entries#index" do
-    it "should list the entries in the database" do
-      # entry1 = FactoryBot.create(:entry)
-      # entry2 = FactoryBot.create(:entry)
+    it "should redirect to the login page when trying to view the index but not logged in" do
+      get :index
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    it "should show the index page when logged in" do
+      user = FactoryBot.create(:user)
+      sign_in user
       get :index
       expect(response).to have_http_status(:success)
-      # response_value = ActiveSupport::JSON.decode(@response.body)
-      # expect(response_value.count).to eq(2)
     end
   end
 end
