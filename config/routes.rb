@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'entries#index'
-  resources :entries, only: [:create]
+  root 'static_pages#index'
+  resources :entries, only: [:index, :create]
 end

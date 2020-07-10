@@ -78,7 +78,7 @@
           <% end %>
           </tr>
           <% new_balance = nil %> <!-- not sure if needed yet -->
-          <% @entries.each do |entry| %>
+          <% current_user.entries.each do |entry| %>
             <tr>
               <td>
                 <%= entry.date %>

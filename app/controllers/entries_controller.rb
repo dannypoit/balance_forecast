@@ -2,8 +2,7 @@ class EntriesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @entries = Entry.all
-    @entry = Entry.new
+    render json: Entry.where(user_id: current_user.id).order(:id)
   end
 
   def create
@@ -12,7 +11,7 @@ class EntriesController < ApplicationController
       redirect_to root_path
     else
       @entries = Entry.all  # when rendering index, this was nil
-      render :index, status: :unprocessable_entity
+      render :index => 'static_pages/index', status: :unprocessable_entity
     end
   end
 
