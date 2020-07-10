@@ -70,9 +70,10 @@
             </td>
             <td>
               <%= f.number_field :amount %>
+              <p class="text-muted small m-0">(in cents)</p>
             </td>
             <td>
-              <%= f.button :submit %>
+              <%= f.submit 'Add' %>
             </td>
           <% end %>
           </tr>
