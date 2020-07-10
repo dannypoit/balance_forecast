@@ -7,7 +7,7 @@ RSpec.describe EntriesController, type: :controller do
       expect(response).to redirect_to new_user_session_path
     end
 
-    it "should show the index page when logged in" do
+    it "should successfully show the index page when a user is logged in" do
       user = FactoryBot.create(:user)
       sign_in user
       get :index
