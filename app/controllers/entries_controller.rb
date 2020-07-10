@@ -7,8 +7,7 @@ class EntriesController < ApplicationController
   end
 
   def create
-    # @entry = current_user.entries.create(entry_params)
-    @entry = Entry.create(entry_params)
+    @entry = current_user.entries.create(entry_params)
     if @entry.valid?
       redirect_to root_path
     else

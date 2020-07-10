@@ -33,11 +33,25 @@ RSpec.describe EntriesController, type: :controller do
       expect(entry.description).to eq("Test create action")
       expect(entry.frequency).to eq("one_time")
       expect(entry.amount).to eq(6789)
+      expect(entry.user).to eq(user)
+    end
+
+    it "should require a user to be logged in to create an entry" do
+      post :create, params: { 
+        entry: {
+          date: "2020-12-31",
+          description: "Test create action",
+          frequency: "one_time",
+          amount: 6789
+        } 
+      }
+      expect(response).to redirect_to new_user_session_path
     end
 
     it "should properly deal with validation errors if date is blank" do
       user = FactoryBot.create(:user)
       sign_in user
+      entry_count = Entry.count
       post :create, params: { 
         entry: {
           date: "",
@@ -47,7 +61,7 @@ RSpec.describe EntriesController, type: :controller do
         } 
       }
       expect(response).to have_http_status(:unprocessable_entity)
-      expect(Entry.count).to eq 0
+      expect(entry_count).to eq(Entry.count)
     end
 
     # it "should properly deal with validation errors if date is before today" do
