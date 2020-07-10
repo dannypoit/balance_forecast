@@ -10,7 +10,7 @@ class EntriesController < ApplicationController
     if @entry.valid?
       redirect_to root_path
     else
-      render 'static_pages/index', status: :unprocessable_entity
+      redirect_to root_path, alert: 'All fields must be filled out to add a new entry'
     end
   end
 

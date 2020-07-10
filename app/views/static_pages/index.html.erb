@@ -17,15 +17,15 @@
   </header>
 
   <main role="main">
-    <% if notice.present? %>
-      <p class="notice"><%= notice %></p>
-    <% end %>
-
-    <% if alert.present? %>
-      <p class="alert"><%= alert %></p>
-    <% end %>
-
+    
     <div class="container">
+      <% if notice.present? %>
+        <div class="alert alert-info" role="alert"><%= notice %></div>
+      <% end %>
+
+      <% if alert.present? %>
+        <div class="alert alert-danger" role="alert"><%= alert %></div>
+      <% end %>
 
       <table class="table table-striped table-bordered">
         <thead>
