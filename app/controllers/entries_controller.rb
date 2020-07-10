@@ -10,8 +10,7 @@ class EntriesController < ApplicationController
     if @entry.valid?
       redirect_to root_path
     else
-      @entries = Entry.all  # when rendering index, this was nil
-      render :index => 'static_pages/index', status: :unprocessable_entity
+      render 'static_pages/index', status: :unprocessable_entity
     end
   end
 
