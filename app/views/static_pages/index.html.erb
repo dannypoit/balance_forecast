@@ -35,7 +35,7 @@
               Current balance:
             </th>
             <th>
-              $<%= (current_user.current_balance / 100.00).round %>
+              $<span id="currentBalance"><%= (current_user.current_balance / 100.00).round %></span>
             </th>
           </tr>
           <tr>
@@ -77,7 +77,7 @@
             </td>
           <% end %>
           </tr>
-          <% new_balance = nil %> <!-- not sure if needed yet -->
+          <% new_balance = (current_user.current_balance / 100.00).round %>
           <% current_user.entries.each do |entry| %>
             <tr>
               <td>
@@ -93,9 +93,6 @@
                 $<%= (entry.amount / 100.00).round %>
               </td>
               <td>
-                <% if new_balance.nil? %>
-                  <% new_balance = (current_user.current_balance / 100.00).round %>
-                <% end %>
                 <% new_balance = new_balance - (entry.amount / 100.00).round %>
                 $<%= new_balance %>
               </td>
@@ -105,3 +102,23 @@
       </table>
     </div>
   </main>
+
+  <footer>
+
+  </footer>
+
+  <script>
+    $(function() {
+      $.get("/entries").success(function(data) {
+        var currentBalance = document.getElementById("currentBalance").innerHTML;
+        var newBalance = parseInt(currentBalance);
+        $.each(data, function(index, entry) {
+          newBalance = newBalance - Math.round(entry.amount / 100.00)
+          var trElement = '<tr><td>' + entry.date + '</td><td>' + entry.description + '</td><td>' + entry.frequency + '</td><td>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
+          newBalance
+          + '</td></tr>';
+          console.log(trElement);
+        });
+      });
+    });
+  </script>
