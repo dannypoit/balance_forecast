@@ -77,27 +77,8 @@
             </td>
           <% end %>
           </tr>
-          <% new_balance = (current_user.current_balance / 100.00).round %>
-          <% current_user.entries.each do |entry| %>
-            <tr>
-              <td>
-                <%= entry.date %>
-              </td>
-              <td>
-                <%= entry.description %>
-              </td>
-              <td>
-                <%= entry.frequency %>
-              </td>
-              <td>
-                $<%= (entry.amount / 100.00).round %>
-              </td>
-              <td>
-                <% new_balance = new_balance - (entry.amount / 100.00).round %>
-                $<%= new_balance %>
-              </td>
-            </tr>
-          <% end %>
+        </tbody>
+        <tbody class="entries-table">
         </tbody>
       </table>
     </div>
@@ -112,13 +93,16 @@
       $.get("/entries").success(function(data) {
         var currentBalance = document.getElementById("currentBalance").innerHTML;
         var newBalance = parseInt(currentBalance);
+        var allEntries = "";
         $.each(data, function(index, entry) {
-          newBalance = newBalance - Math.round(entry.amount / 100.00)
+          newBalance = newBalance - Math.round(entry.amount / 100.00);
           var trElement = '<tr><td>' + entry.date + '</td><td>' + entry.description + '</td><td>' + entry.frequency + '</td><td>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
           newBalance
           + '</td></tr>';
-          console.log(trElement);
+          allEntries += trElement;
         });
+        var trEntries = $('.entries-table');
+        trEntries.html(allEntries);
       });
     });
   </script>
