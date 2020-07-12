@@ -94,15 +94,45 @@
         var currentBalance = document.getElementById("currentBalance").innerHTML;
         var newBalance = parseInt(currentBalance);
         var allEntryRows = "";
+
         $.each(data, function(index, entry) {
           newBalance = newBalance - Math.round(entry.amount / 100.00);
           var entryRow = '<tr><td>' + entry.date + '</td><td>' + entry.description + '</td><td>' + entry.frequency + '</td><td>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
           newBalance
-          + '</td><td class="entry-actions-cell"><input class="toggle" type="checkbox"></td></tr>';
+          + '</td><td class="entry-actions-cell"><input class="clear" type="checkbox"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount="' + Math.round(entry.amount / 100.00) + '"></td></tr>';
+
+          console.log(entryRow);
+
           allEntryRows += entryRow;
         });
+
         var entriesTable = $('.entries-table');
         entriesTable.html(allEntryRows);
+
+        $('.clear').change(function(e) {
+          var itemId = $(e.target).data("id");
+          var userId = $(e.target).data("user-id");
+          var amount = $(e.target).data("amount");
+          var updatedBalance = (currentBalance - amount) * 100;
+
+          $.post("/users/" + userId, {
+            _method: "PUT",
+            user: {
+              current_balance: updatedBalance
+            }
+          });
+
+          $.ajax({
+            type: "DELETE",
+            url: "/entries/" + itemId,
+            success: function(data) {
+              console.log('Deleted: ' + data);
+            },
+            error: function (data) {
+              console.log('Error: ' + data);
+            }
+          });
+        });
       });
     });
   </script>

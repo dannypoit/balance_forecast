@@ -67,7 +67,6 @@ RSpec.describe EntriesController, type: :controller do
       user = FactoryBot.create(:user)
       sign_in user
       entry_count = Entry.count
-      # byebug
       post :create, params: { 
         entry: {
           date: "",
@@ -164,9 +163,8 @@ RSpec.describe EntriesController, type: :controller do
 
   describe "entries#update" do
     it "should allow the date to be updated in entries" do
-      user = FactoryBot.create(:user)
-      sign_in user
       entry = FactoryBot.create(:entry)
+      sign_in entry.user
       expect(Entry.count).to eq(1)
       expect(Entry.last).to eq(entry)
       put :update, params: {
@@ -181,9 +179,8 @@ RSpec.describe EntriesController, type: :controller do
     end
 
     it "should allow the description to be updated in entries" do
-      user = FactoryBot.create(:user)
-      sign_in user
       entry = FactoryBot.create(:entry)
+      sign_in entry.user
       expect(Entry.count).to eq(1)
       expect(Entry.last).to eq(entry)
       put :update, params: {
@@ -198,9 +195,8 @@ RSpec.describe EntriesController, type: :controller do
     end
 
     it "should allow the frequency to be updated in entries" do
-      user = FactoryBot.create(:user)
-      sign_in user
       entry = FactoryBot.create(:entry)
+      sign_in entry.user
       expect(Entry.count).to eq(1)
       expect(Entry.last).to eq(entry)
       put :update, params: {
@@ -215,9 +211,8 @@ RSpec.describe EntriesController, type: :controller do
     end
 
     it "should allow the amount to be updated in entries" do
-      user = FactoryBot.create(:user)
-      sign_in user
       entry = FactoryBot.create(:entry)
+      sign_in entry.user
       expect(Entry.count).to eq(1)
       expect(Entry.last).to eq(entry)
       put :update, params: {
@@ -229,6 +224,48 @@ RSpec.describe EntriesController, type: :controller do
       expect(response).to have_http_status(:success)
       entry.reload
       expect(entry.amount).to eq(69420)
+    end
+
+    it "should return a 404 error if a user tries to update an entry that does not exist" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      put :update, params: {
+        id: 'MANHORSE',
+        entry: {
+          amount: 69420
+        }
+      }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe "entries#destroy action" do
+    it "should allow a user to destroy an entry they created" do
+      entry = FactoryBot.create(:entry)
+      sign_in entry.user
+      delete :destroy, params: {
+        id: entry.id
+      }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should now allow a user to destroy an entry they did not create" do
+      entry = FactoryBot.create(:entry)
+      user = FactoryBot.create(:user)
+      sign_in user
+      delete :destroy, params: {
+        id: entry.id
+      }
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "should return a 404 error if a user tries to destroy an entry that does not exist" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      delete :destroy, params: {
+        id: 'MANHORSE'
+      }
+      expect(response).to have_http_status(:not_found)
     end
   end
 end
