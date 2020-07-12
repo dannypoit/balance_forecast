@@ -226,7 +226,7 @@ RSpec.describe EntriesController, type: :controller do
       expect(entry.amount).to eq(69420)
     end
 
-    it "should return a 404 error if a user tries to update an entry that does not exist" do
+    it "should return a 404 not found error if a user tries to update an entry that does not exist" do
       user = FactoryBot.create(:user)
       sign_in user
       put :update, params: {
@@ -236,6 +236,19 @@ RSpec.describe EntriesController, type: :controller do
         }
       }
       expect(response).to have_http_status(:not_found)
+    end
+
+    it "should not allow a user to update an entry that belongs to another user" do
+      entry = FactoryBot.create(:entry)
+      user = FactoryBot.create(:user)
+      sign_in user
+      put :update, params: {
+        id: entry.id,
+        entry: {
+          amount: 69420
+        }
+      }
+      expect(response).to have_http_status(:forbidden)
     end
   end
 
