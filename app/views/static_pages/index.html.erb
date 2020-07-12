@@ -93,16 +93,16 @@
       $.get("/entries").success(function(data) {
         var currentBalance = document.getElementById("currentBalance").innerHTML;
         var newBalance = parseInt(currentBalance);
-        var allEntries = "";
+        var allEntryRows = "";
         $.each(data, function(index, entry) {
           newBalance = newBalance - Math.round(entry.amount / 100.00);
-          var trElement = '<tr><td>' + entry.date + '</td><td>' + entry.description + '</td><td>' + entry.frequency + '</td><td>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
+          var entryRow = '<tr><td>' + entry.date + '</td><td>' + entry.description + '</td><td>' + entry.frequency + '</td><td>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
           newBalance
-          + '</td></tr>';
-          allEntries += trElement;
+          + '</td><td class="entry-actions-cell"><input class="toggle" type="checkbox"></td></tr>';
+          allEntryRows += entryRow;
         });
-        var trEntries = $('.entries-table');
-        trEntries.html(allEntries);
+        var entriesTable = $('.entries-table');
+        entriesTable.html(allEntryRows);
       });
     });
   </script>

@@ -41,3 +41,10 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+td.entry-actions-cell {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-bottom-style: hidden;
+  background-color: #fff; // this needs to be transparent
+}
