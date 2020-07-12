@@ -38,7 +38,7 @@
               $<span id="currentBalance"><%= (current_user.current_balance / 100.00).round %></span>
             </th>
           </tr>
-          <tr>
+          <tr class="header-row">
             <th scope="col">
               Date
             </th>
@@ -57,7 +57,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="new-entry-row">
           <%= form_for(@entry) do |f| %>
             <td>
               <%= f.date_field :date %>
