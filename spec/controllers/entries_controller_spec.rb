@@ -264,8 +264,6 @@ RSpec.describe EntriesController, type: :controller do
     it "should allow the date to be updated in entries" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      expect(Entry.count).to eq(1)
-      expect(Entry.last).to eq(entry)
       put :update, params: {
         id: entry.id,
         entry: {
@@ -280,8 +278,6 @@ RSpec.describe EntriesController, type: :controller do
     it "should allow the description to be updated in entries" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      expect(Entry.count).to eq(1)
-      expect(Entry.last).to eq(entry)
       put :update, params: {
         id: entry.id,
         entry: {
@@ -296,8 +292,6 @@ RSpec.describe EntriesController, type: :controller do
     it "should allow the frequency to be updated in entries" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      expect(Entry.count).to eq(1)
-      expect(Entry.last).to eq(entry)
       put :update, params: {
         id: entry.id,
         entry: {
@@ -312,8 +306,6 @@ RSpec.describe EntriesController, type: :controller do
     it "should allow the amount to be updated in entries" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      expect(Entry.count).to eq(1)
-      expect(Entry.last).to eq(entry)
       put :update, params: {
         id: entry.id,
         entry: {
@@ -354,21 +346,29 @@ RSpec.describe EntriesController, type: :controller do
   describe "entries#destroy action" do
     it "should allow a user to destroy an entry they created" do
       entry = FactoryBot.create(:entry)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
       sign_in entry.user
       delete :destroy, params: {
         id: entry.id
       }
-      expect(response).to have_http_status(:success)
+      expect(response).to redirect_to root_path
+      expect(Entry.count).to eq(0)
+      expect(Entry.last).not_to eq(entry)
     end
 
-    it "should now allow a user to destroy an entry they did not create" do
+    it "should not allow a user to destroy an entry they did not create" do
       entry = FactoryBot.create(:entry)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
       user = FactoryBot.create(:user)
       sign_in user
       delete :destroy, params: {
         id: entry.id
       }
       expect(response).to have_http_status(:forbidden)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
     end
 
     it "should return a 404 error if a user tries to destroy an entry that does not exist" do
