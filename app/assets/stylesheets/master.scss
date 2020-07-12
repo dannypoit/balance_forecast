@@ -48,3 +48,14 @@ td.entry-actions-cell {
   border-bottom-style: hidden;
   background-color: #fff; // this needs to be transparent
 }
+
+th.top-row-cells {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+}
+
+th.current-balance-label-cell {
+  border-top-style: hidden;
+  border-left-style: hidden;
+}

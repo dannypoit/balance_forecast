@@ -67,6 +67,7 @@ RSpec.describe EntriesController, type: :controller do
       user = FactoryBot.create(:user)
       sign_in user
       entry_count = Entry.count
+      # byebug
       post :create, params: { 
         entry: {
           date: "",
@@ -75,7 +76,8 @@ RSpec.describe EntriesController, type: :controller do
           amount: 6789
         } 
       }
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
       expect(entry_count).to eq(Entry.count)
     end
 
