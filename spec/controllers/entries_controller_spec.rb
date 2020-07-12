@@ -66,7 +66,6 @@ RSpec.describe EntriesController, type: :controller do
     it "should properly deal with validation errors if date is blank" do
       user = FactoryBot.create(:user)
       sign_in user
-      entry_count = Entry.count
       post :create, params: { 
         entry: {
           date: "",
@@ -77,7 +76,7 @@ RSpec.describe EntriesController, type: :controller do
       }
       expect(response).to redirect_to root_path
       expect(flash[:alert]).to be_present
-      expect(entry_count).to eq(Entry.count)
+      expect(Entry.count).to eq(0)
     end
 
     # it "should properly deal with validation errors if date is before today" do
@@ -144,7 +143,7 @@ RSpec.describe EntriesController, type: :controller do
       expect(Entry.count).to eq(0)
     end
 
-    it "should properly deal with validation errors if frequency is blank" do
+    it "should properly deal with validation errors if amount is blank" do
       user = FactoryBot.create(:user)
       sign_in user
       post :create, params: { 
@@ -162,6 +161,106 @@ RSpec.describe EntriesController, type: :controller do
   end
 
   describe "entries#update" do
+    it "should require a user to be logged in to update an entry" do
+      post :create, params: { 
+        entry: {
+          date: "2020-12-31",
+          description: "Test create action",
+          frequency: "one_time",
+          amount: 6789
+        } 
+      }
+      expect(response).to redirect_to new_user_session_path
+    end
+
+    it "should properly deal with validation errors if an entry is updated and date is blank" do
+      entry = FactoryBot.create(:entry)
+      sign_in entry.user
+      put :update, params: { 
+        id: entry.id,
+        entry: {
+          date: ""
+        } 
+      }
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      last_entry = Entry.last
+      expect(last_entry.date).to eq(entry.date)
+    end
+
+    # it "should properly deal with validation errors if an entry is updated and date is before today" do
+    #   entry = FactoryBot.create(:entry)
+    #   sign_in entry.user
+    #   put :update, params: { 
+    #     id: entry.id,
+    #     entry: {
+    #       date: "2020-07-08"
+    #     } 
+    #   }
+    #   last_entry = Entry.last
+    #   expect(entry.date < Date.today).to eq(true)
+    # end
+
+    it "should properly deal with validation errors if an entry is updated and description is blank" do
+      entry = FactoryBot.create(:entry)
+      sign_in entry.user
+      put :create, params: { 
+        id: entry.id,
+        entry: {
+          description: ""
+        } 
+      }
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      last_entry = Entry.last
+      expect(last_entry.description).to eq(entry.description)
+    end
+
+    it "should properly deal with validation errors if an entry is updated and description is longer than 64 characters" do
+      entry = FactoryBot.create(:entry)
+      sign_in entry.user
+      put :update, params: { 
+        id: entry.id,
+        entry: {
+          description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit placerat."
+        } 
+      }
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      last_entry = Entry.last
+      expect(last_entry.description).to eq(entry.description)
+    end
+
+    it "should properly deal with validation errors if an entry is updated and frequency is blank" do
+      entry = FactoryBot.create(:entry)
+      sign_in entry.user
+      put :update, params: { 
+        id: entry.id,
+        entry: {
+          frequency: ""
+        } 
+      }
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      last_entry = Entry.last
+      expect(last_entry.frequency).to eq(entry.frequency)
+    end
+
+    it "should properly deal with validation errors if an entry is updated and amount is blank" do
+      entry = FactoryBot.create(:entry)
+      sign_in entry.user
+      put :update, params: { 
+        id: entry.id, 
+        entry: {
+          date: ""
+        } 
+      }
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      last_entry = Entry.last
+      expect(last_entry.date).to eq(entry.date)
+    end
+    
     it "should allow the date to be updated in entries" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
