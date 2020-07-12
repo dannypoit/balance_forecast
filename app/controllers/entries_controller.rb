@@ -14,6 +14,12 @@ class EntriesController < ApplicationController
     end
   end
 
+  def update
+    entry = Entry.find(params[:id])
+    entry.update_attributes(entry_params)
+    render json: entry
+  end
+
   private
 
   def entry_params

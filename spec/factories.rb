@@ -12,5 +12,6 @@ FactoryBot.define do
     description { "Test entry" }
     amount { 1234 }
     frequency { "one_time" }
+    association :user
   end
 end

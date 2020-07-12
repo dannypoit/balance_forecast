@@ -108,8 +108,9 @@ RSpec.describe EntriesController, type: :controller do
           amount: 6789
         } 
       }
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(Entry.count).to eq 0
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      expect(Entry.count).to eq(0)
     end
 
     it "should properly deal with validation errors if description is longer than 64 characters" do
@@ -123,8 +124,9 @@ RSpec.describe EntriesController, type: :controller do
           amount: 6789
         } 
       }
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(Entry.count).to eq 0
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      expect(Entry.count).to eq(0)
     end
 
     it "should properly deal with validation errors if frequency is blank" do
@@ -138,8 +140,9 @@ RSpec.describe EntriesController, type: :controller do
           amount: 6789
         } 
       }
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(Entry.count).to eq 0
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      expect(Entry.count).to eq(0)
     end
 
     it "should properly deal with validation errors if frequency is blank" do
@@ -153,8 +156,79 @@ RSpec.describe EntriesController, type: :controller do
           amount: nil
         } 
       }
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(Entry.count).to eq 0
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      expect(Entry.count).to eq(0)
+    end
+  end
+
+  describe "entries#update" do
+    it "should allow the date to be updated in entries" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      entry = FactoryBot.create(:entry)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
+      put :update, params: {
+        id: entry.id,
+        entry: {
+          date: "2020-08-02"
+        }
+      }
+      expect(response).to have_http_status(:success)
+      entry.reload
+      expect(entry.date).to eq("2020-08-02".to_date)
+    end
+
+    it "should allow the description to be updated in entries" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      entry = FactoryBot.create(:entry)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
+      put :update, params: {
+        id: entry.id,
+        entry: {
+          description: "Updated description"
+        }
+      }
+      expect(response).to have_http_status(:success)
+      entry.reload
+      expect(entry.description).to eq("Updated description")
+    end
+
+    it "should allow the frequency to be updated in entries" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      entry = FactoryBot.create(:entry)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
+      put :update, params: {
+        id: entry.id,
+        entry: {
+          frequency: "bi-weekly"
+        }
+      }
+      expect(response).to have_http_status(:success)
+      entry.reload
+      expect(entry.frequency).to eq("bi-weekly")
+    end
+
+    it "should allow the amount to be updated in entries" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      entry = FactoryBot.create(:entry)
+      expect(Entry.count).to eq(1)
+      expect(Entry.last).to eq(entry)
+      put :update, params: {
+        id: entry.id,
+        entry: {
+          amount: 69420
+        }
+      }
+      expect(response).to have_http_status(:success)
+      entry.reload
+      expect(entry.amount).to eq(69420)
     end
   end
 end
