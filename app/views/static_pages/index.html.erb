@@ -99,7 +99,7 @@
           newBalance = newBalance - Math.round(entry.amount / 100.00);
           var entryRow = '<tr><td>' + entry.date + '</td><td>' + entry.description + '</td><td>' + entry.frequency + '</td><td>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
           newBalance
-          + '</td><td class="entry-actions-cell"><input class="clear" type="checkbox"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount="' + Math.round(entry.amount / 100.00) + '"><i class="far fa-trash-alt ml-2"></i></td></tr>';
+          + '</td><td class="entry-actions-cell"><input class="clear" type="checkbox"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount="' + Math.round(entry.amount / 100.00) + '"><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
 
           allEntryRows += entryRow;
         });
@@ -108,12 +108,12 @@
         entriesTable.html(allEntryRows);
 
         $('.clear').change(function(e) {
-          var itemId = $(e.target).data("id");
-          var userId = $(e.target).data("user-id");
+          var entryID = $(e.target).data("id");
+          var userID = $(e.target).data("user-id");
           var amount = $(e.target).data("amount");
           var updatedBalance = (currentBalance - amount) * 100;
 
-          $.post("/users/" + userId, {
+          $.post("/users/" + userID, {
             _method: "PUT",
             user: {
               current_balance: updatedBalance
@@ -122,13 +122,16 @@
 
           $.ajax({
             type: "DELETE",
-            url: "/entries/" + itemId,
-            success: function(data) {
-              console.log('Deleted: ' + data);
-            },
-            error: function (data) {
-              console.log('Error: ' + data);
-            }
+            url: "/entries/" + entryID
+          });
+        });
+
+        $('.fa-trash-alt').click(function(e) {
+          var entryID = $(e.target).data("id");
+
+          $.ajax({
+            type: "DELETE",
+            url: "/entries/" + entryID
           });
         });
       });
