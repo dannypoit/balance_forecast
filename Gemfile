@@ -61,3 +61,9 @@ gem 'devise'
 
 # Use Bootstrap for CSS framework
 gem 'bootstrap', '~> 4.5.0'
+
+# Use bootstrap-select-rails for dropdown menus
+gem 'bootstrap-select-rails'
+
+# Use Font Awesome for icons
+gem 'font-awesome-rails'

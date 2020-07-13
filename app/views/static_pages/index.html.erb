@@ -66,7 +66,16 @@
               <%= f.text_field :description %>
             </td>
             <td>
-              <%= f.text_field :frequency %> <!-- change to dropdown -->
+              <%= f.select :frequency, options_for_select([
+                  ["", ""], 
+                  ["One-time", "one-time"], 
+                  ["Weekly", "weekly"], 
+                  ["Bi-weekly", "bi-weekly"], 
+                  ["Monthly", "monthly"], 
+                  ["Bi-monthly", "bi-monthly"],
+                  ["Quarterly", "quarterly"],
+                  ["Annually", "annually"]
+                ]), class: '' %>
             </td>
             <td>
               <%= f.number_field :amount %>
