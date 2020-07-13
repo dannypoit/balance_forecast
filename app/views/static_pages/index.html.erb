@@ -98,7 +98,7 @@
 
         $.each(data, function(index, entry) {
           newBalance = newBalance - Math.round(entry.amount / 100.00);
-          var entryRow = '<tr class="entryRow"><td data-date data-id="' + entry.id + '">' + entry.date + '</td><td data-description data-id="' + entry.id + '">' + entry.description + '</td><td data-frequency data-id="' + entry.id + '">' + entry.frequency + '</td><td data-amount>$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
+          var entryRow = '<tr class="entryRow"><td data-date data-id="' + entry.id + '">' + entry.date + '</td><td data-description data-id="' + entry.id + '">' + entry.description + '</td><td data-frequency data-id="' + entry.id + '">' + entry.frequency + '</td><td data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</td><td>$' + 
           newBalance
           + '</td><td class="entry-actions-cell"><input class="clear" type="checkbox"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount="' + Math.round(entry.amount / 100.00) + '"><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
 
@@ -208,6 +208,33 @@
           $input.one('blur', save).focus();
         });
 
+        // update amount
+        $('.entryRow').on('click', '[data-amount]', function(e) {
+          var entryID = $(e.target).data("id");
+          var $el = $(this);
+          var $input = $('<input/>').val($el.text());
+          $el.replaceWith($input);
+          
+          var save = function(){
+            var $td = $('<td data-amount id="updatedAmountCell" />').text($input.val());
+            $input.replaceWith($td);
+
+            var updatedAmount = document.getElementById("updatedAmountCell").innerHTML;
+            
+            $.post("/entries/" + entryID, {
+              _method: "PUT",
+              id: entryID,
+              entry: {
+                amount: updatedAmount,
+                success: location.reload()
+              }
+            });
+          };
+          
+          $input.one('blur', save).focus();
+        });
+
+        // clear entry - delete and update balance
         $('.clear').change(function(e) {
           var entryID = $(e.target).data("id");
           var amount = $(e.target).data("amount");
