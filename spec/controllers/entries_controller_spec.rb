@@ -162,13 +162,12 @@ RSpec.describe EntriesController, type: :controller do
 
   describe "entries#update" do
     it "should require a user to be logged in to update an entry" do
-      post :create, params: { 
+      entry = FactoryBot.create(:entry)
+      patch :update, params: {
+        id: entry.id,
         entry: {
-          date: "2020-12-31",
-          description: "Test create action",
-          frequency: "one_time",
-          amount: 6789
-        } 
+          description: "Update to entry"
+        }
       }
       expect(response).to redirect_to new_user_session_path
     end
@@ -176,7 +175,7 @@ RSpec.describe EntriesController, type: :controller do
     it "should properly deal with validation errors if an entry is updated and date is blank" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: { 
+      patch :update, params: { 
         id: entry.id,
         entry: {
           date: ""
@@ -191,7 +190,7 @@ RSpec.describe EntriesController, type: :controller do
     # it "should properly deal with validation errors if an entry is updated and date is before today" do
     #   entry = FactoryBot.create(:entry)
     #   sign_in entry.user
-    #   put :update, params: { 
+    #   patch :update, params: { 
     #     id: entry.id,
     #     entry: {
     #       date: "2020-07-08"
@@ -219,7 +218,7 @@ RSpec.describe EntriesController, type: :controller do
     it "should properly deal with validation errors if an entry is updated and description is longer than 64 characters" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: { 
+      patch :update, params: { 
         id: entry.id,
         entry: {
           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit placerat."
@@ -234,7 +233,7 @@ RSpec.describe EntriesController, type: :controller do
     it "should properly deal with validation errors if an entry is updated and frequency is blank" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: { 
+      patch :update, params: { 
         id: entry.id,
         entry: {
           frequency: ""
@@ -249,7 +248,7 @@ RSpec.describe EntriesController, type: :controller do
     it "should properly deal with validation errors if an entry is updated and amount is blank" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: { 
+      patch :update, params: { 
         id: entry.id, 
         entry: {
           date: ""
@@ -261,10 +260,10 @@ RSpec.describe EntriesController, type: :controller do
       expect(last_entry.date).to eq(entry.date)
     end
     
-    it "should allow the date to be updated in entries" do
+    it "should allow a user to update the date in an entry they created" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: {
+      patch :update, params: {
         id: entry.id,
         entry: {
           date: "2020-08-02"
@@ -275,10 +274,10 @@ RSpec.describe EntriesController, type: :controller do
       expect(entry.date).to eq("2020-08-02".to_date)
     end
 
-    it "should allow the description to be updated in entries" do
+    it "should allow a user to update the description in an entry they created" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: {
+      patch :update, params: {
         id: entry.id,
         entry: {
           description: "Updated description"
@@ -289,10 +288,10 @@ RSpec.describe EntriesController, type: :controller do
       expect(entry.description).to eq("Updated description")
     end
 
-    it "should allow the frequency to be updated in entries" do
+    it "should allow a user to update the frequency in an entry they created" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: {
+      patch :update, params: {
         id: entry.id,
         entry: {
           frequency: "bi-weekly"
@@ -303,10 +302,10 @@ RSpec.describe EntriesController, type: :controller do
       expect(entry.frequency).to eq("bi-weekly")
     end
 
-    it "should allow the amount to be updated in entries" do
+    it "should allow a user to update the amount in an entry they created" do
       entry = FactoryBot.create(:entry)
       sign_in entry.user
-      put :update, params: {
+      patch :update, params: {
         id: entry.id,
         entry: {
           amount: 69420
@@ -320,7 +319,7 @@ RSpec.describe EntriesController, type: :controller do
     it "should return a 404 not found error if a user tries to update an entry that does not exist" do
       user = FactoryBot.create(:user)
       sign_in user
-      put :update, params: {
+      patch :update, params: {
         id: 'MANHORSE',
         entry: {
           amount: 69420
@@ -333,7 +332,7 @@ RSpec.describe EntriesController, type: :controller do
       entry = FactoryBot.create(:entry)
       user = FactoryBot.create(:user)
       sign_in user
-      put :update, params: {
+      patch :update, params: {
         id: entry.id,
         entry: {
           amount: 69420
@@ -344,6 +343,14 @@ RSpec.describe EntriesController, type: :controller do
   end
 
   describe "entries#destroy action" do
+    it "should not let unauthenticated users destroy an entry" do
+      entry = FactoryBot.create(:entry)
+      delete :destroy, params: {
+        id: entry.id
+      }
+      expect(response).to redirect_to new_user_session_path
+    end
+
     it "should allow a user to destroy an entry they created" do
       entry = FactoryBot.create(:entry)
       expect(Entry.count).to eq(1)
