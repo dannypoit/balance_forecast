@@ -6,14 +6,14 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find_by_id(params[:id])
+    user = User.find_by_id(current_user.id)
     return render_not_found if user.blank?
     return render_not_found(:forbidden) if user != current_user
     user.update_attributes(user_params)
     if user.valid?
-      redirect_to root_path
+      redirect_to root_path, notice: 'Successfully updated'
     else
-      redirect_to root_path, alert: 'Your current balance could not be updated automatically. Please update it manually.'
+      redirect_to root_path, alert: 'Your current balance could not be updated'
     end
   end
 
