@@ -98,7 +98,7 @@
 
         $.each(data, function(index, entry) {
           newBalance = newBalance - Math.round(entry.amount / 100.00);
-          var entryRow = '<tr class="entryRow"><td data-editable class="entryDate" data-id="' + entry.id + '">' + entry.date + '</td><td data-editable>' + entry.description + '</td><td data-editable>' + entry.frequency + '</td><td data-editable>$' + Math.round(entry.amount / 100.00) + '</td><td data-editable>$' + 
+          var entryRow = '<tr class="entryRow"><td data-date data-id="' + entry.id + '">' + entry.date + '</td><td data-description data-id="' + entry.id + '">' + entry.description + '</td><td data-editable>' + entry.frequency + '</td><td data-editable>$' + Math.round(entry.amount / 100.00) + '</td><td data-editable>$' + 
           newBalance
           + '</td><td class="entry-actions-cell"><input class="clear" type="checkbox"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount="' + Math.round(entry.amount / 100.00) + '"><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
 
@@ -114,7 +114,7 @@
           $el.replaceWith($input);
           
           var save = function(){
-            var $span = $('<span data-editable id="currentBalance" class="entryDate" />').text($input.val());
+            var $span = $('<span data-editable id="currentBalance" />').text($input.val());
             $input.replaceWith($span);
 
             updatedBalance = document.getElementById("currentBalance").innerHTML;
@@ -130,15 +130,15 @@
           $input.one('blur', save).focus();
         });
 
-        $('.entryRow').on('click', '[data-editable]', function(e) {
+        // update date
+        $('.entryRow').on('click', '[data-date]', function(e) {
           var entryID = $(e.target).data("id");
           var $el = $(this);
           var $input = $('<input/>').val($el.text());
-          
           $el.replaceWith($input);
           
           var save = function(){
-            var $td = $('<td data-editable class="entryDate" id="updatedDateCell" />').text($input.val());
+            var $td = $('<td data-date id="updatedDateCell" />').text($input.val());
             $input.replaceWith($td);
 
             var updatedDate = document.getElementById("updatedDateCell").innerHTML;
@@ -156,9 +156,34 @@
           $input.one('blur', save).focus();
         });
 
+        // update description
+        $('.entryRow').on('click', '[data-description]', function(e) {
+          var entryID = $(e.target).data("id");
+          var $el = $(this);
+          var $input = $('<input/>').val($el.text());
+          $el.replaceWith($input);
+          
+          var save = function(){
+            var $td = $('<td data-description id="updatedDescriptionCell" />').text($input.val());
+            $input.replaceWith($td);
+
+            var updatedDescription = document.getElementById("updatedDescriptionCell").innerHTML;
+            
+            $.post("/entries/" + entryID, {
+              _method: "PUT",
+              id: entryID,
+              entry: {
+                description: updatedDescription,
+                success: location.reload()
+              }
+            });
+          };
+          
+          $input.one('blur', save).focus();
+        });
+
         $('.clear').change(function(e) {
           var entryID = $(e.target).data("id");
-
           var amount = $(e.target).data("amount");
           var updatedBalance = (currentBalance - amount) * 100;
 
