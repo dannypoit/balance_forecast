@@ -118,7 +118,7 @@
         // update current balance
         $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
           var $el = $(this);
-          var $input = $('<input/>').val($el.text());
+          var $input = $('<input type="number"/>').val($el.text());
           $el.replaceWith($input);
           
           var save = function(){
