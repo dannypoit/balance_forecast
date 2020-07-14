@@ -31,7 +31,7 @@ class EntriesController < ApplicationController
     return render_not_found if entry.blank?
     return render_not_found(:forbidden) if entry.user != current_user
     entry.destroy
-    redirect_to root_path, notice: 'Successfully deleted'
+    redirect_to root_path
   end
 
   private

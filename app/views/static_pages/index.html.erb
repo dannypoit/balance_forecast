@@ -106,10 +106,8 @@
         var userID = $('#currentBalance').data("user-id");
 
         $.each(data, function(index, entry) {
-          newBalance = newBalance - Math.round(entry.amount / 100.00);
-          var entryRow = '<tr class="entryRow"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td><span data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + 
-          newBalance
-          + '</td><td class="entry-actions-cell"><input class="clear" type="checkbox"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount="' + Math.round(entry.amount / 100.00) + '"><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
+          newBalance = newBalance + Math.round(entry.amount / 100.00);
+          var entryRow = '<tr class="entryRow"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td><span data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newBalance + '</td><td class="entry-actions-cell"><i class="far fa-check-square mx-1"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt mx-1"' + ' data-id="' + entry.id + '"></i></td></tr>';
 
           allEntryRows += entryRow;
         });
@@ -127,7 +125,7 @@
             var $span = $('<span data-current-balance id="currentBalance" />').text($input.val());
             $input.replaceWith($span);
 
-            updatedBalance = document.getElementById("currentBalance").innerHTML;
+            var updatedBalance = document.getElementById("currentBalance").innerHTML;
             
             $.post("/users/" + userID, {
               _method: "PUT",
@@ -246,16 +244,15 @@
         });
 
         // clear entry - delete and update balance
-        $('.clear').change(function(e) {
+        $('.fa-check-square').click(function(e) {
           var entryID = $(e.target).data("id");
-          var amount = $(e.target).data("amount");
-          var updatedBalance = (currentBalance - amount) * 100;
+          var amountToClear = $(e.target).data("amount-to-clear");
+          var newClearedBalance = ((parseInt(currentBalance) + amountToClear) * 100);
 
           $.post("/users/" + userID, {
             _method: "PUT",
             user: {
-              current_balance: updatedBalance,
-              success: location.reload()
+              current_balance: newClearedBalance
             }
           });
 
@@ -265,6 +262,7 @@
           });
         });
 
+        // delete entry
         $('.fa-trash-alt').click(function(e) {
           var entryID = $(e.target).data("id");
 

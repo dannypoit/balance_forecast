@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     return render_not_found(:forbidden) if user != current_user
     user.update_attributes(user_params)
     if user.valid?
-      redirect_to root_path, notice: 'Successfully updated'
+      redirect_to root_path
     else
       redirect_to root_path, alert: 'Your current balance could not be updated'
     end
