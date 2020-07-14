@@ -10,7 +10,7 @@ FactoryBot.define do
     date { "2020-08-01" }
     description { "Test entry" }
     amount { 1234 }
-    frequency { "one_time" }
+    frequency { "one-time" }
     association :user
   end
 end

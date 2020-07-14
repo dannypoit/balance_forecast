@@ -9,7 +9,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "Test entries index 1",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -18,7 +18,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "Test entries index 2",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -38,7 +38,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "Test create action",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -46,7 +46,7 @@ RSpec.describe EntriesController, type: :controller do
       entry = Entry.last
       expect(entry.date).to eq("2020-12-31".to_date)
       expect(entry.description).to eq("Test create action")
-      expect(entry.frequency).to eq("one_time")
+      expect(entry.frequency).to eq("one-time")
       expect(entry.amount).to eq(6789)
       expect(entry.user).to eq(user)
     end
@@ -56,7 +56,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "Test create action",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -70,7 +70,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "",
           description: "Test create action",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -86,7 +86,7 @@ RSpec.describe EntriesController, type: :controller do
     #     entry: {
     #       date: "2020-07-08",
     #       description: "Test create action",
-    #       frequency: "one_time",
+    #       frequency: "one-time",
     #       amount: 6789
     #     } 
     #   }
@@ -102,7 +102,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -118,7 +118,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit placerat.",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: 6789
         } 
       }
@@ -143,6 +143,22 @@ RSpec.describe EntriesController, type: :controller do
       expect(Entry.count).to eq(0)
     end
 
+    it "should properly deal with validation errors if frequency is not valid" do
+      user = FactoryBot.create(:user)
+      sign_in user
+      post :create, params: { 
+        entry: {
+          date: "2020-12-31",
+          description: "Test create action",
+          frequency: "Lady Gaga",
+          amount: 6789
+        } 
+      }
+      expect(response).to redirect_to root_path
+      expect(flash[:alert]).to be_present
+      expect(Entry.count).to eq(0)
+    end
+
     it "should properly deal with validation errors if amount is blank" do
       user = FactoryBot.create(:user)
       sign_in user
@@ -150,7 +166,7 @@ RSpec.describe EntriesController, type: :controller do
         entry: {
           date: "2020-12-31",
           description: "Test create action",
-          frequency: "one_time",
+          frequency: "one-time",
           amount: nil
         } 
       }
