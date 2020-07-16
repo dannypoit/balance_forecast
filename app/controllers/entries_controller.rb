@@ -2,7 +2,7 @@ class EntriesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: Entry.where(user_id: current_user.id).order(:id)
+    render json: Entry.where(user_id: current_user.id).order(:date)
   end
 
   def create
