@@ -2,6 +2,10 @@
 @import 'bootstrap-select';
 @import 'font-awesome';
 
+// * {
+//   border: 1px solid lightgray;
+// }
+
 // body {
 //   background-color: #edf8f5;
 // }
@@ -83,4 +87,8 @@ th input {
 .past-date {
   color: #A9A9A9;
   font-weight: 500;
+}
+
+.navbar-brand {
+  font-size: 2em;
 }
