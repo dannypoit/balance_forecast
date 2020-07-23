@@ -16,12 +16,23 @@ $(function() {
     return entryRow;
   }
 
+  // get all entries for current user in JSON format
   $.get("/entries").success(function(data) {
     var allEntryRows = "";
-    var userID = $('#currentBalance').data("user-id");
+    var numRows = 100;
+    var userId = $('#currentBalance').data("user-id");
 
     $.each(data, function(index, entry) {
       allEntryRows += createEntryRow(entry);
+
+      // tried this in rails first but now trying in js
+      // problem in js is getting date format to match what rails has already outputted
+      if (entry.frequency === "weekly") {
+        var entryDate = new Date(entry.date);
+        entryDate.setDate(entryDate.getDate() + 7);
+        entry.date = new Intl.DateTimeFormat('en-US').format(entryDate);
+        allEntryRows += createEntryRow(entry);
+      }
     });
 
     var entriesTable = $('.entries-table');
@@ -39,7 +50,7 @@ $(function() {
 
         var updatedBalance = document.getElementById("currentBalance").innerHTML;
         
-        $.post("/users/" + userID, {
+        $.post("/users/" + userId, {
           _method: "PUT",
           user: {
             current_balance: updatedBalance
@@ -157,7 +168,7 @@ $(function() {
       var amountToClear = $(e.target).data("amount-to-clear");
       var newClearedBalance = ((parseInt(currentBalance) + amountToClear) * 100);
 
-      $.post("/users/" + userID, {
+      $.post("/users/" + userId, {
         _method: "PUT",
         user: {
           current_balance: newClearedBalance

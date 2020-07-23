@@ -3,6 +3,22 @@ class EntriesController < ApplicationController
 
   def index
     render json: Entry.where(user_id: current_user.id).order(:date)
+
+    # tried to do this in rails first but maybe better in js
+    # problem with this is that array is only referencing ActiveRecord Relations
+    # so when it creates new_entry and sets it to entry, it is just creating a duplicate reference to the same record in the db
+    # ---
+    # entries = []
+    # entries = Entry.where(user_id: current_user.id).order(:date)
+    # entries = entries.to_a
+    # entries.each do |entry|
+    #   if entry.frequency == "weekly" && entries.count < 100
+    #     new_entry = entry
+    #     new_entry.date = new_entry.date + 7
+    #     entries << new_entry
+    #   end
+    # end
+    # render json: entries
   end
 
   def create
