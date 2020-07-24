@@ -27,12 +27,14 @@ $(function() {
 
       // tried this in rails first but now trying in js
       // problem in js is getting date format to match what rails has already outputted
-      if (entry.frequency === "weekly") {
-        var entryDate = new Date(entry.date);
-        entryDate.setDate(entryDate.getDate() + 7);
-        entry.date = new Intl.DateTimeFormat('en-US').format(entryDate);
-        allEntryRows += createEntryRow(entry);
-      }
+      // comment below to disable JS version of recurring entries
+      // ====================================
+      // if (entry.frequency === "weekly") {
+      //   var entryDate = new Date(entry.date);
+      //   entryDate.setDate(entryDate.getDate() + 7);
+      //   entry.date = new Intl.DateTimeFormat('en-US').format(entryDate);
+      //   allEntryRows += createEntryRow(entry);
+      // }
     });
 
     var entriesTable = $('.entries-table');
