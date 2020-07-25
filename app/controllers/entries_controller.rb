@@ -2,22 +2,30 @@ class EntriesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    # render json: Entry.where(user_id: current_user.id).order(:date)
-
-    # problem with this is that array is only referencing ActiveRecord Relations
-    # so when it creates new_entry and sets it to entry, it is just creating a duplicate reference to the same record in the db
-    # ---
-    entries = []
-    entries = Entry.where(user_id: current_user.id).order(:date)
-    entries = entries.to_a
-    entries.each do |entry|
-      if entry.frequency == "weekly" && entries.count < 100
-        new_entry = entry
-        new_entry.date = new_entry.date + 7
-        entries << new_entry
+    entries_in_db = []
+    entries_to_display = []
+    max_date = Date.current.next_month(3)
+    entries_in_db = Entry.where(user_id: current_user.id).order(:date).to_a
+    entries_in_db.each do |entry_in_db|
+      entries_to_display << {"date": entry_in_db.date, "description": entry_in_db.description, "frequency": entry_in_db.frequency, "amount": entry_in_db.amount, "id": entry_in_db.id, "user_id": entry_in_db.user_id}
+    end
+    entries_to_display.each do |entry_to_display|
+      if entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "weekly"
+        entries_to_display << {"date": entry_to_display[:date] + 7, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
+      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "bi-weekly"
+        entries_to_display << {"date": entry_to_display[:date] + 14, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
+      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "monthly"
+        entries_to_display << {"date": entry_to_display[:date].next_month, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
+      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "bi-monthly"
+        entries_to_display << {"date": entry_to_display[:date].next_month(2), "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
+      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "quarterly"
+        entries_to_display << {"date": entry_to_display[:date].next_month(3), "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
+      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "annually"
+        entries_to_display << {"date": entry_to_display[:date].next_year, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
       end
     end
-    render json: entries
+    entries_to_display = entries_to_display.sort_by! { |entry| entry[:date] }
+    render json: entries_to_display
   end
 
   def create

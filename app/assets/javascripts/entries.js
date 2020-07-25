@@ -19,7 +19,6 @@ $(function() {
   // get all entries for current user in JSON format
   $.get("/entries").success(function(data) {
     var allEntryRows = "";
-    var numRows = 100;
     var userId = $('#currentBalance').data("user-id");
 
     $.each(data, function(index, entry) {
