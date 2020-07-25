@@ -6,22 +6,71 @@ class EntriesController < ApplicationController
     entries_to_display = []
     max_date = Date.current.next_month(3)
     entries_in_db = Entry.where(user_id: current_user.id).order(:date).to_a
-    entries_in_db.each do |entry_in_db|
-      entries_to_display << {"date": entry_in_db.date, "description": entry_in_db.description, "frequency": entry_in_db.frequency, "amount": entry_in_db.amount, "id": entry_in_db.id, "user_id": entry_in_db.user_id}
+    entries_in_db.each do |entry|
+      entries_to_display << {
+        date: entry.date, 
+        description: entry.description, 
+        frequency: entry.frequency, 
+        amount: entry.amount, 
+        id: entry.id, 
+        user_id: entry.user_id
+      }
     end
-    entries_to_display.each do |entry_to_display|
-      if entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "weekly"
-        entries_to_display << {"date": entry_to_display[:date] + 7, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
-      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "bi-weekly"
-        entries_to_display << {"date": entry_to_display[:date] + 14, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
-      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "monthly"
-        entries_to_display << {"date": entry_to_display[:date].next_month, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
-      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "bi-monthly"
-        entries_to_display << {"date": entry_to_display[:date].next_month(2), "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
-      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "quarterly"
-        entries_to_display << {"date": entry_to_display[:date].next_month(3), "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
-      elsif entry_to_display[:date] <= max_date && entry_to_display[:frequency] == "annually"
-        entries_to_display << {"date": entry_to_display[:date].next_year, "description": entry_to_display[:description], "frequency": entry_to_display[:frequency], "amount": entry_to_display[:amount]}
+    entries_to_display.each do |entry|
+      if entry[:date] <= max_date && entry[:frequency] == "weekly"
+        entries_to_display << {
+          date: entry[:date] + 7, 
+          description: entry[:description], 
+          frequency: entry[:frequency], 
+          amount: entry[:amount], 
+          id: entry[:id], 
+          user_id: entry[:user_id]
+        }
+      elsif entry[:date] <= max_date && entry[:frequency] == "bi-weekly"
+        entries_to_display << {
+          date: entry[:date] + 14, 
+          description: entry[:description], 
+          frequency: entry[:frequency], 
+          amount: entry[:amount], 
+          id: entry[:id], 
+          user_id: entry[:user_id]
+        }
+      elsif entry[:date] <= max_date && entry[:frequency] == "monthly"
+        entries_to_display << {
+          date: entry[:date].next_month, 
+          description: entry[:description], 
+          frequency: entry[:frequency], 
+          amount: entry[:amount], 
+          id: entry[:id], 
+          user_id: entry[:user_id]
+        }
+      elsif entry[:date] <= max_date && entry[:frequency] == "bi-monthly"
+        entries_to_display << {
+          date: entry[:date].next_month(2), 
+          description: entry[:description], 
+          frequency: entry[:frequency], 
+          amount: entry[:amount], 
+          id: entry[:id], 
+          user_id: entry[:user_id]
+        }
+      elsif entry[:date] <= max_date && entry[:frequency] == "quarterly"
+        entries_to_display << {
+          date: entry[:date].next_month(3), 
+          description: entry[:description], 
+          frequency: entry[:frequency], 
+          amount: entry[:amount], 
+          id: entry[:id], 
+          user_id: entry[:user_id]
+        }
+      elsif entry[:date] <= max_date && entry[:frequency] == "annually"
+        entries_to_display << {
+          date: entry[:date].next_year, 
+          description: entry[:description], 
+          frequency: entry[:frequency], 
+          amount: entry[:amount], 
+          id: entry[:id], 
+          user_id: entry[:user_id]
+        }
       end
     end
     entries_to_display = entries_to_display.sort_by! { |entry| entry[:date] }
