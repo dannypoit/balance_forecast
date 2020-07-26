@@ -8,9 +8,9 @@ $(function() {
     newEntryBalance = newEntryBalance + Math.round(entry.amount / 100.00);
     var entryColorClass = "";
     var currentDate = new Date();
-    if (new Date(entry.date) < currentDate) {
+    if (new Date(entry.date + "T00:00:00.000-04:00") < currentDate) {
       entryColorClass = " past-date ";
-    } else if (parseInt(entry.amount) >= 0 && new Date(entry.date) >= currentDate) {
+    } else if (parseInt(entry.amount) >= 0 && new Date(entry.date + "T00:00:00.000-04:00") >= currentDate) {
       entryColorClass = " credit ";
     }
     var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td><span data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newEntryBalance + '</td><td class="entry-actions-cell pl-2"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
@@ -44,7 +44,8 @@ $(function() {
         $.post("/users/" + userId, {
           _method: "PUT",
           user: {
-            current_balance: updatedBalance
+            current_balance: updatedBalance,
+            success: location.reload()
           }
         });
       };
@@ -163,7 +164,8 @@ $(function() {
       $.post("/users/" + userId, {
         _method: "PUT",
         user: {
-          current_balance: newClearedBalance
+          current_balance: newClearedBalance,
+          success: location.reload()
         }
       });
 
@@ -171,33 +173,44 @@ $(function() {
       // I may add support for other time zones in the future
       var dateString = $("span[data-id='" + entryId + "'][data-date]").html() + "T00:00:00.000-04:00";
       var newDate = new Date(dateString);
+      var entryFrequency = $("span[data-id='" + entryId + "'][data-frequency]").html();
 
-      // if one-time
+      if (entryFrequency == "one-time") {
+        $.ajax({
+          type: "DELETE",
+          url: "/entries/" + entryId
+        });
+      } else {
+        if (entryFrequency == "weekly") {
+          newDate.setDate(newDate.getDate() + 7)
+        } else if (entryFrequency === "bi-weekly") {
+          newDate.setDate(newDate.getDate() + 14)
+        } else if (entryFrequency === "monthly") {
+          newDate.setMonth(newDate.getMonth()+1)
+        } else if (entryFrequency === "bi-monthly") {
+          newDate.setMonth(newDate.getMonth()+2)
+        } else if (entryFrequency === "quarterly") {
+          newDate.setMonth(newDate.getMonth()+3)
+        } else if (entryFrequency === "annually") {
+          newDate.setMonth(newDate.getMonth()+12)
+        }
 
-      // $.ajax({
-      //   type: "DELETE",
-      //   url: "/entries/" + entryId
-      // });
-
-      // else if weekly
-      newDate.setDate(newDate.getDate() + 7);
-
-      // else if bi-weekly, etc.
-      // newDate.setDate(newDate.getDate() + 14);
+        $.post("/entries/" + entryId, {
+          _method: "PUT",
+          id: entryId,
+          entry: {
+            date: newDate,
+            success: location.reload()
+          }
+        });
+      }
 
       // this selects the date of a one-time entry
       // need to make this select the first of a recurring series
 
       // this works but JS is setting the new date one day early!
 
-      $.post("/entries/" + entryId, {
-        _method: "PUT",
-        id: entryId,
-        entry: {
-          date: newDate,
-          success: location.reload()
-        }
-      });
+      
     });
 
     // delete entry
@@ -206,7 +219,8 @@ $(function() {
 
       $.ajax({
         type: "DELETE",
-        url: "/entries/" + entryId
+        url: "/entries/" + entryId,
+        success: location.reload()
       });
     });
   });

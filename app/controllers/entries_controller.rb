@@ -4,7 +4,7 @@ class EntriesController < ApplicationController
   def index
     entries_in_db = []
     entries_to_display = []
-    max_date = Date.current.next_month(3)
+    max_date = Date.current.next_month(13)
     entries_in_db = Entry.where(user_id: current_user.id).order(:date).to_a
     entries_in_db.each do |entry|
       entries_to_display << {
