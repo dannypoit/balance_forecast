@@ -182,17 +182,17 @@ $(function() {
         });
       } else {
         if (entryFrequency == "weekly") {
-          newDate.setDate(newDate.getDate() + 7)
+          newDate.setDate(newDate.getDate() + 7);
         } else if (entryFrequency === "bi-weekly") {
-          newDate.setDate(newDate.getDate() + 14)
+          newDate.setDate(newDate.getDate() + 14);
         } else if (entryFrequency === "monthly") {
-          newDate.setMonth(newDate.getMonth()+1)
+          newDate.setMonth(newDate.getMonth()+1);
         } else if (entryFrequency === "bi-monthly") {
-          newDate.setMonth(newDate.getMonth()+2)
+          newDate.setMonth(newDate.getMonth()+2);
         } else if (entryFrequency === "quarterly") {
-          newDate.setMonth(newDate.getMonth()+3)
+          newDate.setMonth(newDate.getMonth()+3);
         } else if (entryFrequency === "annually") {
-          newDate.setMonth(newDate.getMonth()+12)
+          newDate.setMonth(newDate.getMonth()+12);
         }
 
         $.post("/entries/" + entryId, {
