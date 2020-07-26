@@ -153,9 +153,10 @@ $(function() {
       $input.one('blur', save).focus();
     });
 
-    // clear entry - delete and update balance
+    // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
     $('.fa-check').click(function(e) {
       var entryId = $(e.target).data("id");
+      // var entryDate = $(e.target).data("date");
       var amountToClear = $(e.target).data("amount-to-clear");
       var newClearedBalance = ((parseInt(currentBalance) + amountToClear) * 100);
 
@@ -166,9 +167,36 @@ $(function() {
         }
       });
 
-      $.ajax({
-        type: "DELETE",
-        url: "/entries/" + entryId
+      // this is calibrated for eastern time right now
+      // I may add support for other time zones in the future
+      var dateString = $("span[data-id='" + entryId + "'][data-date]").html() + "T00:00:00.000-04:00";
+      var newDate = new Date(dateString);
+
+      // if one-time
+
+      // $.ajax({
+      //   type: "DELETE",
+      //   url: "/entries/" + entryId
+      // });
+
+      // else if weekly
+      newDate.setDate(newDate.getDate() + 7);
+
+      // else if bi-weekly, etc.
+      // newDate.setDate(newDate.getDate() + 14);
+
+      // this selects the date of a one-time entry
+      // need to make this select the first of a recurring series
+
+      // this works but JS is setting the new date one day early!
+
+      $.post("/entries/" + entryId, {
+        _method: "PUT",
+        id: entryId,
+        entry: {
+          date: newDate,
+          success: location.reload()
+        }
       });
     });
 
