@@ -181,10 +181,15 @@ $(function() {
           url: "/entries/" + entryId
         });
       } else {
+        // set isEarliest to true for entry in each conditional below
+        // should only apply to first entry in recurring series
+        // rest should stay false -- see notes in trello
         if (entryFrequency == "weekly") {
           newDate.setDate(newDate.getDate() + 7);
+          // set isEarliest = true
         } else if (entryFrequency === "bi-weekly") {
           newDate.setDate(newDate.getDate() + 14);
+          // set isEarliest = true, etc.
         } else if (entryFrequency === "monthly") {
           newDate.setMonth(newDate.getMonth()+1);
         } else if (entryFrequency === "bi-monthly") {

@@ -6,6 +6,8 @@ class EntriesController < ApplicationController
     entries_to_display = []
     max_date = Date.current.next_month(3)
     entries_in_db = Entry.where(user_id: current_user.id).order(:date).to_a
+    # add isEarliest boolean to each entry in entries_in_db, 
+    # set to true for all (maybe leave one-time true / this shouldn't matter)
     entries_in_db.each do |entry|
       entries_to_display << {
         date: entry.date, 
@@ -13,9 +15,11 @@ class EntriesController < ApplicationController
         frequency: entry.frequency, 
         amount: entry.amount, 
         id: entry.id, 
-        user_id: entry.user_id
+        user_id: entry.user_id,
+        isEarliest: true
       }
     end
+    # refactor: set isEarliest to false for all subsequent recurring entries
     entries_to_display.each do |entry|
       if entry[:date] + 7 <= max_date && entry[:frequency] == "weekly"
         entries_to_display << {
@@ -24,7 +28,8 @@ class EntriesController < ApplicationController
           frequency: entry[:frequency], 
           amount: entry[:amount], 
           id: entry[:id], 
-          user_id: entry[:user_id]
+          user_id: entry[:user_id],
+          isEarliest: false
         }
       elsif entry[:date] + 14 <= max_date && entry[:frequency] == "bi-weekly"
         entries_to_display << {
@@ -33,7 +38,8 @@ class EntriesController < ApplicationController
           frequency: entry[:frequency], 
           amount: entry[:amount], 
           id: entry[:id], 
-          user_id: entry[:user_id]
+          user_id: entry[:user_id],
+          isEarliest: false
         }
       elsif entry[:date].next_month <= max_date && entry[:frequency] == "monthly"
         entries_to_display << {
@@ -42,7 +48,8 @@ class EntriesController < ApplicationController
           frequency: entry[:frequency], 
           amount: entry[:amount], 
           id: entry[:id], 
-          user_id: entry[:user_id]
+          user_id: entry[:user_id],
+          isEarliest: false
         }
       elsif entry[:date].next_month(2) <= max_date && entry[:frequency] == "bi-monthly"
         entries_to_display << {
@@ -51,7 +58,8 @@ class EntriesController < ApplicationController
           frequency: entry[:frequency], 
           amount: entry[:amount], 
           id: entry[:id], 
-          user_id: entry[:user_id]
+          user_id: entry[:user_id],
+          isEarliest: false
         }
       elsif entry[:date].next_month(3) <= max_date && entry[:frequency] == "quarterly"
         entries_to_display << {
@@ -60,7 +68,8 @@ class EntriesController < ApplicationController
           frequency: entry[:frequency], 
           amount: entry[:amount], 
           id: entry[:id], 
-          user_id: entry[:user_id]
+          user_id: entry[:user_id],
+          isEarliest: false
         }
       elsif entry[:date].next_year <= max_date && entry[:frequency] == "annually"
         entries_to_display << {
@@ -69,7 +78,8 @@ class EntriesController < ApplicationController
           frequency: entry[:frequency], 
           amount: entry[:amount], 
           id: entry[:id], 
-          user_id: entry[:user_id]
+          user_id: entry[:user_id],
+          isEarliest: false
         }
       end
     end
