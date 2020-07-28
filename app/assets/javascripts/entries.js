@@ -7,13 +7,17 @@ $(function() {
     
     newEntryBalance = newEntryBalance + Math.round(entry.amount / 100.00);
     var entryColorClass = "";
+    var entryActionsClass = "";
     var currentDate = new Date();
     if (new Date(entry.date + "T00:00:00.000-04:00") < currentDate) {
       entryColorClass = " past-date ";
     } else if (parseInt(entry.amount) >= 0 && new Date(entry.date + "T00:00:00.000-04:00") >= currentDate) {
       entryColorClass = " credit ";
     }
-    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td><span data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newEntryBalance + '</td><td class="entry-actions-cell pl-2"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
+    if (entry.isEarliest === false) {
+      entryActionsClass = " d-none";
+    }
+    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td><span data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newEntryBalance + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '" data-is-earliest=' + entry.isEarliest + '></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
     return entryRow;
   }
 
@@ -157,7 +161,6 @@ $(function() {
     // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
     $('.fa-check').click(function(e) {
       var entryId = $(e.target).data("id");
-      // var entryDate = $(e.target).data("date");
       var amountToClear = $(e.target).data("amount-to-clear");
       var newClearedBalance = ((parseInt(currentBalance) + amountToClear) * 100);
 
@@ -181,15 +184,10 @@ $(function() {
           url: "/entries/" + entryId
         });
       } else {
-        // set isEarliest to true for entry in each conditional below
-        // should only apply to first entry in recurring series
-        // rest should stay false -- see notes in trello
         if (entryFrequency == "weekly") {
           newDate.setDate(newDate.getDate() + 7);
-          // set isEarliest = true
         } else if (entryFrequency === "bi-weekly") {
           newDate.setDate(newDate.getDate() + 14);
-          // set isEarliest = true, etc.
         } else if (entryFrequency === "monthly") {
           newDate.setMonth(newDate.getMonth()+1);
         } else if (entryFrequency === "bi-monthly") {
@@ -210,12 +208,6 @@ $(function() {
         });
       }
 
-      // this selects the date of a one-time entry
-      // need to make this select the first of a recurring series
-
-      // this works but JS is setting the new date one day early!
-
-      
     });
 
     // delete entry
