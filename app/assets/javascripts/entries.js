@@ -165,24 +165,24 @@ $(function() {
         var amountToClear = $(e.target).data("amount-to-clear");
         var newClearedBalance = ((parseInt(currentBalance) + amountToClear) * 100);
 
-        $.post("/users/" + userId, {
-          _method: "PUT",
-          user: {
-            current_balance: newClearedBalance,
-            success: location.reload()
-          }
-        });
-
         // this is calibrated for eastern time right now
         // I may add support for other time zones in the future
         var dateString = $("span[data-id='" + entryId + "'][data-date]").html() + "T00:00:00.000-04:00";
         var newDate = new Date(dateString);
         var entryFrequency = $("span[data-id='" + entryId + "'][data-frequency]").html();
 
+        $.post("/users/" + userId, {
+          _method: "PUT",
+          user: {
+            current_balance: newClearedBalance
+          }
+        });
+
         if (entryFrequency == "one-time") {
           $.ajax({
             type: "DELETE",
-            url: "/entries/" + entryId
+            url: "/entries/" + entryId,
+            success: location.reload()
           });
         } else {
           if (entryFrequency == "weekly") {
@@ -208,7 +208,6 @@ $(function() {
             }
           });
         }
-
       });
 
       // delete entry
