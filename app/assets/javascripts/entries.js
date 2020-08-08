@@ -4,7 +4,6 @@ $(document).on('turbolinks:load', function() {
 
   // create new table row for each entry
   function createEntryRow(entry) {
-    
     newEntryBalance = newEntryBalance + Math.round(entry.amount / 100.00);
     var entryColorClass = "";
     var entryActionsClass = "";
@@ -54,6 +53,13 @@ $(document).on('turbolinks:load', function() {
         });
       };
       
+      $input.keyup(event => {
+        if (event.keyCode == 13) {
+          save();
+        } else {
+          return false;
+        }
+      });
       $input.one('blur', save).focus();
     });
 
@@ -79,6 +85,13 @@ $(document).on('turbolinks:load', function() {
         });
       };
       
+      $input.keyup(event => {
+        if (event.keyCode == 13) {
+          save();
+        } else {
+          return false;
+        }
+      });
       $input.one('blur', save).focus();
     });
 
@@ -104,6 +117,13 @@ $(document).on('turbolinks:load', function() {
         });
       };
       
+      $input.keyup(event => {
+        if (event.keyCode == 13) {
+          save();
+        } else {
+          return false;
+        }
+      });
       $input.one('blur', save).focus();
     });
 
@@ -129,6 +149,13 @@ $(document).on('turbolinks:load', function() {
         });
       };
       
+      $select.keyup(event => {
+        if (event.keyCode == 13) {
+          save();
+        } else {
+          return false;
+        }
+      });
       $select.one('blur', save).focus();
     });
 
@@ -155,6 +182,13 @@ $(document).on('turbolinks:load', function() {
         });
       };
       
+      $input.keyup(event => {
+        if (event.keyCode == 13) {
+          save();
+        } else {
+          return false;
+        }
+      });
       $input.one('blur', save).focus();
     });
 
