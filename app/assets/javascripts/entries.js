@@ -1,6 +1,41 @@
 $(document).on('turbolinks:load', function() {
   var currentBalance = document.getElementById("currentBalance").innerHTML;
   var newEntryBalance = parseInt(currentBalance);
+  var $userId = $('#currentBalance').data("user-id");
+
+  // update current balance
+  $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
+    var $el = $(this);
+    var $textBal = $el.text();
+    var $decBal = parseFloat($textBal).toFixed(2);
+    var $input = $('<input type="number"/>').val($decBal);
+    $el.replaceWith($input.select());
+    
+    var save = function(){
+      var $updatedDecBal = $input.val();
+      var $span = $('<span data-current-balance id="currentBalance" />').text($updatedDecBal * 100);
+      $input.replaceWith($span);
+
+      var updatedBalance = document.getElementById("currentBalance").innerHTML;
+      
+      $.post("/users/" + $userId, {
+        _method: "PUT",
+        user: {
+          current_balance: updatedBalance,
+          success: setTimeout(window.location.reload.bind(window.location), 50)
+        }
+      });
+    };
+    
+    $input.keyup(event => {
+      if (event.keyCode == 13) {
+        save();
+      } else {
+        return false;
+      }
+    });
+    $input.one('blur', save).focus();
+  });
 
   // create new table row for each entry
   function createEntryRow(entry) {
@@ -23,7 +58,6 @@ $(document).on('turbolinks:load', function() {
   // get all entries for current user in JSON format
   $.get("/entries").success(function(data) {
     var allEntryRows = "";
-    var userId = $('#currentBalance').data("user-id");
 
     $.each(data, function(index, entry) {
       allEntryRows += createEntryRow(entry);
@@ -31,37 +65,6 @@ $(document).on('turbolinks:load', function() {
 
     var entriesTable = $('.entries-table');
     entriesTable.html(allEntryRows);
-
-    // update current balance
-    $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
-      var $el = $(this);
-      var $input = $('<input type="number"/>').val($el.text());
-      $el.replaceWith($input);
-      
-      var save = function(){
-        var $span = $('<span data-current-balance id="currentBalance" />').text($input.val());
-        $input.replaceWith($span);
-
-        var updatedBalance = document.getElementById("currentBalance").innerHTML;
-        
-        $.post("/users/" + userId, {
-          _method: "PUT",
-          user: {
-            current_balance: updatedBalance,
-            success: setTimeout(window.location.reload.bind(window.location), 50)
-          }
-        });
-      };
-      
-      $input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else {
-          return false;
-        }
-      });
-      $input.one('blur', save).focus();
-    });
 
     // update date
     $('.entryRow').on('click', '[data-date]', function(e) {
@@ -204,7 +207,7 @@ $(document).on('turbolinks:load', function() {
       var newDate = new Date(dateString);
       var entryFrequency = $("span[data-id='" + entryId + "'][data-frequency]").html();
 
-      $.post("/users/" + userId, {
+      $.post("/users/" + $userId, {
         _method: "PUT",
         user: {
           current_balance: newClearedBalance
