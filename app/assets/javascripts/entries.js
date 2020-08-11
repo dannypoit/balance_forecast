@@ -51,7 +51,7 @@ $(document).on('turbolinks:load', function() {
     if (entry.isEarliest === false) {
       entryActionsClass = " d-none";
     }
-    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td><span data-amount data-id="' + entry.id + '">$' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newEntryBalance + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
+    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td>$<span data-amount data-id="' + entry.id + '">' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newEntryBalance + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
     return entryRow;
   }
 
@@ -165,12 +165,15 @@ $(document).on('turbolinks:load', function() {
     // update amount
     $('.entryRow').on('click', '[data-amount]', function(e) {
       var entryId = $(e.target).data("id");
-      var $el = $(this);
-      var $input = $('<input type="number"/>').val($el.text());
-      $el.replaceWith($input);
+      var $el = $('span[data-amount][data-id="' + entryId + '"]');
+      var $textAmt = $el.text();
+      var $decAmt = parseFloat($textAmt).toFixed(2);
+      var $input = $('<input type="number"/>').val($decAmt);
+      $el.replaceWith($input.select());
 
       var save = function(){
-        var $span = $('<span data-amount id="updatedAmountCell" />').text($input.val());
+        var $updatedDecAmt = $input.val();
+        var $span = $('<span data-amount id="updatedAmountCell" />').text($updatedDecAmt * 100);
         $input.replaceWith($span);
 
         var updatedAmount = document.getElementById("updatedAmountCell").innerHTML;
