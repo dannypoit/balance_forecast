@@ -1,12 +1,15 @@
 $(document).on('turbolinks:load', function() {
   var $currentBalance;
+  var newEntryBalance;
+  var decNewBal;
   var $userId = $('#currentBalance').data("user-id");
 
   $.get("/users/" + $userId).success(function(user) {
     $currentBalance = user.current_balance;
+    newEntryBalance = $currentBalance;
+    decNewBal = parseFloat(newEntryBalance / 100);
+    // decNewBal = decNewBal.toFixed(2);
   });
-
-  var newEntryBalance = $currentBalance;
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
@@ -45,7 +48,9 @@ $(document).on('turbolinks:load', function() {
 
   // create new table row for each entry
   function createEntryRow(entry) {
-    newEntryBalance = newEntryBalance + Math.round(entry.amount / 100.00);
+    var decAmount = entry.amount / 100;
+    decNewBal = decNewBal + decAmount;
+    var intNewBal = Math.round(decNewBal);
     var entryColorClass = "";
     var entryActionsClass = "";
     var currentDate = new Date();
@@ -57,7 +62,7 @@ $(document).on('turbolinks:load', function() {
     if (entry.isEarliest === false) {
       entryActionsClass = " d-none";
     }
-    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td>$<span data-amount data-id="' + entry.id + '">' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + newEntryBalance + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
+    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td>$<span data-amount data-id="' + entry.id + '">' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + intNewBal + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
     return entryRow;
   }
 
