@@ -1,13 +1,19 @@
 $(document).on('turbolinks:load', function() {
-  var currentBalance = document.getElementById("currentBalance").innerHTML;
-  var newEntryBalance = parseInt(currentBalance);
+  var $currentBalance;
   var $userId = $('#currentBalance').data("user-id");
+
+  $.get("/users/" + $userId).success(function(user) {
+    $currentBalance = user.current_balance;
+  });
+
+  var newEntryBalance = $currentBalance;
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
     var $el = $(this);
-    var $textBal = $el.text();
-    var $decBal = parseFloat($textBal).toFixed(2);
+    var $decBal = $currentBalance / 100;
+    $decBal = $decBal.toFixed(2);
+
     var $input = $('<input type="number"/>').val($decBal);
     $el.replaceWith($input.select());
     
@@ -202,7 +208,7 @@ $(document).on('turbolinks:load', function() {
     $('.fa-check').click(function(e) {
       var entryId = $(e.target).data("id");
       var amountToClear = $(e.target).data("amount-to-clear");
-      var newClearedBalance = ((parseInt(currentBalance) + amountToClear) * 100);
+      var newClearedBalance = ((parseInt($currentBalance) + amountToClear) * 100);
 
       // this is calibrated for eastern time right now
       // I may add support for other time zones in the future
