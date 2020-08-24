@@ -8,11 +8,11 @@ $(document).on('turbolinks:load', function() {
     $currentBalance = user.current_balance;
     newEntryBalance = $currentBalance;
     decNewBal = parseFloat(newEntryBalance / 100);
-    // decNewBal = decNewBal.toFixed(2);
   });
 
   // update current balance
-  $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
+  $('#currentBalanceCell').on('click', '[data-current-balance]', 
+  function() {
     var $el = $(this);
     var $decBal = $currentBalance / 100;
     $decBal = $decBal.toFixed(2);
@@ -62,7 +62,7 @@ $(document).on('turbolinks:load', function() {
     if (entry.isEarliest === false) {
       entryActionsClass = " d-none";
     }
-    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td>$<span data-amount data-id="' + entry.id + '">' + Math.round(entry.amount / 100.00) + '</span></td><td>$' + intNewBal + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
+    var entryRow = '<tr class="entryRow' + entryColorClass + '"><td><span data-date data-id="' + entry.id + '">' + entry.date + '</span></td><td><span data-description data-id="' + entry.id + '">' + entry.description + '</span></td><td><span data-frequency data-id="' + entry.id + '">' + entry.frequency + '</span></td><td>$<span data-amount data-id="' + entry.id + '">' + decAmount.toFixed(2) + '</span></td><td>$' + intNewBal + '</td><td class="entry-actions-cell pl-2' + entryActionsClass + '"><i class="fas fa-check"' + ' data-id="' + entry.id + '" data-user-id="' + entry.user_id + '" data-amount-to-clear="' + Math.round(entry.amount / 100.00) + '"></i><i class="far fa-trash-alt ml-2"' + ' data-id="' + entry.id + '"></i></td></tr>';
     return entryRow;
   }
 
