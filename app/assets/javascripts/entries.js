@@ -176,10 +176,12 @@ $(document).on('turbolinks:load', function() {
     // update amount
     $('.entryRow').on('click', '[data-amount]', function(e) {
       var entryId = $(e.target).data("id");
+      var $entryAmt = $(e.target).text();
+      var decEntryAmt = parseFloat($entryAmt);
       var $el = $('span[data-amount][data-id="' + entryId + '"]');
       var $textAmt = $el.text();
       var $decAmt = parseFloat($textAmt).toFixed(2);
-      var $input = $('<input type="number"/>').val($decAmt);
+      var $input = $('<input type="number"/>').val(decEntryAmt);
       $el.replaceWith($input.select());
 
       var save = function(){
