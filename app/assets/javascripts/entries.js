@@ -70,40 +70,42 @@ $(document).on('turbolinks:load', function () {
     if (entry.isEarliest === false) {
       entryActionsClass = ' d-none';
     }
-    const entryRow =
-      '<tr class="entryRow' +
-      entryColorClass +
-      '"><td><span data-date data-id="' +
-      entry.id +
-      '">' +
-      entry.date +
-      '</span></td><td><span data-description data-id="' +
-      entry.id +
-      '">' +
-      entry.description +
-      '</span></td><td><span data-frequency data-id="' +
-      entry.id +
-      '">' +
-      entry.frequency +
-      '</span></td><td>$<span data-amount data-id="' +
-      entry.id +
-      '">' +
-      decAmount.toFixed(2) +
-      '</span></td><td>$' +
-      intNewBal +
-      '</td><td class="entry-actions-cell pl-2' +
-      entryActionsClass +
-      '"><i class="fas fa-check"' +
-      ' data-id="' +
-      entry.id +
-      '" data-user-id="' +
-      entry.user_id +
-      '" data-amount-to-clear="' +
-      Math.round(entry.amount / 100.0) +
-      '"></i><i class="far fa-trash-alt ml-2"' +
-      ' data-id="' +
-      entry.id +
-      '"></i></td></tr>';
+    const entryRow = `
+      <tr class="entryRow ${entryColorClass}">
+        <td>
+          <span data-date data-id="${entry.id}">
+            ${entry.date}
+          </span>
+        </td>
+        <td>
+          <span data-description data-id="${entry.id}">
+            ${entry.description}
+          </span>
+        </td>
+        <td>
+          <span data-frequency data-id="${entry.id}">
+            ${entry.frequency}
+          </span>
+        </td>
+        <td>
+          <span data-amount data-id="${entry.id}">
+            $${decAmount.toFixed(2)}
+          </span>
+        </td>
+        <td>
+          $${intNewBal}
+        </td>
+        <td class="entry-actions-cell pl-2 ${entryActionsClass}">
+          <i class="fas fa-check" 
+            data-id="${entry.id}" 
+            data-user-id="${entry.user_id}" 
+            data-amount-to-clear="${Math.round(entry.amount / 100.0)}">
+          </i>
+          <i class="far fa-trash-alt ml-2" 
+            data-id="${entry.id}">
+          </i>
+        </td>
+      </tr>`;
     return entryRow;
   }
 
@@ -193,9 +195,17 @@ $(document).on('turbolinks:load', function () {
     $('.entryRow').on('click', '[data-frequency]', function (e) {
       const entryId = $(e.target).data('id');
       let el = $(this);
-      let select = $(
-        '<select id="frequency-select"><option value="one-time">One-time</option><option value="weekly">Weekly</option><option value="bi-weekly">Bi-weekly</option><option value="monthly">Monthly</option><option value="bi-monthly">Bi-monthly</option><option value="quarterly">Quarterly</option><option value="annually">Annually</option></select>'
-      ).val(el.text());
+      let select = $(`
+        <select id="frequency-select">
+          <option value="one-time">One-time</option>
+          <option value="weekly">Weekly</option>
+          <option value="bi-weekly">Bi-weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="bi-monthly">Bi-monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="annually">Annually</option>
+        </select>
+      `).val(el.text());
       el.replaceWith(select);
 
       const save = function () {
@@ -240,7 +250,7 @@ $(document).on('turbolinks:load', function () {
       });
 
       const decEntryAmt = parseFloat(entryAmt);
-      const el = $('span[data-amount][data-id="' + entryId + '"]');
+      const el = $(`span[data-amount][data-id="${entryId}"]`);
       // why are these here?
       // const textAmt = el.text();
       // var $decAmt = parseFloat(textAmt).toFixed(2);
@@ -287,11 +297,11 @@ $(document).on('turbolinks:load', function () {
       // this is calibrated for eastern time right now
       // I may add support for other time zones in the future
       const dateString =
-        $("span[data-id='" + entryId + "'][data-date]").html() +
+        $(`span[data-id="${entryId}"][data-date]`).html() +
         'T00:00:00.000-04:00';
       let newDate = new Date(dateString);
       const entryFrequency = $(
-        "span[data-id='" + entryId + "'][data-frequency]"
+        `span[data-id="${entryId}"][data-frequency]`
       ).html();
 
       $.post('/users/' + userId, {
