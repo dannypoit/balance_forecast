@@ -46,7 +46,7 @@
               Current balance:
             </th>
             <th class="h4" id="currentBalanceCell">
-              $<span data-current-balance data-user-id="<%= current_user.id %>" id="currentBalance"><%= (current_user.current_balance / 100.00).round %></span>
+              $<span data-current-balance data-user-id="<%= current_user.id %>" id="currentBalance"><%= current_user.current_balance %></span>
             </th>
           </tr>
           <tr class="header-row">
