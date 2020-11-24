@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201124213529) do
+ActiveRecord::Schema.define(version: 20201124214627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,9 +18,9 @@ ActiveRecord::Schema.define(version: 20201124213529) do
   create_table "entries", force: :cascade do |t|
     t.date     "date"
     t.string   "description"
-    t.integer  "amount"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.decimal  "amount",      precision: 10, scale: 2
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "frequency"
     t.integer  "user_id"
     t.index ["user_id"], name: "index_entries_on_user_id", using: :btree
