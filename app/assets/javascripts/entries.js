@@ -4,23 +4,16 @@ $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   let currentBalance;
   let newBalance;
-  // let decNewBal;
 
-  // get the current balance from the db and save it into a variable
+  // get the current balance from the db and save it into a variable to display on page
   $.get('/users/' + userId).success(function (user) {
     currentBalance = user.current_balance;
-    newBalance = currentBalance;
-    // decNewBal = parseFloat(newEntryBalance / 100);
+    newBalance = Number(currentBalance);
   });
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
-    // let el = $(this);
-    // let decBal = currentBalance / 100;
-    // decBal = decBal.toFixed(2);
-
     let input = $('<input type="number"/>').val(currentBalance);
-    // el.replaceWith(input.select());
     $(this).replaceWith(input.select());
 
     const save = function () {
@@ -54,9 +47,8 @@ $(document).on('turbolinks:load', function () {
 
   // create new table row for each entry
   function createEntryRow(entry) {
-    const entryAmount = entry.amount;
+    const entryAmount = Number(entry.amount);
     newBalance += entryAmount;
-    // const intNewBal = Math.round(newBalance);
     let entryColorClass = '';
     let entryActionsClass = '';
     const currentDate = new Date();
@@ -90,11 +82,11 @@ $(document).on('turbolinks:load', function () {
         </td>
         <td>
           <span data-amount data-id="${entry.id}">
-            ${entryAmount}
+            $${entryAmount.toFixed(2)}
           </span>
         </td>
         <td>
-          $${newBalance}
+          $${newBalance.toFixed(2)}
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
           <i class="fas fa-check" 
@@ -114,6 +106,7 @@ $(document).on('turbolinks:load', function () {
   $.get('/entries').success(function (data) {
     let allEntryRows = '';
 
+    // add each entry row to allEntryRows variable
     $.each(data, function (index, entry) {
       allEntryRows += createEntryRow(entry);
     });
@@ -240,23 +233,10 @@ $(document).on('turbolinks:load', function () {
     // update amount
     $('.entryRow').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
-      let entryAmt;
-
-      $.get('/entries').success(function (data) {
-        $.each(data, function (index, entry) {
-          // wtf is this?
-          if (entry.id == 253) {
-            entryAmt = entry.amount;
-          }
-        });
-      });
-
-      // const decEntryAmt = parseFloat(entryAmt);
-      const el = $(`span[data-amount][data-id="${entryId}"]`);
-      // why are these here?
-      // const textAmt = el.text();
-      // var $decAmt = parseFloat(textAmt).toFixed(2);
-      let input = $('<input type="number"/>').val(entryAmt);
+      let el = $('span[data-amount][data-id="' + entryId + '"]');
+      const textAmt = el.text();
+      const decAmt = parseFloat(textAmt).toFixed(2);
+      let input = $('<input type="number"/>').val(decAmt);
       el.replaceWith(input.select());
 
       const save = function () {
