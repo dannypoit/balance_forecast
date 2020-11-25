@@ -2,14 +2,8 @@
 
 $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
-  let currentBalance;
-  let newBalance;
-
-  // get the current balance from the db and save it into a variable to display on page
-  $.get('/users/' + userId).success(function (user) {
-    currentBalance = user.current_balance;
-    newBalance = Number(currentBalance);
-  });
+  const currentBalance = document.getElementById('currentBalance').innerText;
+  let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
