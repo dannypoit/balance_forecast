@@ -49,10 +49,15 @@ $(document).on('turbolinks:load', function () {
     if (new Date(entry.date + 'T00:00:00.000-04:00') < currentDate) {
       entryColorClass = ' past-date ';
     } else if (
-      entry.amount >= 0 &&
+      entry.amount > 0 &&
       new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
     ) {
       entryColorClass = ' credit ';
+    } else if (
+      newBalance < 0 &&
+      new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
+    ) {
+      entryColorClass = ' in-the-red ';
     }
     if (entry.isEarliest === false) {
       entryActionsClass = ' d-none';
