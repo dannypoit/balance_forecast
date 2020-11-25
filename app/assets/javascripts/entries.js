@@ -273,7 +273,7 @@ $(document).on('turbolinks:load', function () {
     $('.fa-check').click(function (e) {
       const entryId = $(e.target).data('id');
       const amountToClear = $(e.target).data('amount-to-clear');
-      const newClearedBalance = currentBalance + amountToClear;
+      const newClearedBalance = Number(currentBalance) + Number(amountToClear);
 
       // this is calibrated for eastern time right now
       // I may add support for other time zones in the future
