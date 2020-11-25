@@ -3,29 +3,23 @@
 $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   let currentBalance;
-  let newEntryBalance;
-  let decNewBal;
+  let newBalance;
 
-  // get the current balance from the db, convert it to decimal format, and save it into a variable
+  // get the current balance from the db and save it into a variable to display on page
   $.get('/users/' + userId).success(function (user) {
     currentBalance = user.current_balance;
-    newEntryBalance = currentBalance;
-    decNewBal = parseFloat(newEntryBalance / 100);
+    newBalance = Number(currentBalance);
   });
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
-    let el = $(this);
-    let decBal = currentBalance / 100;
-    decBal = decBal.toFixed(2);
-
-    let input = $('<input type="number"/>').val(decBal);
-    el.replaceWith(input.select());
+    let input = $('<input type="number"/>').val(currentBalance);
+    $(this).replaceWith(input.select());
 
     const save = function () {
-      const updatedDecBal = input.val();
+      const enteredBalance = input.val();
       const span = $('<span data-current-balance id="currentBalance" />').text(
-        updatedDecBal * 100
+        enteredBalance
       );
       input.replaceWith(span);
 
@@ -53,16 +47,15 @@ $(document).on('turbolinks:load', function () {
 
   // create new table row for each entry
   function createEntryRow(entry) {
-    const decAmount = entry.amount / 100;
-    decNewBal += decAmount;
-    const intNewBal = Math.round(decNewBal);
+    const entryAmount = Number(entry.amount);
+    newBalance += entryAmount;
     let entryColorClass = '';
     let entryActionsClass = '';
     const currentDate = new Date();
     if (new Date(entry.date + 'T00:00:00.000-04:00') < currentDate) {
       entryColorClass = ' past-date ';
     } else if (
-      parseInt(entry.amount) >= 0 &&
+      entry.amount >= 0 &&
       new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
     ) {
       entryColorClass = ' credit ';
@@ -89,17 +82,17 @@ $(document).on('turbolinks:load', function () {
         </td>
         <td>
           <span data-amount data-id="${entry.id}">
-            $${decAmount.toFixed(2)}
+            $${entryAmount.toFixed(2)}
           </span>
         </td>
         <td>
-          $${intNewBal}
+          $${newBalance.toFixed(2)}
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
           <i class="fas fa-check" 
             data-id="${entry.id}" 
             data-user-id="${entry.user_id}" 
-            data-amount-to-clear="${Math.round(entry.amount / 100.0)}">
+            data-amount-to-clear="${entry.amount}">
           </i>
           <i class="far fa-trash-alt ml-2" 
             data-id="${entry.id}">
@@ -113,6 +106,7 @@ $(document).on('turbolinks:load', function () {
   $.get('/entries').success(function (data) {
     let allEntryRows = '';
 
+    // add each entry row to allEntryRows variable
     $.each(data, function (index, entry) {
       allEntryRows += createEntryRow(entry);
     });
@@ -239,28 +233,16 @@ $(document).on('turbolinks:load', function () {
     // update amount
     $('.entryRow').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
-      let entryAmt;
-
-      $.get('/entries').success(function (data) {
-        $.each(data, function (index, entry) {
-          if (entry.id == 253) {
-            entryAmt = entry.amount;
-          }
-        });
-      });
-
-      const decEntryAmt = parseFloat(entryAmt);
-      const el = $(`span[data-amount][data-id="${entryId}"]`);
-      // why are these here?
-      // const textAmt = el.text();
-      // var $decAmt = parseFloat(textAmt).toFixed(2);
-      let input = $('<input type="number"/>').val(decEntryAmt);
+      let el = $('span[data-amount][data-id="' + entryId + '"]');
+      const textAmt = el.text();
+      const decAmt = parseFloat(textAmt).toFixed(2);
+      let input = $('<input type="number"/>').val(decAmt);
       el.replaceWith(input.select());
 
       const save = function () {
-        const updatedDecAmt = input.val();
+        const enteredAmount = input.val();
         const span = $('<span data-amount id="updatedAmountCell" />').text(
-          updatedDecAmt * 100
+          enteredAmount
         );
         input.replaceWith(span);
 
@@ -291,8 +273,7 @@ $(document).on('turbolinks:load', function () {
     $('.fa-check').click(function (e) {
       const entryId = $(e.target).data('id');
       const amountToClear = $(e.target).data('amount-to-clear');
-      const newClearedBalance =
-        (parseInt(currentBalance) + amountToClear) * 100;
+      const newClearedBalance = currentBalance + amountToClear;
 
       // this is calibrated for eastern time right now
       // I may add support for other time zones in the future
