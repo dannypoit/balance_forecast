@@ -60,24 +60,20 @@ $(document).on('turbolinks:load', function () {
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
-          <span data-date data-id="${entry.id}">
-            ${entry.date}
-          </span>
+          <span data-date data-id="${entry.id}">${entry.date}</span>
         </td>
         <td>
-          <span data-description data-id="${entry.id}">
-            ${entry.description}
-          </span>
+          <span data-description data-id="${entry.id}">${
+      entry.description
+    }</span>
         </td>
         <td>
-          <span data-frequency data-id="${entry.id}">
-            ${entry.frequency}
-          </span>
-        </td>
+        <span data-frequency data-id="${entry.id}">${entry.frequency}</span>
+    </td>
         <td>
-          <span data-amount data-id="${entry.id}">
-            $${entryAmount.toFixed(2)}
-          </span>
+          $<span data-amount data-id="${entry.id}">${entryAmount.toFixed(
+      2
+    )}</span>
         </td>
         <td>
           $${newBalance.toFixed(2)}
@@ -267,7 +263,9 @@ $(document).on('turbolinks:load', function () {
     $('.fa-check').click(function (e) {
       const entryId = $(e.target).data('id');
       const amountToClear = $(e.target).data('amount-to-clear');
-      const newClearedBalance = Number(currentBalance) + Number(amountToClear);
+      const newClearedBalance =
+        parseFloat(currentBalance.replace('$', '').replace(',', '')) +
+        Number(amountToClear);
 
       // this is calibrated for eastern time right now
       // I may add support for other time zones in the future
@@ -286,14 +284,14 @@ $(document).on('turbolinks:load', function () {
         },
       });
 
-      if (entryFrequency == 'one-time') {
+      if (entryFrequency === 'one-time') {
         $.ajax({
           type: 'DELETE',
           url: '/entries/' + entryId,
           success: setTimeout(window.location.reload.bind(window.location), 50),
         });
       } else {
-        if (entryFrequency == 'weekly') {
+        if (entryFrequency === 'weekly') {
           newDate.setDate(newDate.getDate() + 7);
         } else if (entryFrequency === 'bi-weekly') {
           newDate.setDate(newDate.getDate() + 14);
