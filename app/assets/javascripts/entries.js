@@ -7,7 +7,10 @@ $(document).on('turbolinks:load', function () {
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
-    let input = $('<input type="number"/>').val(currentBalance);
+    const floatBal = parseFloat(
+      currentBalance.replace('$', '').replace(',', '')
+    );
+    let input = $('<input type="number"/>').val(floatBal);
     $(this).replaceWith(input.select());
 
     const save = function () {
