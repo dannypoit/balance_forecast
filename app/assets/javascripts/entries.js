@@ -45,6 +45,7 @@ $(document).on('turbolinks:load', function () {
     newBalance += entryAmount;
     let entryColorClass = '';
     let entryActionsClass = '';
+    let entryIsEarliestClass = '';
     const currentDate = new Date();
     if (new Date(entry.date + 'T00:00:00.000-04:00') < currentDate) {
       entryColorClass = ' past-date ';
@@ -59,7 +60,9 @@ $(document).on('turbolinks:load', function () {
     ) {
       entryColorClass = ' in-the-red ';
     }
-    if (entry.isEarliest === false) {
+    if (entry.isEarliest === true) {
+      entryIsEarliestClass = 'class="earliest"';
+    } else {
       entryActionsClass = ' d-none';
     }
     const entryRow = `
@@ -75,11 +78,9 @@ $(document).on('turbolinks:load', function () {
         <td>
         <span data-frequency data-id="${entry.id}">${entry.frequency}</span>
     </td>
-        <td>
-          $<span data-amount data-id="${entry.id}">${entryAmount.toFixed(
-      2
-    )}</span>
-        </td>
+        <td>$<span ${entryIsEarliestClass} data-amount data-id="${
+      entry.id
+    }">${entryAmount.toFixed(2)}</span></td>
         <td>
           $${newBalance.toFixed(2)}
         </td>
@@ -228,9 +229,9 @@ $(document).on('turbolinks:load', function () {
     // update amount
     $('.entryRow').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $('span[data-amount][data-id="' + entryId + '"]');
-      const textAmt = el.text();
-      const decAmt = parseFloat(textAmt).toFixed(2);
+      let el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
+      const textAmt = el[0].innerText;
+      const decAmt = parseFloat(textAmt);
       let input = $('<input type="number"/>').val(decAmt);
       el.replaceWith(input.select());
 
