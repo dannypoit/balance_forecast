@@ -10,7 +10,7 @@ $(document).on('turbolinks:load', function () {
     const floatBal = parseFloat(
       currentBalance.replace('$', '').replace(',', '')
     );
-    let input = $('<input type="number"/>').val(floatBal);
+    let input = $('<input type="number" step=".01"/>').val(floatBal);
     $(this).replaceWith(input.select());
 
     const save = function () {
@@ -35,6 +35,8 @@ $(document).on('turbolinks:load', function () {
     input.keyup(event => {
       if (event.keyCode == 13) {
         save();
+      } else if (event.keyCode == 27) {
+        input.blur(window.location.reload());
       } else {
         return false;
       }
@@ -44,7 +46,7 @@ $(document).on('turbolinks:load', function () {
 
   // create new table row for each entry
   function createEntryRow(entry) {
-    const entryAmount = Number(entry.amount);
+    const entryAmount = parseFloat(entry.amount);
     newBalance += entryAmount;
     let entryColorClass = '';
     let entryActionsClass = '';
@@ -141,6 +143,8 @@ $(document).on('turbolinks:load', function () {
       input.keyup(event => {
         if (event.keyCode == 13) {
           save();
+        } else if (event.keyCode == 27) {
+          input.blur(window.location.reload());
         } else {
           return false;
         }
@@ -177,6 +181,8 @@ $(document).on('turbolinks:load', function () {
       input.keyup(event => {
         if (event.keyCode == 13) {
           save();
+        } else if (event.keyCode == 27) {
+          input.blur(window.location.reload());
         } else {
           return false;
         }
@@ -222,6 +228,8 @@ $(document).on('turbolinks:load', function () {
       select.keyup(event => {
         if (event.keyCode == 13) {
           save();
+        } else if (event.keyCode == 27) {
+          select.blur(window.location.reload());
         } else {
           return false;
         }
@@ -235,7 +243,7 @@ $(document).on('turbolinks:load', function () {
       let el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
       const textAmt = el[0].innerText;
       const decAmt = parseFloat(textAmt);
-      let input = $('<input type="number"/>').val(decAmt);
+      let input = $('<input type="number" step=".01"/>').val(decAmt);
       el.replaceWith(input.select());
 
       const save = function () {
@@ -261,6 +269,8 @@ $(document).on('turbolinks:load', function () {
       input.keyup(event => {
         if (event.keyCode == 13) {
           save();
+        } else if (event.keyCode == 27) {
+          input.blur(window.location.reload());
         } else {
           return false;
         }
@@ -274,7 +284,7 @@ $(document).on('turbolinks:load', function () {
       const amountToClear = $(e.target).data('amount-to-clear');
       const newClearedBalance =
         parseFloat(currentBalance.replace('$', '').replace(',', '')) +
-        Number(amountToClear);
+        parseFloat(amountToClear);
 
       // this is calibrated for eastern time right now
       // I may add support for other time zones in the future
