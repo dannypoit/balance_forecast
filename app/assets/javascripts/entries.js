@@ -280,73 +280,82 @@ $(document).on('turbolinks:load', function () {
 
     // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
     $('.fa-check').click(function (e) {
-      const entryId = $(e.target).data('id');
-      const amountToClear = $(e.target).data('amount-to-clear');
-      const newClearedBalance =
-        parseFloat(currentBalance.replace('$', '').replace(',', '')) +
-        parseFloat(amountToClear);
+      const r = confirm('Are you sure you want to clear this entry?');
+      if (r == true) {
+        const entryId = $(e.target).data('id');
+        const amountToClear = $(e.target).data('amount-to-clear');
+        const newClearedBalance =
+          parseFloat(currentBalance.replace('$', '').replace(',', '')) +
+          parseFloat(amountToClear);
 
-      // this is calibrated for eastern time right now
-      // I may add support for other time zones in the future
-      const dateString =
-        $(`span[data-id="${entryId}"][data-date]`).html() +
-        'T00:00:00.000-04:00';
-      let newDate = new Date(dateString);
-      const entryFrequency = $(
-        `span[data-id="${entryId}"][data-frequency]`
-      ).html();
+        // this is calibrated for eastern time right now
+        // I may add support for other time zones in the future
+        const dateString =
+          $(`span[data-id="${entryId}"][data-date]`).html() +
+          'T00:00:00.000-04:00';
+        let newDate = new Date(dateString);
+        const entryFrequency = $(
+          `span[data-id="${entryId}"][data-frequency]`
+        ).html();
 
-      $.post('/users/' + userId, {
-        _method: 'PUT',
-        user: {
-          current_balance: newClearedBalance,
-        },
-      });
-
-      if (entryFrequency === 'one-time') {
-        $.ajax({
-          type: 'DELETE',
-          url: '/entries/' + entryId,
-          success: setTimeout(window.location.reload.bind(window.location), 50),
-        });
-      } else {
-        if (entryFrequency === 'weekly') {
-          newDate.setDate(newDate.getDate() + 7);
-        } else if (entryFrequency === 'bi-weekly') {
-          newDate.setDate(newDate.getDate() + 14);
-        } else if (entryFrequency === 'monthly') {
-          newDate.setMonth(newDate.getMonth() + 1);
-        } else if (entryFrequency === 'bi-monthly') {
-          newDate.setMonth(newDate.getMonth() + 2);
-        } else if (entryFrequency === 'quarterly') {
-          newDate.setMonth(newDate.getMonth() + 3);
-        } else if (entryFrequency === 'annually') {
-          newDate.setMonth(newDate.getMonth() + 12);
-        }
-
-        $.post('/entries/' + entryId, {
+        $.post('/users/' + userId, {
           _method: 'PUT',
-          id: entryId,
-          entry: {
-            date: newDate,
+          user: {
+            current_balance: newClearedBalance,
+          },
+        });
+
+        if (entryFrequency === 'one-time') {
+          $.ajax({
+            type: 'DELETE',
+            url: '/entries/' + entryId,
             success: setTimeout(
               window.location.reload.bind(window.location),
               50
             ),
-          },
-        });
+          });
+        } else {
+          if (entryFrequency === 'weekly') {
+            newDate.setDate(newDate.getDate() + 7);
+          } else if (entryFrequency === 'bi-weekly') {
+            newDate.setDate(newDate.getDate() + 14);
+          } else if (entryFrequency === 'monthly') {
+            newDate.setMonth(newDate.getMonth() + 1);
+          } else if (entryFrequency === 'bi-monthly') {
+            newDate.setMonth(newDate.getMonth() + 2);
+          } else if (entryFrequency === 'quarterly') {
+            newDate.setMonth(newDate.getMonth() + 3);
+          } else if (entryFrequency === 'annually') {
+            newDate.setMonth(newDate.getMonth() + 12);
+          }
+
+          $.post('/entries/' + entryId, {
+            _method: 'PUT',
+            id: entryId,
+            entry: {
+              date: newDate,
+              success: setTimeout(
+                window.location.reload.bind(window.location),
+                50
+              ),
+            },
+          });
+        }
       }
     });
 
     // delete entry
     $('.fa-trash-alt').click(function (e) {
-      const entryId = $(e.target).data('id');
+      const r = confirm('Are you sure you want to delete this entry?');
+      if (r == true) {
+        const entryId = $(e.target).data('id');
 
-      $.ajax({
-        type: 'DELETE',
-        url: '/entries/' + entryId,
-        success: location.reload(),
-      });
+        $.ajax({
+          type: 'DELETE',
+          url: '/entries/' + entryId,
+          success: location.reload(),
+        });
+      }
     });
   });
 });
