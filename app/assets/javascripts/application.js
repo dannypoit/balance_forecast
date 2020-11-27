@@ -18,4 +18,5 @@
 //= require bootstrap-select
 //= require bootstrap/alert
 //= require bootstrap/dropdown
+//= require bootbox
 //= require_tree .

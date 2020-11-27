@@ -280,72 +280,108 @@ $(document).on('turbolinks:load', function () {
 
     // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
     $('.fa-check').click(function (e) {
-      const entryId = $(e.target).data('id');
-      const amountToClear = $(e.target).data('amount-to-clear');
-      const newClearedBalance =
-        parseFloat(currentBalance.replace('$', '').replace(',', '')) +
-        parseFloat(amountToClear);
+      bootbox.dialog({
+        message:
+          '<p></p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
+        centerVertical: true,
+        buttons: {
+          delete: {
+            label: 'Clear',
+            className: 'btn-danger',
+            callback: function () {
+              const entryId = $(e.target).data('id');
+              const amountToClear = $(e.target).data('amount-to-clear');
+              const newClearedBalance =
+                parseFloat(currentBalance.replace('$', '').replace(',', '')) +
+                parseFloat(amountToClear);
 
-      // this is calibrated for eastern time right now
-      // I may add support for other time zones in the future
-      const dateString =
-        $(`span[data-id="${entryId}"][data-date]`).html() +
-        'T00:00:00.000-04:00';
-      let newDate = new Date(dateString);
-      const entryFrequency = $(
-        `span[data-id="${entryId}"][data-frequency]`
-      ).html();
+              // this is calibrated for eastern time right now
+              // I may add support for other time zones in the future
+              const dateString =
+                $(`span[data-id="${entryId}"][data-date]`).html() +
+                'T00:00:00.000-04:00';
+              let newDate = new Date(dateString);
+              const entryFrequency = $(
+                `span[data-id="${entryId}"][data-frequency]`
+              ).html();
 
-      $.post('/users/' + userId, {
-        _method: 'PUT',
-        user: {
-          current_balance: newClearedBalance,
+              $.post('/users/' + userId, {
+                _method: 'PUT',
+                user: {
+                  current_balance: newClearedBalance,
+                },
+              });
+
+              if (entryFrequency === 'one-time') {
+                $.ajax({
+                  type: 'DELETE',
+                  url: '/entries/' + entryId,
+                  success: setTimeout(
+                    window.location.reload.bind(window.location),
+                    100
+                  ),
+                });
+              } else {
+                if (entryFrequency === 'weekly') {
+                  newDate.setDate(newDate.getDate() + 7);
+                } else if (entryFrequency === 'bi-weekly') {
+                  newDate.setDate(newDate.getDate() + 14);
+                } else if (entryFrequency === 'monthly') {
+                  newDate.setMonth(newDate.getMonth() + 1);
+                } else if (entryFrequency === 'bi-monthly') {
+                  newDate.setMonth(newDate.getMonth() + 2);
+                } else if (entryFrequency === 'quarterly') {
+                  newDate.setMonth(newDate.getMonth() + 3);
+                } else if (entryFrequency === 'annually') {
+                  newDate.setMonth(newDate.getMonth() + 12);
+                }
+
+                $.post('/entries/' + entryId, {
+                  _method: 'PUT',
+                  id: entryId,
+                  entry: {
+                    date: newDate,
+                    success: setTimeout(
+                      window.location.reload.bind(window.location),
+                      200
+                    ),
+                  },
+                });
+              }
+            },
+          },
+          cancel: {
+            label: 'Cancel',
+            className: 'btn-secondary',
+          },
         },
       });
-
-      if (entryFrequency === 'one-time') {
-        $.ajax({
-          type: 'DELETE',
-          url: '/entries/' + entryId,
-          success: setTimeout(window.location.reload.bind(window.location), 50),
-        });
-      } else {
-        if (entryFrequency === 'weekly') {
-          newDate.setDate(newDate.getDate() + 7);
-        } else if (entryFrequency === 'bi-weekly') {
-          newDate.setDate(newDate.getDate() + 14);
-        } else if (entryFrequency === 'monthly') {
-          newDate.setMonth(newDate.getMonth() + 1);
-        } else if (entryFrequency === 'bi-monthly') {
-          newDate.setMonth(newDate.getMonth() + 2);
-        } else if (entryFrequency === 'quarterly') {
-          newDate.setMonth(newDate.getMonth() + 3);
-        } else if (entryFrequency === 'annually') {
-          newDate.setMonth(newDate.getMonth() + 12);
-        }
-
-        $.post('/entries/' + entryId, {
-          _method: 'PUT',
-          id: entryId,
-          entry: {
-            date: newDate,
-            success: setTimeout(
-              window.location.reload.bind(window.location),
-              50
-            ),
-          },
-        });
-      }
     });
 
     // delete entry
     $('.fa-trash-alt').click(function (e) {
-      const entryId = $(e.target).data('id');
-
-      $.ajax({
-        type: 'DELETE',
-        url: '/entries/' + entryId,
-        success: location.reload(),
+      bootbox.dialog({
+        message:
+          '<p></p>Are you sure you want to delete this entry?</p><p class="text-muted small">This will permanently delete this entry and any recurrences of it. This cannot be undone.</p>',
+        centerVertical: true,
+        buttons: {
+          delete: {
+            label: 'Delete',
+            className: 'btn-danger',
+            callback: function () {
+              const entryId = $(e.target).data('id');
+              $.ajax({
+                type: 'DELETE',
+                url: '/entries/' + entryId,
+                success: location.reload(),
+              });
+            },
+          },
+          cancel: {
+            label: 'Cancel',
+            className: 'btn-secondary',
+          },
+        },
       });
     });
   });
