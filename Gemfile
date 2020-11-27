@@ -67,3 +67,6 @@ gem 'bootstrap-select-rails'
 
 # Use Font Awesome for icons
 gem 'font-awesome-rails'
+
+# Use Bootbox for better Bootstrap confirmation modals
+gem 'bootbox-rails'
