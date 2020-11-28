@@ -254,22 +254,25 @@ $(document).on('turbolinks:load', function () {
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
+      // debugger;
 
       const save = function () {
         const enteredAmount = $input.val();
-        const span = $('<span data-amount id="updatedAmountCell" />').text(
+        const $span = $('<span data-amount id="updatedAmountCell" />').text(
           enteredAmount
         );
-        $input.replaceWith(span);
+        $input.replaceWith($span);
 
-        const updatedAmount = document.getElementById('updatedAmountCell')
-          .innerHTML;
+        // const updatedAmount = document.getElementById('updatedAmountCell')
+        //   .innerHTML;
+
+        const $updatedAmount = $('#updatedAmountCell')[0].innerText;
 
         $.post('/entries/' + entryId, {
           _method: 'PUT',
           id: entryId,
           entry: {
-            amount: updatedAmount,
+            amount: $updatedAmount,
             success: location.reload(),
           },
         });
