@@ -10,15 +10,16 @@ $(document).on('turbolinks:load', function () {
     const floatBal = parseFloat(
       currentBalance.replace('$', '').replace(',', '')
     );
-    let input = $('<input type="number" step=".01"/>').val(floatBal);
-    $(this).replaceWith(input.select());
+    let $input = $('<input type="number" step=".01"/>').val(floatBal);
+    const $currentBalanceCell = $(this);
+    $(this).replaceWith($input.select());
 
     const save = function () {
-      const enteredBalance = input.val();
+      const enteredBalance = $input.val();
       const span = $('<span data-current-balance id="currentBalance" />').text(
         enteredBalance
       );
-      input.replaceWith(span);
+      $input.replaceWith(span);
 
       const updatedBalance = document.getElementById('currentBalance')
         .innerHTML;
@@ -32,16 +33,18 @@ $(document).on('turbolinks:load', function () {
       });
     };
 
-    input.keyup(event => {
-      if (event.keyCode == 13) {
-        save();
-      } else if (event.keyCode == 27) {
-        input.blur(window.location.reload());
-      } else {
-        return false;
-      }
-    });
-    input.one('blur', save).focus();
+    $input
+      .keyup(function (event) {
+        if (event.keyCode == 13) {
+          save();
+        } else if (event.keyCode == 27) {
+          $(this).replaceWith($currentBalanceCell);
+        }
+      })
+      .on('blur', function () {
+        $(this).replaceWith($currentBalanceCell);
+      })
+      .focus();
   });
 
   // create new table row for each entry
@@ -118,15 +121,15 @@ $(document).on('turbolinks:load', function () {
     // update date
     $('.entryRow').on('click', '[data-date]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $(this);
-      let input = $('<input type="date" />').val(el.text());
-      el.replaceWith(input);
+      const $dateCell = $(this);
+      let $input = $('<input type="date" />').val($dateCell.text());
+      $dateCell.replaceWith($input);
 
       const save = function () {
         const span = $('<span data-date id="updatedDateCell" />').text(
-          input.val()
+          $input.val()
         );
-        input.replaceWith(span);
+        $input.replaceWith(span);
         const updatedDate = document.getElementById('updatedDateCell')
           .innerHTML;
 
@@ -140,30 +143,32 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          input.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      input.one('blur', save).focus();
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($dateCell);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($dateCell);
+        })
+        .focus();
     });
 
     // update description
     $('.entryRow').on('click', '[data-description]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $(this);
-      let input = $('<input/>').val(el.text());
-      el.replaceWith(input);
+      const $descCell = $(this);
+      let $input = $('<input/>').val($descCell.text());
+      $descCell.replaceWith($input);
 
       const save = function () {
         const span = $(
           '<span data-description id="updatedDescriptionCell" />'
-        ).text(input.val());
-        input.replaceWith(span);
+        ).text($input.val());
+        $input.replaceWith(span);
         const updatedDescription = document.getElementById(
           'updatedDescriptionCell'
         ).innerHTML;
@@ -178,23 +183,25 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          input.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      input.one('blur', save).focus();
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($descCell);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($descCell);
+        })
+        .focus();
     });
 
     // update frequency
     $('.entryRow').on('click', '[data-frequency]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $(this);
-      let select = $(`
+      const $freqCell = $(this);
+      const $select = $(`
         <select id="frequency-select">
           <option value="one-time">One-time</option>
           <option value="weekly">Weekly</option>
@@ -204,14 +211,14 @@ $(document).on('turbolinks:load', function () {
           <option value="quarterly">Quarterly</option>
           <option value="annually">Annually</option>
         </select>
-      `).val(el.text());
-      el.replaceWith(select);
+      `).val($freqCell.text());
+      $freqCell.replaceWith($select);
 
       const save = function () {
         const span = $(
           '<span data-frequency id="updatedFrequencyCell" />'
-        ).text(select.val());
-        select.replaceWith(span);
+        ).text($select.val());
+        $select.replaceWith(span);
         const updatedFrequency = document.getElementById('updatedFrequencyCell')
           .innerHTML;
 
@@ -225,33 +232,35 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      select.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          select.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      select.one('blur', save).focus();
+      $select
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($freqCell);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($freqCell);
+        })
+        .focus();
     });
 
     // update amount
     $('.entryRow').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
-      const textAmt = el[0].innerText;
+      const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
+      const textAmt = $el[0].innerText;
       const decAmt = parseFloat(textAmt);
-      let input = $('<input type="number" step=".01"/>').val(decAmt);
-      el.replaceWith(input.select());
+      let $input = $('<input type="number" step=".01"/>').val(decAmt);
+      $el.replaceWith($input.select());
 
       const save = function () {
-        const enteredAmount = input.val();
+        const enteredAmount = $input.val();
         const span = $('<span data-amount id="updatedAmountCell" />').text(
           enteredAmount
         );
-        input.replaceWith(span);
+        $input.replaceWith(span);
 
         const updatedAmount = document.getElementById('updatedAmountCell')
           .innerHTML;
@@ -266,28 +275,58 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          input.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      input.one('blur', save).focus();
+      const promptForRecurring = function () {
+        bootbox.dialog({
+          message:
+            '<p>Do you want to change the earliest entry only or all entries?</p><p class="text-muted small">This is a recurring series.</p><p class="text-muted small">If you select <strong>Earliest Entry Only</strong>, that entry will be converted to one-time with the updated amount, and all subsequent entries will remain with the previous amount.</p><p class="text-muted small">If you select <strong>All Entries</strong>, all entries in the series will be updated with the new amount.</p>',
+          centerVertical: true,
+          buttons: {
+            earliest: {
+              label: 'Earliest Entry Only',
+              className: 'btn-primary',
+              callback: function () {
+                console.log('earliest entry only');
+              },
+            },
+            all: {
+              label: 'All Entries',
+              className: 'btn-success',
+              callback: function () {
+                save();
+              },
+            },
+            cancel: {
+              label: 'Cancel',
+              className: 'btn-secondary',
+            },
+          },
+        });
+      };
+
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            $(this).blur(promptForRecurring());
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($el);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($el);
+        })
+        .focus();
     });
 
     // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
     $('.fa-check').click(function (e) {
       bootbox.dialog({
         message:
-          '<p></p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
+          '<p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
         centerVertical: true,
         buttons: {
           delete: {
             label: 'Clear',
-            className: 'btn-danger',
+            className: 'btn-success',
             callback: function () {
               const entryId = $(e.target).data('id');
               const amountToClear = $(e.target).data('amount-to-clear');
@@ -362,7 +401,7 @@ $(document).on('turbolinks:load', function () {
     $('.fa-trash-alt').click(function (e) {
       bootbox.dialog({
         message:
-          '<p></p>Are you sure you want to delete this entry?</p><p class="text-muted small">This will permanently delete this entry and any recurrences of it. This cannot be undone.</p>',
+          '<p>Are you sure you want to delete this entry?</p><p class="text-muted small">This will permanently delete this entry and any recurrences of it. This cannot be undone.</p>',
         centerVertical: true,
         buttons: {
           delete: {
