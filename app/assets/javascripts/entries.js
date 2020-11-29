@@ -16,10 +16,10 @@ $(document).on('turbolinks:load', function () {
 
     const save = function () {
       const enteredBalance = $input.val();
-      const span = $('<span data-current-balance id="currentBalance" />').text(
+      const $span = $('<span data-current-balance id="currentBalance" />').text(
         enteredBalance
       );
-      $input.replaceWith(span);
+      $input.replaceWith($span);
 
       const updatedBalance = document.getElementById('currentBalance')
         .innerHTML;
@@ -28,7 +28,10 @@ $(document).on('turbolinks:load', function () {
         _method: 'PUT',
         user: {
           current_balance: updatedBalance,
-          success: setTimeout(window.location.reload.bind(window.location), 50),
+          success: setTimeout(
+            window.location.reload.bind(window.location),
+            100
+          ),
         },
       });
     };
@@ -115,8 +118,8 @@ $(document).on('turbolinks:load', function () {
       allEntryRows += createEntryRow(entry);
     });
 
-    let entriesTable = $('.entries-table');
-    entriesTable.html(allEntryRows);
+    let $entriesTable = $('.entries-table');
+    $entriesTable.html(allEntryRows);
 
     // update date
     $('.entryRow').on('click', '[data-date]', function (e) {
@@ -126,10 +129,10 @@ $(document).on('turbolinks:load', function () {
       $dateCell.replaceWith($input);
 
       const save = function () {
-        const span = $('<span data-date id="updatedDateCell" />').text(
+        const $span = $('<span data-date id="updatedDateCell" />').text(
           $input.val()
         );
-        $input.replaceWith(span);
+        $input.replaceWith($span);
         const updatedDate = document.getElementById('updatedDateCell')
           .innerHTML;
 
@@ -165,10 +168,10 @@ $(document).on('turbolinks:load', function () {
       $descCell.replaceWith($input);
 
       const save = function () {
-        const span = $(
+        const $span = $(
           '<span data-description id="updatedDescriptionCell" />'
         ).text($input.val());
-        $input.replaceWith(span);
+        $input.replaceWith($span);
         const updatedDescription = document.getElementById(
           'updatedDescriptionCell'
         ).innerHTML;
@@ -215,10 +218,10 @@ $(document).on('turbolinks:load', function () {
       $freqCell.replaceWith($select);
 
       const save = function () {
-        const span = $(
+        const $span = $(
           '<span data-frequency id="updatedFrequencyCell" />'
         ).text($select.val());
-        $select.replaceWith(span);
+        $select.replaceWith($span);
         const updatedFrequency = document.getElementById('updatedFrequencyCell')
           .innerHTML;
 
@@ -254,25 +257,21 @@ $(document).on('turbolinks:load', function () {
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
-      // debugger;
 
       const save = function () {
         const enteredAmount = $input.val();
         const $span = $('<span data-amount id="updatedAmountCell" />').text(
           enteredAmount
         );
-        $input.replaceWith($span);
+        $el.replaceWith($span);
 
-        // const updatedAmount = document.getElementById('updatedAmountCell')
-        //   .innerHTML;
-
-        const $updatedAmount = $('#updatedAmountCell')[0].innerText;
+        const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
         $.post('/entries/' + entryId, {
           _method: 'PUT',
           id: entryId,
           entry: {
-            amount: $updatedAmount,
+            amount: updatedAmount,
             success: location.reload(),
           },
         });
@@ -288,7 +287,8 @@ $(document).on('turbolinks:load', function () {
               label: 'Earliest Entry Only',
               className: 'btn-primary',
               callback: function () {
-                console.log('earliest entry only');
+                // create one-time entry
+                // change date on recurring series to next recurrence
               },
             },
             all: {
@@ -327,7 +327,7 @@ $(document).on('turbolinks:load', function () {
           '<p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
         centerVertical: true,
         buttons: {
-          delete: {
+          clear: {
             label: 'Clear',
             className: 'btn-success',
             callback: function () {
