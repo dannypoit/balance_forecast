@@ -91,6 +91,8 @@ $(document).on('turbolinks:load', function () {
     </td>
         <td>$<span ${entryIsEarliestClass} data-amount data-id="${
       entry.id
+    }" data-amount-date="${entry.date}" data-amount-desc="${
+      entry.description
     }">${entryAmount.toFixed(2)}</span></td>
         <td>
           $${newBalance.toFixed(2)}
@@ -108,6 +110,8 @@ $(document).on('turbolinks:load', function () {
       </tr>`;
     return entryRow;
   }
+  // add back into amount span if needed
+  // data-amount-date="${entry.date}" data-amount-desc="${entry.description}"
 
   // get all entries for current user in JSON format
   $.get('/entries').success(function (data) {
@@ -252,13 +256,31 @@ $(document).on('turbolinks:load', function () {
     // update amount
     $('.entryRow').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
+      const entryDate = $(e.target).data('amount-date');
+      const entryDesc = $(e.target).data('amount-desc');
       const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
       const textAmt = $el[0].innerText;
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
 
-      const save = function () {
+      const changeEarliestAmountOnly = function () {
+        // create one-time entry to match earliest
+        $.post('/entries/', {
+          entry: {
+            date: entryDate,
+            description: entryDesc,
+            frequency: 'one-time',
+            amount: 999.99,
+            success: location.reload(),
+          },
+        });
+
+        // change date on recurring series to next recurrence
+        // INSERT CODE HERE
+      };
+
+      const changeAllRecurringAmounts = function () {
         const enteredAmount = $input.val();
         const $span = $('<span data-amount id="updatedAmountCell" />').text(
           enteredAmount
@@ -287,15 +309,14 @@ $(document).on('turbolinks:load', function () {
               label: 'Earliest Entry Only',
               className: 'btn-primary',
               callback: function () {
-                // create one-time entry
-                // change date on recurring series to next recurrence
+                changeEarliestAmountOnly();
               },
             },
             all: {
               label: 'All Entries',
               className: 'btn-success',
               callback: function () {
-                save();
+                changeAllRecurringAmounts();
               },
             },
             cancel: {
@@ -309,6 +330,7 @@ $(document).on('turbolinks:load', function () {
       $input
         .keyup(function (event) {
           if (event.keyCode == 13) {
+            // need to make this prompt ONLY if freq != one-time
             $(this).blur(promptForRecurring());
           } else if (event.keyCode == 27) {
             $(this).replaceWith($el);
