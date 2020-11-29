@@ -263,15 +263,25 @@ $(document).on('turbolinks:load', function () {
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
+      // debugger;
 
       const changeEarliestAmountOnly = function () {
+        const enteredAmount = $input.val();
+        // need to refactor
+        // see notes in changeAllRecurringAmounts
+        const $span = $('<span data-amount id="updatedAmountCell" />').text(
+          enteredAmount
+        );
+        $el.replaceWith($span);
+        const updatedAmount = $('#updatedAmountCell')[0].innerText;
+
         // create one-time entry to match earliest
         $.post('/entries/', {
           entry: {
             date: entryDate,
             description: entryDesc,
             frequency: 'one-time',
-            amount: 999.99,
+            amount: updatedAmount,
             success: location.reload(),
           },
         });
@@ -282,11 +292,15 @@ $(document).on('turbolinks:load', function () {
 
       const changeAllRecurringAmounts = function () {
         const enteredAmount = $input.val();
+        // need to refactor
+        // currently it is done this way to mark the cell as updated
+        // but the cell doesn't need to be replaced, since it gets reloaded right afterwards anyways
+        // so there must be a better way to do this without updating the span
+        // also this is repeated in changeEarliestAmountOnly
         const $span = $('<span data-amount id="updatedAmountCell" />').text(
           enteredAmount
         );
         $el.replaceWith($span);
-
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
         $.post('/entries/' + entryId, {
