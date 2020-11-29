@@ -58,16 +58,18 @@ $(document).on('turbolinks:load', function () {
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
     const currentDate = new Date();
-    if (new Date(entry.date + 'T00:00:00.000-04:00') < currentDate) {
+    // set for Eastern Standard Time (EST)
+    // will add time zone support later
+    if (new Date(entry.date + 'T00:00:00.000-05:00') < currentDate) {
       entryColorClass = ' past-date ';
     } else if (
       entry.amount > 0 &&
-      new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
+      new Date(entry.date + 'T00:00:00.000-05:00') >= currentDate
     ) {
       entryColorClass = ' credit ';
     } else if (
       newBalance < 0 &&
-      new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
+      new Date(entry.date + 'T00:00:00.000-05:00') >= currentDate
     ) {
       entryColorClass = ' in-the-red ';
     }
@@ -93,7 +95,9 @@ $(document).on('turbolinks:load', function () {
       entry.id
     }" data-amount-date="${entry.date}" data-amount-desc="${
       entry.description
-    }">${entryAmount.toFixed(2)}</span></td>
+    }" data-amount-freq="${entry.frequency}">${entryAmount.toFixed(
+      2
+    )}</span></td>
         <td>
           $${newBalance.toFixed(2)}
         </td>
@@ -110,8 +114,6 @@ $(document).on('turbolinks:load', function () {
       </tr>`;
     return entryRow;
   }
-  // add back into amount span if needed
-  // data-amount-date="${entry.date}" data-amount-desc="${entry.description}"
 
   // get all entries for current user in JSON format
   $.get('/entries').success(function (data) {
@@ -258,12 +260,12 @@ $(document).on('turbolinks:load', function () {
       const entryId = $(e.target).data('id');
       const entryDate = $(e.target).data('amount-date');
       const entryDesc = $(e.target).data('amount-desc');
+      const entryFreq = $(e.target).data('amount-freq');
       const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
       const textAmt = $el[0].innerText;
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
-      // debugger;
 
       const changeEarliestAmountOnly = function () {
         const enteredAmount = $input.val();
@@ -275,6 +277,29 @@ $(document).on('turbolinks:load', function () {
         $el.replaceWith($span);
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
+        const newRecurringDate = new Date(entryDate);
+        debugger;
+        if (entryFreq == 'weekly') {
+          newRecurringDate.setDate(
+            // set for Eastern Standard Time (EST)
+            // will add time zone support later
+            newRecurringDate.getDate() + 'T00:00:00.000-05:00' + 7
+          );
+        }
+
+        const formatDate = function (date) {
+          var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+          if (month.length < 2) month = '0' + month;
+          if (day.length < 2) day = '0' + day;
+
+          return [year, month, day].join('-');
+        };
+        const updatedDate = formatDate(newRecurringDate);
+
         // create one-time entry to match earliest
         $.post('/entries/', {
           entry: {
@@ -282,18 +307,24 @@ $(document).on('turbolinks:load', function () {
             description: entryDesc,
             frequency: 'one-time',
             amount: updatedAmount,
-            success: location.reload(),
           },
         });
 
         // change date on recurring series to next recurrence
-        // INSERT CODE HERE
+        $.post('/entries/' + entryId, {
+          _method: 'PUT',
+          id: entryId,
+          entry: {
+            date: updatedDate,
+            success: location.reload(),
+          },
+        });
       };
 
       const changeAllRecurringAmounts = function () {
         const enteredAmount = $input.val();
         // need to refactor
-        // currently it is done this way to mark the cell as updated
+        // currently it is done this way to mark the cell as updated, so the updatedAmount can be pulled from it
         // but the cell doesn't need to be replaced, since it gets reloaded right afterwards anyways
         // so there must be a better way to do this without updating the span
         // also this is repeated in changeEarliestAmountOnly
@@ -373,11 +404,11 @@ $(document).on('turbolinks:load', function () {
                 parseFloat(currentBalance.replace('$', '').replace(',', '')) +
                 parseFloat(amountToClear);
 
-              // this is calibrated for eastern time right now
-              // I may add support for other time zones in the future
+              // set for Eastern Standard Time (EST)
+              // will add time zone support later
               const dateString =
                 $(`span[data-id="${entryId}"][data-date]`).html() +
-                'T00:00:00.000-04:00';
+                'T00:00:00.000-05:00';
               let newDate = new Date(dateString);
               const entryFrequency = $(
                 `span[data-id="${entryId}"][data-frequency]`
