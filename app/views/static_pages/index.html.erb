@@ -46,7 +46,7 @@
               Current balance:
             </th>
             <th class="h4" id="currentBalanceCell">
-              <span data-current-balance data-user-id="<%= current_user.id %>" id="currentBalance"><%= number_to_currency(current_user.current_balance) %></span>
+              <span data-current-balance data-user-id="<%= current_user.id %>" id="currentBalance"><%= number_to_currency(current_user.current_balance) %></span><i id="currentBalSaveIcon" class="fas fa-save m-2 d-none"></i>
             </th>
           </tr>
           <tr class="header-row">

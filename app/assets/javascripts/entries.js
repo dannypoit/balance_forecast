@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   const currentBalance = document.getElementById('currentBalance').innerText;
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+  const $saveIcon = $('#currentBalSaveIcon');
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
@@ -13,6 +14,7 @@ $(document).on('turbolinks:load', function () {
     let $input = $('<input type="number" step=".01"/>').val(floatBal);
     const $currentBalanceCell = $(this);
     $(this).replaceWith($input.select());
+    $saveIcon.toggleClass('d-none');
 
     const save = function () {
       const enteredBalance = $input.val();
@@ -36,16 +38,22 @@ $(document).on('turbolinks:load', function () {
       });
     };
 
+    $saveIcon.on('mousedown', function () {
+      save();
+    });
+
     $input
       .keyup(function (event) {
         if (event.keyCode == 13) {
           save();
         } else if (event.keyCode == 27) {
           $(this).replaceWith($currentBalanceCell);
+          $saveIcon.toggleClass('d-none');
         }
       })
       .on('blur', function () {
         $(this).replaceWith($currentBalanceCell);
+        $saveIcon.toggleClass('d-none');
       })
       .focus();
   });
