@@ -166,7 +166,9 @@ $(document).on('turbolinks:load', function () {
       const $dateCell = $(this);
       let $input = $('<input type="date" />').val($dateCell.text());
       $dateCell.replaceWith($input);
-      const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`);
+      const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
+        .first()
+        .first();
       $saveIcon.toggleClass('d-none');
 
       const save = function () {
@@ -213,7 +215,9 @@ $(document).on('turbolinks:load', function () {
       const $descCell = $(this);
       let $input = $('<input/>').val($descCell.text());
       $descCell.replaceWith($input);
-      const $saveIcon = $(`#descSaveIcon[data-id="${entryId}"]`);
+      const $saveIcon = $(`#descSaveIcon[data-id="${entryId}"]`)
+        .first()
+        .first();
       $saveIcon.toggleClass('d-none');
 
       const save = function () {
@@ -271,7 +275,9 @@ $(document).on('turbolinks:load', function () {
         </select>
       `).val($freqCell.text());
       $freqCell.replaceWith($select);
-      const $saveIcon = $(`#freqSaveIcon[data-id="${entryId}"]`);
+      const $saveIcon = $(`#freqSaveIcon[data-id="${entryId}"]`)
+        .first()
+        .first();
       $saveIcon.toggleClass('d-none');
 
       const save = function () {
@@ -323,7 +329,7 @@ $(document).on('turbolinks:load', function () {
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
-      const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`);
+      const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`).first().first();
       $saveIcon.toggleClass('d-none');
 
       const saveOneTime = function () {
