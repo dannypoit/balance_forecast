@@ -277,14 +277,22 @@ $(document).on('turbolinks:load', function () {
         $el.replaceWith($span);
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
-        const newRecurringDate = new Date(entryDate);
-        debugger;
-        if (entryFreq == 'weekly') {
-          newRecurringDate.setDate(
-            // set for Eastern Standard Time (EST)
-            // will add time zone support later
-            newRecurringDate.getDate() + 'T00:00:00.000-05:00' + 7
-          );
+        // set for Eastern Standard Time (EST)
+        // will add time zone support later
+        const newRecurringDate = new Date(entryDate + 'T00:00:00.000-05:00');
+
+        if (entryFreq === 'weekly') {
+          newRecurringDate.setDate(newRecurringDate.getDate() + 7);
+        } else if (entryFreq === 'bi-weekly') {
+          newRecurringDate.setDate(newRecurringDate.getDate() + 14);
+        } else if (entryFreq === 'monthly') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 1);
+        } else if (entryFreq === 'bi-monthly') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 2);
+        } else if (entryFreq === 'quarterly') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 3);
+        } else if (entryFreq === 'annually') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 12);
         }
 
         const formatDate = function (date) {
