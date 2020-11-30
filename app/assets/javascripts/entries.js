@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   const currentBalance = document.getElementById('currentBalance').innerText;
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+  const $saveIcon = $('#currentBalSaveIcon');
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
@@ -13,6 +14,7 @@ $(document).on('turbolinks:load', function () {
     let $input = $('<input type="number" step=".01"/>').val(floatBal);
     const $currentBalanceCell = $(this);
     $(this).replaceWith($input.select());
+    $saveIcon.toggleClass('d-none');
 
     const save = function () {
       const enteredBalance = $input.val();
@@ -30,11 +32,15 @@ $(document).on('turbolinks:load', function () {
           current_balance: updatedBalance,
           success: setTimeout(
             window.location.reload.bind(window.location),
-            100
+            200
           ),
         },
       });
     };
+
+    $saveIcon.on('mousedown', function () {
+      save();
+    });
 
     $input
       .keyup(function (event) {
@@ -42,10 +48,12 @@ $(document).on('turbolinks:load', function () {
           save();
         } else if (event.keyCode == 27) {
           $(this).replaceWith($currentBalanceCell);
+          $saveIcon.toggleClass('d-none');
         }
       })
       .on('blur', function () {
         $(this).replaceWith($currentBalanceCell);
+        $saveIcon.toggleClass('d-none');
       })
       .focus();
   });
@@ -94,15 +102,25 @@ $(document).on('turbolinks:load', function () {
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
-          <span data-date data-id="${entry.id}">${entry.date}</span>
+          <span data-date data-id="${entry.id}">${
+      entry.date
+    }</span><i data-id="${
+      entry.id
+    }" id="dateSaveIcon" class="fas fa-save m-2 d-none"></i>
         </td>
         <td>
           <span data-description data-id="${entry.id}">${
       entry.description
-    }</span>
+    }</span><i data-id="${
+      entry.id
+    }" id="descSaveIcon" class="fas fa-save m-2 d-none">
         </td>
         <td>
-        <span data-frequency data-id="${entry.id}">${entry.frequency}</span>
+        <span data-frequency data-id="${entry.id}">${
+      entry.frequency
+    }</span><i data-id="${
+      entry.id
+    }" id="freqSaveIcon" class="fas fa-save m-2 d-none">
     </td>
         <td>$<span ${entryIsEarliestClass} data-amount data-id="${
       entry.id
@@ -110,7 +128,9 @@ $(document).on('turbolinks:load', function () {
       entry.description
     }" data-amount-freq="${entry.frequency}">${entryAmount.toFixed(
       2
-    )}</span></td>
+    )}</span><i data-id="${
+      entry.id
+    }" id="amtSaveIcon" class="fas fa-save m-2 d-none"></td>
         <td>
           $${newBalance.toFixed(2)}
         </td>
@@ -146,6 +166,10 @@ $(document).on('turbolinks:load', function () {
       const $dateCell = $(this);
       let $input = $('<input type="date" />').val($dateCell.text());
       $dateCell.replaceWith($input);
+      const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
+        .first()
+        .first();
+      $saveIcon.toggleClass('d-none');
 
       const save = function () {
         const $span = $('<span data-date id="updatedDateCell" />').text(
@@ -165,16 +189,22 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
+      $saveIcon.on('mousedown', function () {
+        save();
+      });
+
       $input
         .keyup(function (event) {
           if (event.keyCode == 13) {
             save();
           } else if (event.keyCode == 27) {
             $(this).replaceWith($dateCell);
+            $saveIcon.toggleClass('d-none');
           }
         })
         .on('blur', function () {
           $(this).replaceWith($dateCell);
+          $saveIcon.toggleClass('d-none');
         })
         .focus();
     });
@@ -185,6 +215,10 @@ $(document).on('turbolinks:load', function () {
       const $descCell = $(this);
       let $input = $('<input/>').val($descCell.text());
       $descCell.replaceWith($input);
+      const $saveIcon = $(`#descSaveIcon[data-id="${entryId}"]`)
+        .first()
+        .first();
+      $saveIcon.toggleClass('d-none');
 
       const save = function () {
         const $span = $(
@@ -205,16 +239,22 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
+      $saveIcon.on('mousedown', function () {
+        save();
+      });
+
       $input
         .keyup(function (event) {
           if (event.keyCode == 13) {
             save();
           } else if (event.keyCode == 27) {
             $(this).replaceWith($descCell);
+            $saveIcon.toggleClass('d-none');
           }
         })
         .on('blur', function () {
           $(this).replaceWith($descCell);
+          $saveIcon.toggleClass('d-none');
         })
         .focus();
     });
@@ -235,6 +275,10 @@ $(document).on('turbolinks:load', function () {
         </select>
       `).val($freqCell.text());
       $freqCell.replaceWith($select);
+      const $saveIcon = $(`#freqSaveIcon[data-id="${entryId}"]`)
+        .first()
+        .first();
+      $saveIcon.toggleClass('d-none');
 
       const save = function () {
         const $span = $(
@@ -254,16 +298,22 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
+      $saveIcon.on('mousedown', function () {
+        save();
+      });
+
       $select
         .keyup(function (event) {
           if (event.keyCode == 13) {
             save();
           } else if (event.keyCode == 27) {
             $(this).replaceWith($freqCell);
+            $saveIcon.toggleClass('d-none');
           }
         })
         .on('blur', function () {
           $(this).replaceWith($freqCell);
+          $saveIcon.toggleClass('d-none');
         })
         .focus();
     });
@@ -279,6 +329,8 @@ $(document).on('turbolinks:load', function () {
       const decAmt = parseFloat(textAmt);
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
+      const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`).first().first();
+      $saveIcon.toggleClass('d-none');
 
       const saveOneTime = function () {
         const enteredAmount = $input.val();
@@ -395,10 +447,19 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
+      $saveIcon.on('mousedown', function () {
+        // prompt ONLY if freq != one-time
+        if (entryFreq === 'one-time') {
+          $(this).blur(saveOneTime());
+        } else if (entryFreq !== 'one-time') {
+          $(this).blur(promptForRecurring());
+        }
+      });
+
       $input
         .keyup(function (event) {
           if (event.keyCode == 13) {
-            // need to make this prompt ONLY if freq != one-time
+            // prompt ONLY if freq != one-time
             if (entryFreq === 'one-time') {
               $(this).blur(saveOneTime());
             } else if (entryFreq !== 'one-time') {
@@ -406,10 +467,12 @@ $(document).on('turbolinks:load', function () {
             }
           } else if (event.keyCode == 27) {
             $(this).replaceWith($el);
+            $saveIcon.toggleClass('d-none');
           }
         })
         .on('blur', function () {
           $(this).replaceWith($el);
+          $saveIcon.toggleClass('d-none');
         })
         .focus();
     });
