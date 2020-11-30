@@ -267,14 +267,29 @@ $(document).on('turbolinks:load', function () {
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
 
+      const saveOneTime = function () {
+        const enteredAmount = $input.val();
+        const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
+        $input.replaceWith($span);
+        const updatedAmount = $('#updatedAmountCell')[0].innerText;
+
+        $.post('/entries/' + entryId, {
+          _method: 'PUT',
+          id: entryId,
+          entry: {
+            amount: updatedAmount,
+            success: location.reload(),
+          },
+        });
+      };
+
       const changeEarliestAmountOnly = function () {
         const enteredAmount = $input.val();
         // need to refactor
         // see notes in changeAllRecurringAmounts
-        const $span = $('<span data-amount id="updatedAmountCell" />').text(
-          enteredAmount
-        );
+        const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
         $el.replaceWith($span);
+
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
         // set for Eastern Standard Time (EST)
@@ -336,9 +351,7 @@ $(document).on('turbolinks:load', function () {
         // but the cell doesn't need to be replaced, since it gets reloaded right afterwards anyways
         // so there must be a better way to do this without updating the span
         // also this is repeated in changeEarliestAmountOnly
-        const $span = $('<span data-amount id="updatedAmountCell" />').text(
-          enteredAmount
-        );
+        const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
         $el.replaceWith($span);
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
@@ -384,7 +397,11 @@ $(document).on('turbolinks:load', function () {
         .keyup(function (event) {
           if (event.keyCode == 13) {
             // need to make this prompt ONLY if freq != one-time
-            $(this).blur(promptForRecurring());
+            if (entryFreq === 'one-time') {
+              $(this).blur(saveOneTime());
+            } else if (entryFreq !== 'one-time') {
+              $(this).blur(promptForRecurring());
+            }
           } else if (event.keyCode == 27) {
             $(this).replaceWith($el);
           }
