@@ -94,7 +94,9 @@ $(document).on('turbolinks:load', function () {
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
-          <span data-date data-id="${entry.id}">${entry.date}</span>
+          <span data-date data-id="${entry.id}">${
+      entry.date
+    }</span><i data-id="${entry.id}" class="fas fa-save m-2 d-none"></i>
         </td>
         <td>
           <span data-description data-id="${entry.id}">${
@@ -145,7 +147,9 @@ $(document).on('turbolinks:load', function () {
       const entryId = $(e.target).data('id');
       const $dateCell = $(this);
       let $input = $('<input type="date" />').val($dateCell.text());
+      const $saveIcon = $(`.fa-save[data-id="${entryId}"]`);
       $dateCell.replaceWith($input);
+      $saveIcon.toggleClass('d-none');
 
       const save = function () {
         const $span = $('<span data-date id="updatedDateCell" />').text(
@@ -165,16 +169,22 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
+      $saveIcon.on('mousedown', function () {
+        save();
+      });
+
       $input
         .keyup(function (event) {
           if (event.keyCode == 13) {
             save();
           } else if (event.keyCode == 27) {
             $(this).replaceWith($dateCell);
+            $saveIcon.toggleClass('d-none');
           }
         })
         .on('blur', function () {
           $(this).replaceWith($dateCell);
+          $saveIcon.toggleClass('d-none');
         })
         .focus();
     });
