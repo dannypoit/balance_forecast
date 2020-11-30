@@ -50,6 +50,19 @@ $(document).on('turbolinks:load', function () {
       .focus();
   });
 
+  // convert JavaScript date to YYYY-MM-DD format
+  const formatDate = function (date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+  };
+
   // create new table row for each entry
   function createEntryRow(entry) {
     const entryAmount = parseFloat(entry.amount);
@@ -57,19 +70,19 @@ $(document).on('turbolinks:load', function () {
     let entryColorClass = '';
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
-    const currentDate = new Date();
+    const currentDate = formatDate(new Date());
     // set for Eastern Standard Time (EST)
     // will add time zone support later
-    if (new Date(entry.date + 'T00:00:00.000-05:00') < currentDate) {
+    if (new Date(entry.date) < new Date(currentDate)) {
       entryColorClass = ' past-date ';
     } else if (
       entry.amount > 0 &&
-      new Date(entry.date + 'T00:00:00.000-05:00') >= currentDate
+      new Date(entry.date) >= new Date(currentDate)
     ) {
       entryColorClass = ' credit ';
     } else if (
       newBalance < 0 &&
-      new Date(entry.date + 'T00:00:00.000-05:00') >= currentDate
+      new Date(entry.date) >= new Date(currentDate)
     ) {
       entryColorClass = ' in-the-red ';
     }
@@ -310,17 +323,6 @@ $(document).on('turbolinks:load', function () {
           newRecurringDate.setMonth(newRecurringDate.getMonth() + 12);
         }
 
-        const formatDate = function (date) {
-          var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-          if (month.length < 2) month = '0' + month;
-          if (day.length < 2) day = '0' + day;
-
-          return [year, month, day].join('-');
-        };
         const updatedDate = formatDate(newRecurringDate);
 
         // create one-time entry to match earliest
