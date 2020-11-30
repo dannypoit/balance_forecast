@@ -10,15 +10,16 @@ $(document).on('turbolinks:load', function () {
     const floatBal = parseFloat(
       currentBalance.replace('$', '').replace(',', '')
     );
-    let input = $('<input type="number" step=".01"/>').val(floatBal);
-    $(this).replaceWith(input.select());
+    let $input = $('<input type="number" step=".01"/>').val(floatBal);
+    const $currentBalanceCell = $(this);
+    $(this).replaceWith($input.select());
 
     const save = function () {
-      const enteredBalance = input.val();
-      const span = $('<span data-current-balance id="currentBalance" />').text(
+      const enteredBalance = $input.val();
+      const $span = $('<span data-current-balance id="currentBalance" />').text(
         enteredBalance
       );
-      input.replaceWith(span);
+      $input.replaceWith($span);
 
       const updatedBalance = document.getElementById('currentBalance')
         .innerHTML;
@@ -27,21 +28,26 @@ $(document).on('turbolinks:load', function () {
         _method: 'PUT',
         user: {
           current_balance: updatedBalance,
-          success: setTimeout(window.location.reload.bind(window.location), 50),
+          success: setTimeout(
+            window.location.reload.bind(window.location),
+            100
+          ),
         },
       });
     };
 
-    input.keyup(event => {
-      if (event.keyCode == 13) {
-        save();
-      } else if (event.keyCode == 27) {
-        input.blur(window.location.reload());
-      } else {
-        return false;
-      }
-    });
-    input.one('blur', save).focus();
+    $input
+      .keyup(function (event) {
+        if (event.keyCode == 13) {
+          save();
+        } else if (event.keyCode == 27) {
+          $(this).replaceWith($currentBalanceCell);
+        }
+      })
+      .on('blur', function () {
+        $(this).replaceWith($currentBalanceCell);
+      })
+      .focus();
   });
 
   // create new table row for each entry
@@ -52,16 +58,18 @@ $(document).on('turbolinks:load', function () {
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
     const currentDate = new Date();
-    if (new Date(entry.date + 'T00:00:00.000-04:00') < currentDate) {
+    // set for Eastern Standard Time (EST)
+    // will add time zone support later
+    if (new Date(entry.date + 'T00:00:00.000-05:00') < currentDate) {
       entryColorClass = ' past-date ';
     } else if (
       entry.amount > 0 &&
-      new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
+      new Date(entry.date + 'T00:00:00.000-05:00') >= currentDate
     ) {
       entryColorClass = ' credit ';
     } else if (
       newBalance < 0 &&
-      new Date(entry.date + 'T00:00:00.000-04:00') >= currentDate
+      new Date(entry.date + 'T00:00:00.000-05:00') >= currentDate
     ) {
       entryColorClass = ' in-the-red ';
     }
@@ -85,7 +93,11 @@ $(document).on('turbolinks:load', function () {
     </td>
         <td>$<span ${entryIsEarliestClass} data-amount data-id="${
       entry.id
-    }">${entryAmount.toFixed(2)}</span></td>
+    }" data-amount-date="${entry.date}" data-amount-desc="${
+      entry.description
+    }" data-amount-freq="${entry.frequency}">${entryAmount.toFixed(
+      2
+    )}</span></td>
         <td>
           $${newBalance.toFixed(2)}
         </td>
@@ -112,21 +124,21 @@ $(document).on('turbolinks:load', function () {
       allEntryRows += createEntryRow(entry);
     });
 
-    let entriesTable = $('.entries-table');
-    entriesTable.html(allEntryRows);
+    let $entriesTable = $('.entries-table');
+    $entriesTable.html(allEntryRows);
 
     // update date
     $('.entryRow').on('click', '[data-date]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $(this);
-      let input = $('<input type="date" />').val(el.text());
-      el.replaceWith(input);
+      const $dateCell = $(this);
+      let $input = $('<input type="date" />').val($dateCell.text());
+      $dateCell.replaceWith($input);
 
       const save = function () {
-        const span = $('<span data-date id="updatedDateCell" />').text(
-          input.val()
+        const $span = $('<span data-date id="updatedDateCell" />').text(
+          $input.val()
         );
-        input.replaceWith(span);
+        $input.replaceWith($span);
         const updatedDate = document.getElementById('updatedDateCell')
           .innerHTML;
 
@@ -140,30 +152,32 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          input.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      input.one('blur', save).focus();
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($dateCell);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($dateCell);
+        })
+        .focus();
     });
 
     // update description
     $('.entryRow').on('click', '[data-description]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $(this);
-      let input = $('<input/>').val(el.text());
-      el.replaceWith(input);
+      const $descCell = $(this);
+      let $input = $('<input/>').val($descCell.text());
+      $descCell.replaceWith($input);
 
       const save = function () {
-        const span = $(
+        const $span = $(
           '<span data-description id="updatedDescriptionCell" />'
-        ).text(input.val());
-        input.replaceWith(span);
+        ).text($input.val());
+        $input.replaceWith($span);
         const updatedDescription = document.getElementById(
           'updatedDescriptionCell'
         ).innerHTML;
@@ -178,23 +192,25 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          input.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      input.one('blur', save).focus();
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($descCell);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($descCell);
+        })
+        .focus();
     });
 
     // update frequency
     $('.entryRow').on('click', '[data-frequency]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $(this);
-      let select = $(`
+      const $freqCell = $(this);
+      const $select = $(`
         <select id="frequency-select">
           <option value="one-time">One-time</option>
           <option value="weekly">Weekly</option>
@@ -204,14 +220,14 @@ $(document).on('turbolinks:load', function () {
           <option value="quarterly">Quarterly</option>
           <option value="annually">Annually</option>
         </select>
-      `).val(el.text());
-      el.replaceWith(select);
+      `).val($freqCell.text());
+      $freqCell.replaceWith($select);
 
       const save = function () {
-        const span = $(
+        const $span = $(
           '<span data-frequency id="updatedFrequencyCell" />'
-        ).text(select.val());
-        select.replaceWith(span);
+        ).text($select.val());
+        $select.replaceWith($span);
         const updatedFrequency = document.getElementById('updatedFrequencyCell')
           .innerHTML;
 
@@ -225,36 +241,37 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      select.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          select.blur(window.location.reload());
-        } else {
-          return false;
-        }
-      });
-      select.one('blur', save).focus();
+      $select
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($freqCell);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($freqCell);
+        })
+        .focus();
     });
 
     // update amount
     $('.entryRow').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
-      let el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
-      const textAmt = el[0].innerText;
+      const entryDate = $(e.target).data('amount-date');
+      const entryDesc = $(e.target).data('amount-desc');
+      const entryFreq = $(e.target).data('amount-freq');
+      const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
+      const textAmt = $el[0].innerText;
       const decAmt = parseFloat(textAmt);
-      let input = $('<input type="number" step=".01"/>').val(decAmt);
-      el.replaceWith(input.select());
+      let $input = $('<input type="number" step=".01"/>').val(decAmt);
+      $el.replaceWith($input.select());
 
-      const save = function () {
-        const enteredAmount = input.val();
-        const span = $('<span data-amount id="updatedAmountCell" />').text(
-          enteredAmount
-        );
-        input.replaceWith(span);
-
-        const updatedAmount = document.getElementById('updatedAmountCell')
-          .innerHTML;
+      const saveOneTime = function () {
+        const enteredAmount = $input.val();
+        const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
+        $input.replaceWith($span);
+        const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
         $.post('/entries/' + entryId, {
           _method: 'PUT',
@@ -266,28 +283,145 @@ $(document).on('turbolinks:load', function () {
         });
       };
 
-      input.keyup(event => {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          input.blur(window.location.reload());
-        } else {
-          return false;
+      const changeEarliestAmountOnly = function () {
+        const enteredAmount = $input.val();
+        // need to refactor
+        // see notes in changeAllRecurringAmounts
+        const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
+        $el.replaceWith($span);
+
+        const updatedAmount = $('#updatedAmountCell')[0].innerText;
+
+        // set for Eastern Standard Time (EST)
+        // will add time zone support later
+        const newRecurringDate = new Date(entryDate + 'T00:00:00.000-05:00');
+
+        if (entryFreq === 'weekly') {
+          newRecurringDate.setDate(newRecurringDate.getDate() + 7);
+        } else if (entryFreq === 'bi-weekly') {
+          newRecurringDate.setDate(newRecurringDate.getDate() + 14);
+        } else if (entryFreq === 'monthly') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 1);
+        } else if (entryFreq === 'bi-monthly') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 2);
+        } else if (entryFreq === 'quarterly') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 3);
+        } else if (entryFreq === 'annually') {
+          newRecurringDate.setMonth(newRecurringDate.getMonth() + 12);
         }
-      });
-      input.one('blur', save).focus();
+
+        const formatDate = function (date) {
+          var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+          if (month.length < 2) month = '0' + month;
+          if (day.length < 2) day = '0' + day;
+
+          return [year, month, day].join('-');
+        };
+        const updatedDate = formatDate(newRecurringDate);
+
+        // create one-time entry to match earliest
+        $.post('/entries/', {
+          entry: {
+            date: entryDate,
+            description: entryDesc,
+            frequency: 'one-time',
+            amount: updatedAmount,
+          },
+        });
+
+        // change date on recurring series to next recurrence
+        $.post('/entries/' + entryId, {
+          _method: 'PUT',
+          id: entryId,
+          entry: {
+            date: updatedDate,
+            success: location.reload(),
+          },
+        });
+      };
+
+      const changeAllRecurringAmounts = function () {
+        const enteredAmount = $input.val();
+        // need to refactor
+        // currently it is done this way to mark the cell as updated, so the updatedAmount can be pulled from it
+        // but the cell doesn't need to be replaced, since it gets reloaded right afterwards anyways
+        // so there must be a better way to do this without updating the span
+        // also this is repeated in changeEarliestAmountOnly
+        const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
+        $el.replaceWith($span);
+        const updatedAmount = $('#updatedAmountCell')[0].innerText;
+
+        $.post('/entries/' + entryId, {
+          _method: 'PUT',
+          id: entryId,
+          entry: {
+            amount: updatedAmount,
+            success: location.reload(),
+          },
+        });
+      };
+
+      const promptForRecurring = function () {
+        bootbox.dialog({
+          message:
+            '<p>Do you want to change the earliest entry only or all entries?</p><p class="text-muted small">This is a recurring series.</p><p class="text-muted small">If you select <strong>Earliest Entry Only</strong>, that entry will be converted to one-time with the updated amount, and all subsequent entries will remain with the previous amount.</p><p class="text-muted small">If you select <strong>All Entries</strong>, all entries in the series will be updated with the new amount.</p>',
+          centerVertical: true,
+          buttons: {
+            earliest: {
+              label: 'Earliest Entry Only',
+              className: 'btn-primary',
+              callback: function () {
+                changeEarliestAmountOnly();
+              },
+            },
+            all: {
+              label: 'All Entries',
+              className: 'btn-success',
+              callback: function () {
+                changeAllRecurringAmounts();
+              },
+            },
+            cancel: {
+              label: 'Cancel',
+              className: 'btn-secondary',
+            },
+          },
+        });
+      };
+
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            // need to make this prompt ONLY if freq != one-time
+            if (entryFreq === 'one-time') {
+              $(this).blur(saveOneTime());
+            } else if (entryFreq !== 'one-time') {
+              $(this).blur(promptForRecurring());
+            }
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($el);
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith($el);
+        })
+        .focus();
     });
 
     // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
     $('.fa-check').click(function (e) {
       bootbox.dialog({
         message:
-          '<p></p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
+          '<p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
         centerVertical: true,
         buttons: {
-          delete: {
+          clear: {
             label: 'Clear',
-            className: 'btn-danger',
+            className: 'btn-success',
             callback: function () {
               const entryId = $(e.target).data('id');
               const amountToClear = $(e.target).data('amount-to-clear');
@@ -295,11 +429,11 @@ $(document).on('turbolinks:load', function () {
                 parseFloat(currentBalance.replace('$', '').replace(',', '')) +
                 parseFloat(amountToClear);
 
-              // this is calibrated for eastern time right now
-              // I may add support for other time zones in the future
+              // set for Eastern Standard Time (EST)
+              // will add time zone support later
               const dateString =
                 $(`span[data-id="${entryId}"][data-date]`).html() +
-                'T00:00:00.000-04:00';
+                'T00:00:00.000-05:00';
               let newDate = new Date(dateString);
               const entryFrequency = $(
                 `span[data-id="${entryId}"][data-frequency]`
@@ -362,7 +496,7 @@ $(document).on('turbolinks:load', function () {
     $('.fa-trash-alt').click(function (e) {
       bootbox.dialog({
         message:
-          '<p></p>Are you sure you want to delete this entry?</p><p class="text-muted small">This will permanently delete this entry and any recurrences of it. This cannot be undone.</p>',
+          '<p>Are you sure you want to delete this entry?</p><p class="text-muted small">This will permanently delete this entry and any recurrences of it. This cannot be undone.</p>',
         centerVertical: true,
         buttons: {
           delete: {
