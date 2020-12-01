@@ -584,4 +584,48 @@ $(document).on('turbolinks:load', function () {
       });
     });
   });
+
+  const changeTimePeriod = function (months_to_display) {
+    $.post('/users/' + userId, {
+      _method: 'PUT',
+      user: {
+        months_to_display: months_to_display,
+        success: setTimeout(window.location.reload(), 200),
+      },
+    });
+  };
+
+  const loadMore3 = document.querySelector('#load-more-3');
+  const loadMore6 = document.querySelector('#load-more-6');
+  const loadMore9 = document.querySelector('#load-more-9');
+  const loadMore12 = document.querySelector('#load-more-12');
+  const loadMore24 = document.querySelector('#load-more-24');
+  const loadMore36 = document.querySelector('#load-more-36');
+  const loadMore48 = document.querySelector('#load-more-48');
+  const loadMore60 = document.querySelector('#load-more-60');
+
+  loadMore3.addEventListener('click', function () {
+    changeTimePeriod(3);
+  });
+  loadMore6.addEventListener('click', function () {
+    changeTimePeriod(6);
+  });
+  loadMore9.addEventListener('click', function () {
+    changeTimePeriod(9);
+  });
+  loadMore12.addEventListener('click', function () {
+    changeTimePeriod(12);
+  });
+  loadMore24.addEventListener('click', function () {
+    changeTimePeriod(24);
+  });
+  loadMore36.addEventListener('click', function () {
+    changeTimePeriod(36);
+  });
+  loadMore48.addEventListener('click', function () {
+    changeTimePeriod(48);
+  });
+  loadMore60.addEventListener('click', function () {
+    changeTimePeriod(60);
+  });
 });
