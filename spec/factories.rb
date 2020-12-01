@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :time_zone do
+    
+  end
+
   factory :user do
     sequence(:email) { |n| "dummyEmail#{n}@example.com" }
     password { "secretPassword" }
