@@ -6,6 +6,16 @@ $(document).on('turbolinks:load', function () {
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
   const $saveIcon = $('#currentBalSaveIcon');
 
+  let timeZoneId;
+  $.ajax({
+    url: '/users/' + userId,
+    type: 'GET',
+    async: false,
+    success: function (data) {
+      timeZoneId = data.time_zone_id;
+    },
+  });
+
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
     const floatBal = parseFloat(
@@ -79,8 +89,7 @@ $(document).on('turbolinks:load', function () {
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
     const currentDate = formatDate(new Date());
-    // set for Eastern Standard Time (EST)
-    // will add time zone support later
+
     if (new Date(entry.date) < new Date(currentDate)) {
       entryColorClass = ' past-date ';
     } else if (
