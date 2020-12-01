@@ -99,6 +99,12 @@ $(document).on('turbolinks:load', function () {
     } else {
       entryActionsClass = ' d-none';
     }
+
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
@@ -122,17 +128,17 @@ $(document).on('turbolinks:load', function () {
       entry.id
     }" id="freqSaveIcon" class="fas fa-save m-2 d-none">
     </td>
-        <td>$<span ${entryIsEarliestClass} data-amount data-id="${
+        <td><span ${entryIsEarliestClass} data-amount data-id="${
       entry.id
     }" data-amount-date="${entry.date}" data-amount-desc="${
       entry.description
-    }" data-amount-freq="${entry.frequency}">${entryAmount.toFixed(
-      2
+    }" data-amount-freq="${entry.frequency}">${formatter.format(
+      entryAmount
     )}</span><i data-id="${
       entry.id
     }" id="amtSaveIcon" class="fas fa-save m-2 d-none"></td>
         <td>
-          $${newBalance.toFixed(2)}
+          ${formatter.format(newBalance)}
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
           <i class="fas fa-check" 
@@ -326,7 +332,7 @@ $(document).on('turbolinks:load', function () {
       const entryFreq = $(e.target).data('amount-freq');
       const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
       const textAmt = $el[0].innerText;
-      const decAmt = parseFloat(textAmt);
+      const decAmt = parseFloat(textAmt.replace('$', ''));
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
       const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`).first().first();
@@ -343,7 +349,7 @@ $(document).on('turbolinks:load', function () {
           id: entryId,
           entry: {
             amount: updatedAmount,
-            success: location.reload(),
+            success: setTimeout(location.reload(), 200),
           },
         });
       };
@@ -393,7 +399,7 @@ $(document).on('turbolinks:load', function () {
           id: entryId,
           entry: {
             date: updatedDate,
-            success: location.reload(),
+            success: setTimeout(location.reload(), 200),
           },
         });
       };
@@ -414,7 +420,7 @@ $(document).on('turbolinks:load', function () {
           id: entryId,
           entry: {
             amount: updatedAmount,
-            success: location.reload(),
+            success: setTimeout(location.reload(), 200),
           },
         });
       };
