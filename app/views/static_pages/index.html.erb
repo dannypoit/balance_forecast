@@ -17,6 +17,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to 'Change email or password', edit_user_registration_path(current_user), class: 'dropdown-item' %>
                 </div>
+                
               </div>
             </li>
             <li class="nav-item ml-4">
@@ -41,7 +42,24 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th class="top-row-cells"></th><th class="top-row-cells"></th><th class="top-row-cells"></th>
+            <th class="top-row-cells">
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Time period to display
+                </button>
+                <div class="dropdown-menu" aria-labelledby="load-more-dropdown">
+                  <button type="button" class="dropdown-item" id="load-more-3">3 months</button>
+                  <button type="button" class="dropdown-item" id="load-more-6">6 months</button>
+                  <button type="button" class="dropdown-item" id="load-more-9">9 months</button>
+                  <button type="button" class="dropdown-item" id="load-more-12">1 year</button>
+                  <button type="button" class="dropdown-item" id="load-more-24">2 years</button>
+                  <button type="button" class="dropdown-item" id="load-more-36">3 years</button>
+                  <button type="button" class="dropdown-item" id="load-more-48">4 years</button>
+                  <button type="button" class="dropdown-item" id="load-more-60">5 years</button>
+                </div>
+              </div>
+            </th>
+            <th class="top-row-cells"></th><th class="top-row-cells"></th>
             <th class="text-right current-balance-label-cell" style="font-weight: 400;">
               Current balance:
             </th>
@@ -100,6 +118,10 @@
         <tbody class="entries-table">
         </tbody>
       </table>
+
+      <div class="text-center">
+        
+      </div>
     </div>
   </main>
 

@@ -4,7 +4,8 @@ class EntriesController < ApplicationController
   def index
     entries_in_db = []
     entries_to_display = []
-    max_date = Date.current.next_month(3)
+    months_to_display = current_user.months_to_display
+    max_date = Date.current.next_month(months_to_display)
     entries_in_db = Entry.where(user_id: current_user.id).order(:date).to_a
     # add isEarliest boolean to each entry in entries_in_db, 
     # set to true for all (maybe leave one-time true / this shouldn't matter)
