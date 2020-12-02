@@ -141,9 +141,9 @@ $(document).on('turbolinks:load', function () {
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
-          <span ${entryIsEarliestClass} data-date data-id="${entry.id}">${
-      entry.date
-    }</span><i data-id="${
+          <span ${entryIsEarliestClass} data-date data-id="${
+      entry.id
+    }">${entryDateSlashes}</span><i data-id="${
       entry.id
     }" id="dateSaveIcon" class="fas fa-save m-2 d-none"></i>
         </td>
