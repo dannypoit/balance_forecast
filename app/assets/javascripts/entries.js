@@ -350,7 +350,7 @@ $(document).on('turbolinks:load', function () {
       const entryFreq = $(e.target).data('amount-freq');
       const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
       const textAmt = $el[0].innerText;
-      const decAmt = parseFloat(textAmt.replace('$', ''));
+      const decAmt = parseFloat(textAmt.replace('$', '').replace(',', ''));
       let $input = $('<input type="number" step=".01"/>').val(decAmt);
       $el.replaceWith($input.select());
       const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`).first().first();
