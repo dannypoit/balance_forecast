@@ -126,21 +126,21 @@ $(document).on('turbolinks:load', function () {
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
-          <span data-date data-id="${entry.id}">${
+          <span ${entryIsEarliestClass} data-date data-id="${entry.id}">${
       entry.date
     }</span><i data-id="${
       entry.id
     }" id="dateSaveIcon" class="fas fa-save m-2 d-none"></i>
         </td>
         <td>
-          <span data-description data-id="${entry.id}">${
-      entry.description
-    }</span><i data-id="${
+          <span ${entryIsEarliestClass} data-description data-id="${
+      entry.id
+    }">${entry.description}</span><i data-id="${
       entry.id
     }" id="descSaveIcon" class="fas fa-save m-2 d-none">
         </td>
         <td>
-        <span data-frequency data-id="${entry.id}">${
+        <span ${entryIsEarliestClass} data-frequency data-id="${entry.id}">${
       entry.frequency
     }</span><i data-id="${
       entry.id
@@ -187,7 +187,9 @@ $(document).on('turbolinks:load', function () {
     // update date
     $('.entryRow').on('click', '[data-date]', function (e) {
       const entryId = $(e.target).data('id');
-      const $dateCell = $(this);
+      const $dateCell = $(
+        'span.earliest[data-date][data-id="' + entryId + '"]'
+      );
       let $input = $('<input type="date" />').val($dateCell.text());
       $dateCell.replaceWith($input);
       const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
@@ -236,7 +238,9 @@ $(document).on('turbolinks:load', function () {
     // update description
     $('.entryRow').on('click', '[data-description]', function (e) {
       const entryId = $(e.target).data('id');
-      const $descCell = $(this);
+      const $descCell = $(
+        'span.earliest[data-description][data-id="' + entryId + '"]'
+      );
       let $input = $('<input/>').val($descCell.text());
       $descCell.replaceWith($input);
       const $saveIcon = $(`#descSaveIcon[data-id="${entryId}"]`)
@@ -286,7 +290,9 @@ $(document).on('turbolinks:load', function () {
     // update frequency
     $('.entryRow').on('click', '[data-frequency]', function (e) {
       const entryId = $(e.target).data('id');
-      const $freqCell = $(this);
+      const $freqCell = $(
+        'span.earliest[data-frequency][data-id="' + entryId + '"]'
+      );
       const $select = $(`
         <select id="frequency-select">
           <option value="one-time">One-time</option>
