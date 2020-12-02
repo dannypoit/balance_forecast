@@ -112,7 +112,6 @@ $(document).on('turbolinks:load', function () {
     let entryIsEarliestClass = '';
     const currentDate = formatDateSlashes(new Date());
     const entryDateSlashes = formatDateSlashes(new Date(entry.date));
-    const entryDateDashes = formatDateDashes(new Date(entry.date));
 
     if (new Date(entry.date) < new Date(currentDate)) {
       entryColorClass = ' past-date ';
@@ -205,15 +204,15 @@ $(document).on('turbolinks:load', function () {
       const $dateCell = $(
         'span.earliest[data-date][data-id="' + entryId + '"]'
       );
-      let $input = $('<input type="date" />').val($dateCell.text());
-      // let $input = $('<input type="date" />').val(
-      //   formatDateDashes(new Date($dateCell.text()))
-      // );
+      const entryDateJS = new Date($dateCell.text());
+      const entryDateDashes = formatDateDashes(entryDateJS);
+      let $input = $('<input type="date" />').val(entryDateDashes);
       $dateCell.replaceWith($input);
       const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
         .first()
         .first();
       $saveIcon.toggleClass('d-none');
+      // debugger;
 
       const save = function () {
         const $span = $('<span data-date id="updatedDateCell" />').text(
