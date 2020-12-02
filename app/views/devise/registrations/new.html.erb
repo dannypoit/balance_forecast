@@ -11,7 +11,11 @@
 
     <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Password again", class: "form-control mb-3" %>
 
-    <%= f.submit "Sign up", class: 'btn btn-lg btn-primary btn-block mb-4' %>
+    <p class="mb-0 text-muted">Select time zone</p>
+    <%= f.collection_select :time_zone_id, TimeZone.all, :id, :description, class: "mb-3" %>
+    <%# f.number_field :time_zone_id %>
+
+    <%= f.submit "Sign up", class: 'btn btn-lg btn-primary btn-block my-4' %>
 
     <%= render "devise/shared/links" %>
   <% end %>

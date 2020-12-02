@@ -3,8 +3,27 @@
 $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   const currentBalance = document.getElementById('currentBalance').innerText;
+  const timeZoneOffset = document.getElementById('currentBalance').dataset
+    .timeZoneOffset;
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
   const $saveIcon = $('#currentBalSaveIcon');
+
+  // time zone support for front end
+  let timeZoneOffsetStr = String(timeZoneOffset);
+  if (timeZoneOffset > -10 && timeZoneOffset < 0) {
+    timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
+      '-',
+      '-0'
+    )}:00`;
+  } else if (timeZoneOffset > 0 && timeZoneOffset < 10) {
+    timeZoneOffsetStr = `T00:00:00.000+0${timeZoneOffsetStr}:00`;
+  } else if (timeZoneOffset <= -10) {
+    timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr}:00`;
+  } else if (timeZoneOffset >= 10) {
+    timeZoneOffsetStr = `T00:00:00.000+${timeZoneOffsetStr}:00`;
+  } else {
+    timeZoneOffsetStr = '';
+  }
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
@@ -79,8 +98,7 @@ $(document).on('turbolinks:load', function () {
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
     const currentDate = formatDate(new Date());
-    // set for Eastern Standard Time (EST)
-    // will add time zone support later
+
     if (new Date(entry.date) < new Date(currentDate)) {
       entryColorClass = ' past-date ';
     } else if (
@@ -363,9 +381,7 @@ $(document).on('turbolinks:load', function () {
 
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
-        // set for Eastern Standard Time (EST)
-        // will add time zone support later
-        const newRecurringDate = new Date(entryDate + 'T00:00:00.000-05:00');
+        const newRecurringDate = new Date(entryDate + timeZoneOffsetStr);
 
         if (entryFreq === 'weekly') {
           newRecurringDate.setDate(newRecurringDate.getDate() + 7);
@@ -499,12 +515,9 @@ $(document).on('turbolinks:load', function () {
               const newClearedBalance =
                 parseFloat(currentBalance.replace('$', '').replace(',', '')) +
                 parseFloat(amountToClear);
-
-              // set for Eastern Standard Time (EST)
-              // will add time zone support later
               const dateString =
                 $(`span[data-id="${entryId}"][data-date]`).html() +
-                'T00:00:00.000-05:00';
+                timeZoneOffsetStr;
               let newDate = new Date(dateString);
               const entryFrequency = $(
                 `span[data-id="${entryId}"][data-frequency]`

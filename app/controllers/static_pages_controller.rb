@@ -3,5 +3,6 @@ class StaticPagesController < ApplicationController
 
   def index
     @entry = Entry.new
+    @time_zone = TimeZone.all
   end
 end
