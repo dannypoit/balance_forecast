@@ -78,7 +78,7 @@ $(document).on('turbolinks:load', function () {
   });
 
   // convert JavaScript date to YYYY-MM-DD format
-  const formatDate = function (date) {
+  const formatDateDashes = function (date) {
     var d = new Date(date),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
@@ -90,6 +90,19 @@ $(document).on('turbolinks:load', function () {
     return [year, month, day].join('-');
   };
 
+  // convert JavaScript date to MM/DD/YYYY format
+  const formatDateSlashes = function (date) {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [month, day, year].join('/');
+  };
+
   // create new table row for each entry
   function createEntryRow(entry) {
     const entryAmount = parseFloat(entry.amount);
@@ -97,7 +110,9 @@ $(document).on('turbolinks:load', function () {
     let entryColorClass = '';
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
-    const currentDate = formatDate(new Date());
+    const currentDate = formatDateSlashes(new Date());
+    const entryDateSlashes = formatDateSlashes(new Date(entry.date));
+    const entryDateDashes = formatDateDashes(new Date(entry.date));
 
     if (new Date(entry.date) < new Date(currentDate)) {
       entryColorClass = ' past-date ';
@@ -191,6 +206,9 @@ $(document).on('turbolinks:load', function () {
         'span.earliest[data-date][data-id="' + entryId + '"]'
       );
       let $input = $('<input type="date" />').val($dateCell.text());
+      // let $input = $('<input type="date" />').val(
+      //   formatDateDashes(new Date($dateCell.text()))
+      // );
       $dateCell.replaceWith($input);
       const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
         .first()
@@ -403,7 +421,7 @@ $(document).on('turbolinks:load', function () {
           newRecurringDate.setMonth(newRecurringDate.getMonth() + 12);
         }
 
-        const updatedDate = formatDate(newRecurringDate);
+        const updatedDate = formatDateDashes(newRecurringDate);
 
         // create one-time entry to match earliest
         $.post('/entries/', {
