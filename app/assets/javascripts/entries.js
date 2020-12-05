@@ -214,6 +214,9 @@ $(document).on('turbolinks:load', function () {
       const $dateCell = $(
         'span.earliest[data-date][data-id="' + entryId + '"]'
       );
+
+      // note: there may be an easier way to do the next steps below, but for now it works
+
       // convert date in $dateCell.text() to dashes format for saving in db
       const convertSlashesToDashes = function (dateSlashes) {
         let dateArr = dateSlashes.split('/');
@@ -221,9 +224,16 @@ $(document).on('turbolinks:load', function () {
         dateArr.push(dateArr.shift());
         return dateArr.join('-');
       };
+
+      // convert date string pulled from cell from slashes to dashes format
       const entryDateDashesNoTZ = convertSlashesToDashes($dateCell.text());
+
+      // add timeZoneOffsetStr to entry date and convert to JS date
       const entryDateJS = new Date(entryDateDashesNoTZ + timeZoneOffsetStr);
+
+      // convert JS date to date string in dashes format
       const entryDateDashes = convertDateJsToStrDashes(entryDateJS);
+
       let $input = $('<input type="date" />').val(entryDateDashes);
       $dateCell.replaceWith($input);
       const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
@@ -238,7 +248,6 @@ $(document).on('turbolinks:load', function () {
         $input.replaceWith($span);
         const updatedDate = document.getElementById('updatedDateCell')
           .innerHTML;
-        debugger;
 
         $.post('/entries/' + entryId, {
           _method: 'PUT',
