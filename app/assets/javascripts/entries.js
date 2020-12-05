@@ -3,12 +3,14 @@
 $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   const currentBalance = document.getElementById('currentBalance').innerText;
-  const timeZoneOffset = document.getElementById('currentBalance').dataset
-    .timeZoneOffset;
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
   const $saveIcon = $('#currentBalSaveIcon');
 
-  // time zone support for front end
+  // get time zone offset for user from data attribute on currentBalance and store in const
+  const timeZoneOffset = document.getElementById('currentBalance').dataset
+    .timeZoneOffset;
+
+  // build whole time zone string to add onto date from Rails before converting back to JS date
   let timeZoneOffsetStr = String(timeZoneOffset);
   if (timeZoneOffset > -10 && timeZoneOffset < 0) {
     timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
@@ -77,9 +79,9 @@ $(document).on('turbolinks:load', function () {
       .focus();
   });
 
-  // convert JavaScript date to YYYY-MM-DD format
-  const formatDateDashes = function (date) {
-    var d = new Date(date),
+  // convert JavaScript date to string in YYYY-MM-DD format
+  const convertDateJsToStrDashes = function (jsDate) {
+    var d = new Date(jsDate),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
@@ -90,9 +92,9 @@ $(document).on('turbolinks:load', function () {
     return [year, month, day].join('-');
   };
 
-  // convert JavaScript date to MM/DD/YYYY format
-  const formatDateSlashes = function (date) {
-    var d = new Date(date),
+  // convert JavaScript date to string in MM/DD/YYYY format
+  const convertDateJsToStrSlashes = function (jsDate) {
+    var d = new Date(jsDate),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
@@ -110,19 +112,26 @@ $(document).on('turbolinks:load', function () {
     let entryColorClass = '';
     let entryActionsClass = '';
     let entryIsEarliestClass = '';
-    const currentDate = formatDateSlashes(new Date());
-    const entryDateSlashes = formatDateSlashes(new Date(entry.date));
 
-    if (new Date(entry.date) < new Date(currentDate)) {
+    // note: does not need timeZoneOffsetStr added, because it is creating a new JS date, which comes in at the correct time zone
+    const currentDate = convertDateJsToStrSlashes(new Date());
+
+    // get date from Rails, add timeZoneOffsetStr, convert to JS date, and store in const
+    const entryDateSlashes = convertDateJsToStrSlashes(
+      new Date(entry.date + timeZoneOffsetStr)
+    );
+
+    // timeZoneOffsetStr added to each entry.date from Rails before converted to JS date
+    if (new Date(entry.date + timeZoneOffsetStr) < new Date(currentDate)) {
       entryColorClass = ' past-date ';
     } else if (
       entry.amount > 0 &&
-      new Date(entry.date) >= new Date(currentDate)
+      new Date(entry.date + timeZoneOffsetStr) >= new Date(currentDate)
     ) {
       entryColorClass = ' credit ';
     } else if (
       newBalance < 0 &&
-      new Date(entry.date) >= new Date(currentDate)
+      new Date(entry.date + timeZoneOffsetStr) >= new Date(currentDate)
     ) {
       entryColorClass = ' in-the-red ';
     }
@@ -137,6 +146,7 @@ $(document).on('turbolinks:load', function () {
       currency: 'USD',
     });
 
+    // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
         <td>
@@ -204,15 +214,22 @@ $(document).on('turbolinks:load', function () {
       const $dateCell = $(
         'span.earliest[data-date][data-id="' + entryId + '"]'
       );
-      const entryDateJS = new Date($dateCell.text());
-      const entryDateDashes = formatDateDashes(entryDateJS);
+      // convert date in $dateCell.text() to dashes format for saving in db
+      const convertSlashesToDashes = function (dateSlashes) {
+        let dateArr = dateSlashes.split('/');
+        dateArr.push(dateArr.shift());
+        dateArr.push(dateArr.shift());
+        return dateArr.join('-');
+      };
+      const entryDateDashesNoTZ = convertSlashesToDashes($dateCell.text());
+      const entryDateJS = new Date(entryDateDashesNoTZ + timeZoneOffsetStr);
+      const entryDateDashes = convertDateJsToStrDashes(entryDateJS);
       let $input = $('<input type="date" />').val(entryDateDashes);
       $dateCell.replaceWith($input);
       const $saveIcon = $(`#dateSaveIcon[data-id="${entryId}"]`)
         .first()
         .first();
       $saveIcon.toggleClass('d-none');
-      // debugger;
 
       const save = function () {
         const $span = $('<span data-date id="updatedDateCell" />').text(
@@ -221,6 +238,7 @@ $(document).on('turbolinks:load', function () {
         $input.replaceWith($span);
         const updatedDate = document.getElementById('updatedDateCell')
           .innerHTML;
+        debugger;
 
         $.post('/entries/' + entryId, {
           _method: 'PUT',
@@ -420,7 +438,7 @@ $(document).on('turbolinks:load', function () {
           newRecurringDate.setMonth(newRecurringDate.getMonth() + 12);
         }
 
-        const updatedDate = formatDateDashes(newRecurringDate);
+        const updatedDate = convertDateJsToStrDashes(newRecurringDate);
 
         // create one-time entry to match earliest
         $.post('/entries/', {
