@@ -431,6 +431,7 @@ $(document).on('turbolinks:load', function () {
 
         const updatedAmount = $('#updatedAmountCell')[0].innerText;
 
+        // add timeZoneOffsetStr to entry date pulled from Rails before converting to JS date
         const newRecurringDate = new Date(entryDate + timeZoneOffsetStr);
 
         if (entryFreq === 'weekly') {
@@ -450,6 +451,7 @@ $(document).on('turbolinks:load', function () {
         const updatedDate = convertDateJsToStrDashes(newRecurringDate);
 
         // create one-time entry to match earliest
+        // note: timeZoneOffsetStr does not need to be added here because it is not being converted to JS date
         $.post('/entries/', {
           entry: {
             date: entryDate,
@@ -565,10 +567,11 @@ $(document).on('turbolinks:load', function () {
               const newClearedBalance =
                 parseFloat(currentBalance.replace('$', '').replace(',', '')) +
                 parseFloat(amountToClear);
-              const dateString =
-                $(`span[data-id="${entryId}"][data-date]`).html() +
-                timeZoneOffsetStr;
-              let newDate = new Date(dateString);
+              const dateString = $(
+                `span[data-id="${entryId}"][data-date]`
+              ).html();
+              // add timeZoneOffsetStr to dateString, which is pulled from page, before converting to JS date
+              let newDate = new Date(dateString + timeZoneOffsetStr);
               const entryFrequency = $(
                 `span[data-id="${entryId}"][data-frequency]`
               ).html();
