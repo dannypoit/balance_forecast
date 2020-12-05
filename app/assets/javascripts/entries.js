@@ -200,6 +200,14 @@ $(document).on('turbolinks:load', function () {
   $.get('/entries').success(function (data) {
     let allEntryRows = '';
 
+    // convert date string in MM/DD/YYYY format to YYYY-MM-DD format for saving in db
+    const convertSlashesToDashes = function (dateSlashes) {
+      let dateArr = dateSlashes.split('/');
+      dateArr.push(dateArr.shift());
+      dateArr.push(dateArr.shift());
+      return dateArr.join('-');
+    };
+
     // add each entry row to allEntryRows variable
     $.each(data, function (index, entry) {
       allEntryRows += createEntryRow(entry);
@@ -216,14 +224,6 @@ $(document).on('turbolinks:load', function () {
       );
 
       // note: there may be an easier way to do the next steps below, but for now it works
-
-      // convert date in $dateCell.text() to dashes format for saving in db
-      const convertSlashesToDashes = function (dateSlashes) {
-        let dateArr = dateSlashes.split('/');
-        dateArr.push(dateArr.shift());
-        dateArr.push(dateArr.shift());
-        return dateArr.join('-');
-      };
 
       // convert date string pulled from cell from slashes to dashes format
       const entryDateDashesNoTZ = convertSlashesToDashes($dateCell.text());
@@ -570,8 +570,21 @@ $(document).on('turbolinks:load', function () {
               const dateString = $(
                 `span[data-id="${entryId}"][data-date]`
               ).html();
+
+              // convert dateString pulled from cell from slashes to dashes format
+              const dateStringDashesNoTZ = convertSlashesToDashes(dateString);
+
+              // add timeZoneOffsetStr to entry date and convert to JS date
+              const dateStringJS = new Date(
+                dateStringDashesNoTZ + timeZoneOffsetStr
+              );
+
+              // convert JS date to date string in dashes format
+              const entryDateDashes = convertDateJsToStrDashes(dateStringJS);
+
               // add timeZoneOffsetStr to dateString, which is pulled from page, before converting to JS date
-              let newDate = new Date(dateString + timeZoneOffsetStr);
+              let newDate = new Date(entryDateDashes + timeZoneOffsetStr);
+
               const entryFrequency = $(
                 `span[data-id="${entryId}"][data-frequency]`
               ).html();
