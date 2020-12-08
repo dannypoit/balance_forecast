@@ -1,6 +1,7 @@
 @import "bootstrap";
 @import "bootstrap-select";
 @import "font-awesome";
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400&family=Work+Sans:wght@400&family=Inter:wght@300&display=swap");
 
 // * {
 //   border: 1px solid lightgray;
@@ -17,6 +18,16 @@
 html {
   position: relative;
   min-height: 100%;
+}
+
+body {
+  font-family: "Mulish", sans-serif;
+  font-weight: 400;
+}
+
+.entryRow {
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
 }
 
 // html,
@@ -85,6 +96,7 @@ th.current-balance-label-cell {
 
 .header-row {
   background-color: #f2f2f2;
+  font-size: 0.9rem;
 }
 
 .table-striped tbody tr.new-entry-row {

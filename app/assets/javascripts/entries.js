@@ -209,7 +209,7 @@ $(document).on('turbolinks:load', function () {
     };
 
     // add each entry row to allEntryRows variable
-    $.each(data, function (index, entry) {
+    $.each(data, function (_, entry) {
       allEntryRows += createEntryRow(entry);
     });
 
