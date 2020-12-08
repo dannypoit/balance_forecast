@@ -149,7 +149,9 @@ $(document).on('turbolinks:load', function () {
     // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
     const entryRow = `
       <tr class="entryRow ${entryColorClass}">
-        <td>
+        <td class="first-col">
+        </td>
+        <td class="date-col">
           <span ${entryIsEarliestClass} data-date data-id="${
       entry.id
     }">${entryDateSlashes}</span><i data-id="${

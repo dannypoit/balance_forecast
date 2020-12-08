@@ -1,7 +1,7 @@
 <body>
   <header>
     <div class="container">
-      <nav class="navbar navbar-expand-lg navbar-light p-0 col-11">
+      <nav class="navbar navbar-expand-lg navbar-light p-0">
         <%= link_to 'Balance Forecast', root_path, class: 'navbar-brand' %>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -41,6 +41,7 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
+            <th class="top-row-cells first-col"></th>
             <th class="top-row-cells">
               <div class="dropdown">
                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,7 +68,8 @@
             </th>
           </tr>
           <tr class="header-row">
-            <th scope="col">
+            <th scope="col" class="first-col"></th>
+            <th scope="col" class="date-col">
               Date
             </th>
             <th scope="col">
@@ -87,7 +89,8 @@
         <tbody>
           <tr class="new-entry-row">
           <%= form_for(@entry) do |f| %>
-            <td>
+            <td class="first-col"></td>
+            <td class="date-col">
               <%= f.date_field :date %>
             </td>
             <td>

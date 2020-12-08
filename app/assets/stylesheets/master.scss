@@ -7,8 +7,13 @@
 //   border: 1px solid lightgray;
 // }
 
+// html,
 // body {
-//   background-color: #edf8f5;
+//   height: 100%;
+// }
+
+// body {
+//   background-color: #aeffe9;
 // }
 
 // table {
@@ -25,15 +30,38 @@ body {
   font-weight: 400;
 }
 
+.container {
+  max-width: 1400px;
+}
+
+th.first-col {
+  border-top-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+  background-color: #fff; // this needs to be transparent
+  width: 75px;
+}
+
+td.first-col {
+  border-top-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: hidden;
+  background-color: #fff; // this needs to be transparent
+  width: 75px;
+}
+
+// th.date-col {
+//   max-width: 180px;
+// }
+
+.date-col {
+  width: 180px;
+}
+
 .entryRow {
   font-family: "Inter", sans-serif;
   font-weight: 300;
 }
-
-// html,
-// body {
-//   height: 100%;
-// }
 
 .footer {
   position: absolute;
@@ -107,6 +135,14 @@ th input {
   width: 120px;
 }
 
+#entry_date {
+  width: 150px;
+}
+
+#entry_amount {
+  width: 85px;
+}
+
 .past-date {
   color: #a9a9a9;
 }
@@ -130,10 +166,6 @@ th input {
 .fa-trash-alt:hover {
   color: #ff3333;
   font-weight: bold;
-}
-
-.copyright {
-  padding-right: 71px;
 }
 
 .fa-save:hover {
