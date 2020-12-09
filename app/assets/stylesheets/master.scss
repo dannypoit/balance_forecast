@@ -7,22 +7,10 @@
 //   border: 1px solid lightgray;
 // }
 
-// html,
-// body {
-//   height: 100%;
-// }
-
-// body {
-//   background-color: #aeffe9;
-// }
-
-// table {
-//   background-color: #fff;
-// }
-
 html {
   position: relative;
   min-height: 100%;
+  box-sizing: border-box;
 }
 
 body {
@@ -32,6 +20,12 @@ body {
 
 .container {
   max-width: 1400px;
+  padding-left: 115px;
+}
+
+.container-pad-right {
+  max-width: 1400px;
+  padding-right: 115px;
 }
 
 th.first-col {
@@ -39,7 +33,7 @@ th.first-col {
   border-left-style: hidden;
   border-bottom-style: hidden;
   background-color: #fff; // this needs to be transparent
-  width: 75px;
+  // width: 100px;
 }
 
 td.first-col {
@@ -47,7 +41,7 @@ td.first-col {
   border-left-style: hidden;
   border-bottom-style: hidden;
   background-color: #fff; // this needs to be transparent
-  width: 75px;
+  // width: 100px;
 }
 
 // th.date-col {
