@@ -28,28 +28,42 @@ body {
   padding-right: 115px;
 }
 
-th.first-col {
-  border-top-style: hidden;
-  border-left-style: hidden;
-  border-bottom-style: hidden;
-  background-color: #fff; // this needs to be transparent
-  // width: 100px;
-}
-
-td.first-col {
-  border-top-style: hidden;
-  border-left-style: hidden;
-  border-bottom-style: hidden;
-  background-color: #fff; // this needs to be transparent
-  // width: 100px;
-}
-
-// th.date-col {
-//   max-width: 180px;
-// }
-
 .date-col {
   width: 180px;
+}
+
+.short-col {
+  width: 150px;
+}
+
+// why are these in snake_case?
+#entry_date {
+  width: 100%;
+  height: 38px;
+}
+
+// why are these in snake_case?
+#entry_description {
+  width: 100%;
+  height: 38px;
+}
+
+// why are these in snake_case?
+// this can maybe be replaced with a bootbox
+#entry_frequency {
+  width: 100%;
+  height: 38px;
+}
+
+// why are these in snake_case?
+#entry_amount {
+  width: 100%;
+  height: 38px;
+}
+
+#add-btn {
+  width: 100%;
+  height: 38px;
 }
 
 .entryRow {
@@ -127,14 +141,6 @@ th.current-balance-label-cell {
 
 th input {
   width: 120px;
-}
-
-#entry_date {
-  width: 150px;
-}
-
-#entry_amount {
-  width: 85px;
 }
 
 .past-date {
