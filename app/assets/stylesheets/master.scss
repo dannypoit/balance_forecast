@@ -33,8 +33,27 @@ table {
   border-spacing: 0;
 }
 
+.table-bordered tr th,
+.table-bordered tr td {
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-top-style: hidden;
+  border-left-style: hidden;
+  padding: 0.75rem;
+}
+
 .table-bordered {
   border-style: none;
+}
+
+.btn-period {
+  color: #bbc0c5;
+  border-color: #dee2e6;
+}
+
+.btn-period:hover {
+  color: #fff;
+  background-color: #bbc0c5;
 }
 
 th.current-balance-label-cell {
@@ -59,54 +78,62 @@ th.top-row-cells {
   border-left-style: hidden;
 }
 
-// set bottom border of cells in table header that are supposed to be hidden to 0 because hidden does not work on the bottom border
 .table-bordered thead th.top-row-cells,
 .table-bordered thead th.current-balance-label-cell {
   border-bottom-width: 0;
+  border-right-width: 0;
 }
 
-// set bottom border of table header to 1px instead of 2px
 .table-bordered thead th#currentBalanceCell {
-  border-bottom-width: 1px;
+  border-bottom-width: 0;
+  border-left: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
 }
 
-// set bottom border of table header to 1px instead of 2px
 .table-bordered thead tr.header-row th {
   border-bottom-width: 1px;
+  border-top: 1px solid #dee2e6;
 }
 
-// set background color of input row white
+.table-bordered thead tr.header-row th:first-child {
+  border-left: 1px solid #dee2e6;
+}
+
 .table-striped tbody tr.new-entry-row {
   background-color: #fff;
 }
 
-// set background color of header row light gray
+.table-bordered tr.new-entry-row td:first-child {
+  border-left-width: 1px;
+}
+
+.table-bordered tr td.date-col {
+  border-left: 1px solid #dee2e6;
+}
+
 .header-row {
   background-color: #f2f2f2;
   font-size: 0.9rem;
 }
 
-// rounded corners
 .table-bordered thead tr.header-row th:first-child {
   border-top-left-radius: 0.4rem;
 }
 
-// rounded corners
 .table-bordered tbody.entries-table tr:last-child td:first-child {
   border-bottom-left-radius: 0.4rem;
 }
 
-// rounded corners
 .table-bordered tbody.entries-table tr:last-child td:nth-last-child(2) {
   border-bottom-right-radius: 0.4rem;
 }
 
+.table-bordered tr td.entry-actions-cell {
+  border-right-style: hidden;
+  border-bottom-style: hidden;
+}
+
 td.entry-actions-cell {
-  // border-top-style: hidden;
-  // border-right-style: hidden;
-  // border-bottom-style: hidden;
-  // border-left-style: hidden;
-  border-style: hidden;
   background-color: #fff;
 }
 
@@ -148,6 +175,12 @@ td.entry-actions-cell {
   // this is set to 31px because at 30px the Description input pulls the bottom border up so it is off by 1px -- so this is a temporary fix until I find a better solution
   height: 31px;
   padding: 0;
+}
+
+input,
+select {
+  border: 1px solid #dee2e6;
+  border-radius: 0.2rem;
 }
 
 .entry-row {
@@ -223,4 +256,8 @@ td.entry-actions-cell {
 
 .fa-save:hover {
   color: #00ff00;
+}
+
+.copyright {
+  color: #bbc0c5;
 }
