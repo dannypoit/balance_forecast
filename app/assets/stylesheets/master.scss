@@ -3,9 +3,9 @@
 @import "font-awesome";
 @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400&family=Work+Sans:wght@400&family=Inter:wght@300&display=swap");
 
-* {
-  border: 1px solid lightgray;
-}
+// * {
+//   border: 1px solid lightgray;
+// }
 
 html {
   position: relative;
@@ -28,6 +28,92 @@ body {
   padding-left: 115px;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-bordered {
+  border-style: none;
+}
+
+th.current-balance-label-cell {
+  border-top-style: hidden;
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+
+th#currentBalanceCell {
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+}
+
+th input {
+  font-size: 1rem;
+  width: 90px;
+}
+
+th.top-row-cells {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+}
+
+// set bottom border of cells in table header that are supposed to be hidden to 0 because hidden does not work on the bottom border
+.table-bordered thead th.top-row-cells,
+.table-bordered thead th.current-balance-label-cell {
+  border-bottom-width: 0;
+}
+
+// set bottom border of table header to 1px instead of 2px
+.table-bordered thead th#currentBalanceCell {
+  border-bottom-width: 1px;
+}
+
+// set bottom border of table header to 1px instead of 2px
+.table-bordered thead tr.header-row th {
+  border-bottom-width: 1px;
+}
+
+// set background color of input row white
+.table-striped tbody tr.new-entry-row {
+  background-color: #fff;
+}
+
+// set background color of header row light gray
+.header-row {
+  background-color: #f2f2f2;
+  font-size: 0.9rem;
+}
+
+// rounded corners
+.table-bordered thead tr.header-row th:first-child {
+  border-top-left-radius: 0.4rem;
+}
+
+// rounded corners
+.table-bordered tbody.entries-table tr:last-child td:first-child {
+  border-bottom-left-radius: 0.4rem;
+}
+
+// rounded corners
+.table-bordered tbody.entries-table tr:last-child td:nth-last-child(2) {
+  border-bottom-right-radius: 0.4rem;
+}
+
+td.entry-actions-cell {
+  // border-top-style: hidden;
+  // border-right-style: hidden;
+  // border-bottom-style: hidden;
+  // border-left-style: hidden;
+  border-style: hidden;
+  background-color: #fff;
+}
+
+#currentBalSaveIcon {
+  font-size: 1rem;
+}
+
 .date-col {
   width: 180px;
 }
@@ -36,26 +122,22 @@ body {
   width: 150px;
 }
 
-// why are these in snake_case?
 #entry_date {
   width: 100%;
   height: 30px;
 }
 
-// why are these in snake_case?
 #entry_description {
   width: 100%;
   height: 30px;
 }
 
-// why are these in snake_case?
-// this can maybe be replaced with a bootbox
+// this one can maybe be replaced with a bootbox
 #entry_frequency {
   width: 100%;
   height: 30px;
 }
 
-// why are these in snake_case?
 #entry_amount {
   width: 100%;
   height: 30px;
@@ -63,11 +145,12 @@ body {
 
 #add-btn {
   width: 100%;
-  height: 30px;
+  // this is set to 31px because at 30px the Description input pulls the bottom border up so it is off by 1px -- so this is a temporary fix until I find a better solution
+  height: 31px;
   padding: 0;
 }
 
-.entryRow {
+.entry-row {
   font-family: "Inter", sans-serif;
   font-weight: 300;
 }
@@ -111,37 +194,6 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-
-td.entry-actions-cell {
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-bottom-style: hidden;
-  background-color: #fff; // this needs to be transparent
-}
-
-th.top-row-cells {
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-left-style: hidden;
-}
-
-th.current-balance-label-cell {
-  border-top-style: hidden;
-  border-left-style: hidden;
-}
-
-.header-row {
-  background-color: #f2f2f2;
-  font-size: 0.9rem;
-}
-
-.table-striped tbody tr.new-entry-row {
-  background-color: #fff;
-}
-
-th input {
-  width: 120px;
 }
 
 .past-date {

@@ -148,7 +148,7 @@ $(document).on('turbolinks:load', function () {
 
     // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
     const entryRow = `
-      <tr class="entryRow ${entryColorClass}">
+      <tr class="entry-row ${entryColorClass}">
         <td class="date-col">
           <span ${entryIsEarliestClass} data-date data-id="${
       entry.id
@@ -217,7 +217,7 @@ $(document).on('turbolinks:load', function () {
     $entriesTable.html(allEntryRows);
 
     // update date
-    $('.entryRow').on('click', '[data-date]', function (e) {
+    $('.entry-row').on('click', '[data-date]', function (e) {
       const entryId = $(e.target).data('id');
       const $dateCell = $(
         'span.earliest[data-date][data-id="' + entryId + '"]'
@@ -280,7 +280,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update description
-    $('.entryRow').on('click', '[data-description]', function (e) {
+    $('.entry-row').on('click', '[data-description]', function (e) {
       const entryId = $(e.target).data('id');
       const $descCell = $(
         'span.earliest[data-description][data-id="' + entryId + '"]'
@@ -332,7 +332,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update frequency
-    $('.entryRow').on('click', '[data-frequency]', function (e) {
+    $('.entry-row').on('click', '[data-frequency]', function (e) {
       const entryId = $(e.target).data('id');
       const $freqCell = $(
         'span.earliest[data-frequency][data-id="' + entryId + '"]'
@@ -393,7 +393,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update amount
-    $('.entryRow').on('click', '[data-amount]', function (e) {
+    $('.entry-row').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
       const entryDate = $(e.target).data('amount-date');
       const entryDesc = $(e.target).data('amount-desc');
