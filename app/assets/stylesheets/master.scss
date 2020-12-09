@@ -23,6 +23,22 @@ body {
   padding-right: 135px;
 }
 
+.navbar-brand {
+  font-size: 2em;
+}
+
+.navbar-light .navbar-brand {
+  color: #555555;
+}
+
+a#dropdownMenuButton {
+  color: #555555;
+}
+
+a {
+  color: #555555;
+}
+
 .ledger {
   max-width: 1400px;
   padding-left: 115px;
@@ -60,6 +76,7 @@ th.current-balance-label-cell {
   border-top-style: hidden;
   border-left-style: hidden;
   border-right-style: hidden;
+  color: #555555;
 }
 
 th#currentBalanceCell {
@@ -68,8 +85,9 @@ th#currentBalanceCell {
 }
 
 th input {
-  font-size: 1rem;
-  width: 90px;
+  // font-size: 1rem;
+  // width: 90px;
+  width: 120px;
 }
 
 th.top-row-cells {
@@ -159,7 +177,7 @@ td.entry-actions-cell {
   height: 30px;
 }
 
-// this one can maybe be replaced with a bootbox
+// this one can maybe be replaced with a bootstrap dropdown
 #entry_frequency {
   width: 100%;
   height: 30px;
@@ -239,10 +257,6 @@ select {
 
 .in-the-red {
   color: #cc0000;
-}
-
-.navbar-brand {
-  font-size: 2em;
 }
 
 .fa-check:hover {
