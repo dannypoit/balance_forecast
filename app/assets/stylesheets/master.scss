@@ -3,14 +3,13 @@
 @import "font-awesome";
 @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400&family=Work+Sans:wght@400&family=Inter:wght@300&display=swap");
 
-// * {
-//   border: 1px solid lightgray;
-// }
+* {
+  border: 1px solid lightgray;
+}
 
 html {
   position: relative;
   min-height: 100%;
-  box-sizing: border-box;
 }
 
 body {
@@ -18,14 +17,15 @@ body {
   font-weight: 400;
 }
 
-.container {
+.header-footer {
   max-width: 1400px;
   padding-left: 115px;
+  padding-right: 135px;
 }
 
-.container-pad-right {
+.ledger {
   max-width: 1400px;
-  padding-right: 115px;
+  padding-left: 115px;
 }
 
 .date-col {
