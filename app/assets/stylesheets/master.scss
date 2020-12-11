@@ -12,9 +12,15 @@ html {
   min-height: 100%;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   font-family: "Mulish", sans-serif;
   font-weight: 400;
+  color: #555555;
 }
 
 .header-footer {
@@ -32,11 +38,16 @@ body {
 }
 
 a#dropdownMenuButton {
-  color: #555555;
+  color: #a7a2bf;
 }
 
 a {
-  color: #555555;
+  color: #027ba7;
+}
+
+a:hover {
+  color: #4da2c1;
+  text-decoration: none;
 }
 
 .ledger {
@@ -60,6 +71,7 @@ table {
 
 .table-bordered {
   border-style: none;
+  color: #555555;
 }
 
 .btn-period {
@@ -199,11 +211,19 @@ input,
 select {
   border: 1px solid #dee2e6;
   border-radius: 0.2rem;
+  // width: 100%;
+}
+
+select#user_time_zone_id {
+  width: 100%;
+  padding: 10px;
+  color: #555555;
 }
 
 .entry-row {
   font-family: "Inter", sans-serif;
   font-weight: 300;
+  color: #555555;
 }
 
 .footer {
@@ -228,7 +248,8 @@ select {
   box-sizing: border-box;
   height: auto;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 .form-signin .form-control:focus {
@@ -236,15 +257,29 @@ select {
 }
 
 .form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  margin-bottom: 10px;
+  // border-bottom-right-radius: 0;
+  // border-bottom-left-radius: 0;
+  color: #555555;
 }
 
 .form-signin input[type="password"] {
   margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  // border-top-left-radius: 0;
+  // border-top-right-radius: 0;
+  color: #555555;
+}
+
+.btn-blu {
+  background-color: #027ba7;
+  border-color: #027ba7;
+  color: #fff;
+}
+
+.btn-blu:hover {
+  color: #fff;
+  background-color: #3495b8;
+  border-color: #3495b8;
 }
 
 .past-date {

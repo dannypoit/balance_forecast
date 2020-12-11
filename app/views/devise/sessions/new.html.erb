@@ -1,8 +1,7 @@
-<body style="display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-top: 40px; padding-bottom: 40px; background-color: #f5f5f5;" class="text-center">
+<body style="display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-top: 40px; padding-bottom: 40px;" class="text-center">
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-signin"}) do |f| %>
-    <h5 class="h5 mb-0">Balance Forecast</h5>
-    <h3 class="h3 mb-3 font-weight-normal">Log in</h3>
+    <h5 class="h2 mb-4">Balance Forecast</h5>
 
     <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control" %>
 
@@ -15,7 +14,7 @@
       </div>
     <% end %>
 
-    <%= f.submit "Log in", class: "btn btn-lg btn-primary btn-block mb-4" %>
+    <%= f.submit "Log in", class: "btn btn-lg btn-blu btn-block mb-4" %>
 
     <%= link_to "Sign up", new_user_registration_path, class: 'mr-4' %>
     <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
