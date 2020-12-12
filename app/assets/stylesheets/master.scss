@@ -38,16 +38,26 @@ body {
 }
 
 a#dropdownMenuButton {
-  color: #a7a2bf;
+  color: #02a781;
 }
 
 a {
-  color: #027ba7;
+  color: #02a781;
 }
 
 a:hover {
-  color: #4da2c1;
+  color: #4dc1a6;
   text-decoration: none;
+}
+
+.btn-period {
+  color: #02a781;
+  border-color: #02a781;
+}
+
+.btn-period:hover {
+  color: #fff;
+  background-color: #02a781;
 }
 
 .ledger {
@@ -72,16 +82,6 @@ table {
 .table-bordered {
   border-style: none;
   color: #555555;
-}
-
-.btn-period {
-  color: #bbc0c5;
-  border-color: #dee2e6;
-}
-
-.btn-period:hover {
-  color: #fff;
-  background-color: #bbc0c5;
 }
 
 th.current-balance-label-cell {
@@ -282,16 +282,28 @@ select#user_time_zone_id {
   border-color: #3495b8;
 }
 
+.btn-gree {
+  background-color: #02a781;
+  border-color: #02a781;
+  color: #fff;
+}
+
+.btn-gree:hover {
+  color: #fff;
+  background-color: #4dc1a6;
+  border-color: #4dc1a6;
+}
+
 .past-date {
   color: #a9a9a9;
 }
 
 .credit {
-  color: #33aa33;
+  color: #02a781;
 }
 
 .in-the-red {
-  color: #cc0000;
+  color: #a70228;
 }
 
 .fa-check:hover {
