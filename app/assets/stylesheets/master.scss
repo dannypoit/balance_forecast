@@ -3,9 +3,9 @@
 @import "font-awesome";
 @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400&family=Work+Sans:wght@400&family=Inter:wght@300&display=swap");
 
-// * {
-//   border: 1px solid lightgray;
-// }
+* {
+  border: 1px solid lightgray;
+}
 
 html {
   position: relative;
@@ -37,10 +37,6 @@ body {
   color: #555555;
 }
 
-a#dropdownMenuButton {
-  color: #02a781;
-}
-
 a {
   color: #02a781;
 }
@@ -48,6 +44,14 @@ a {
 a:hover {
   color: #4dc1a6;
   text-decoration: none;
+}
+
+a#dropdownMenuButton {
+  color: #02a781;
+}
+
+a#dropdownMenuButton:hover {
+  color: #4dc1a6;
 }
 
 .btn-period {
