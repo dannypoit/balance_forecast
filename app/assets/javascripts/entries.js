@@ -188,7 +188,7 @@ $(document).on('turbolinks:load', function () {
             data-user-id="${entry.user_id}" 
             data-amount-to-clear="${entry.amount}">
           </i>
-          <i class="far fa-trash-alt ml-2" 
+          <i class="far fa-trash-alt ml-2 mr-0" 
             data-id="${entry.id}">
           </i>
         </td>

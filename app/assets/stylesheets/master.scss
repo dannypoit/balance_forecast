@@ -155,12 +155,12 @@ th.top-row-cells {
 .table-bordered tr td.entry-actions-cell {
   border-right-style: hidden;
   border-bottom-style: hidden;
+  padding-right: 0;
 }
 
 td.entry-actions-cell {
   background-color: #fff;
-  width: 70px;
-  padding-right: 0;
+  width: 51px;
 }
 
 #currentBalSaveIcon {
