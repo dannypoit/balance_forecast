@@ -21,15 +21,19 @@ html {
 body {
   font-family: "Mulish", sans-serif;
   font-weight: 400;
-  color: #555555;
+  color: #555;
 }
 
 .navbar-brand {
   font-size: 2em;
 }
 
+.navbar-light .navbar-brand:hover {
+  color: #4dc1a6;
+}
+
 .navbar-light .navbar-brand {
-  color: #555555;
+  color: #555;
 }
 
 a {
@@ -42,21 +46,31 @@ a:hover {
 }
 
 a#dropdownMenuButton {
-  color: #02a781;
+  color: #555;
 }
 
 a#dropdownMenuButton:hover {
   color: #4dc1a6;
 }
 
+.dropdown-item {
+  color: #555;
+}
+
+.dropdown-item:hover {
+  color: #000;
+  background-color: #ccede5;
+}
+
 .btn-period {
-  color: #02a781;
-  border-color: #4dc1a6;
+  color: #bbb;
+  border-color: #bbb;
 }
 
 .btn-period:hover {
   color: #fff;
   background-color: #4dc1a6;
+  border-color: #fff;
 }
 
 table {
@@ -75,14 +89,14 @@ table {
 
 .table-bordered {
   border-style: none;
-  color: #555555;
+  color: #555;
 }
 
 th.current-balance-label-cell {
   border-top-style: hidden;
   border-left-style: hidden;
   border-right-style: hidden;
-  color: #555555;
+  color: #555;
 }
 
 th#currentBalanceCell {
@@ -213,13 +227,13 @@ select {
 select#user_time_zone_id {
   width: 100%;
   padding: 10px;
-  color: #555555;
+  color: #555;
 }
 
 .entry-row {
   font-family: "Inter", sans-serif;
   font-weight: 300;
-  color: #555555;
+  color: #555;
 }
 
 .footer {
@@ -256,14 +270,14 @@ select#user_time_zone_id {
   margin-bottom: 10px;
   // border-bottom-right-radius: 0;
   // border-bottom-left-radius: 0;
-  color: #555555;
+  color: #555;
 }
 
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   // border-top-left-radius: 0;
   // border-top-right-radius: 0;
-  color: #555555;
+  color: #555;
 }
 
 .btn-blu {
@@ -312,7 +326,7 @@ select#user_time_zone_id {
 }
 
 .fa-save {
-  color: #555555;
+  color: #555;
 }
 
 .fa-save:hover {
