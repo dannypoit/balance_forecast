@@ -13,10 +13,10 @@ html {
 }
 
 // this needs to be applied to all pages for vertical centering to work except root, because it breaks the sticky footer
-// html,
-// body {
-//   height: 100%;
-// }
+html,
+body {
+  height: 100%;
+}
 
 body {
   font-family: "Mulish", sans-serif;
