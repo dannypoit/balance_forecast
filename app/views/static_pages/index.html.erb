@@ -1,6 +1,6 @@
 <body>
   <header>
-    <div class="container header-footer">
+    <div class="container-lg">
       <nav class="navbar navbar-light p-0">
         <%= link_to 'Balance Forecast', root_path, class: 'navbar-brand' %>
           <div class="dropdown d-inline align-middle">
@@ -17,7 +17,7 @@
   </header>
 
   <main role="main"> 
-    <div class="container py-3">
+    <div class="container-lg py-3">
       <% if notice.present? %>
         <div class="alert alert-info" role="alert">
           <%= notice %>
@@ -120,7 +120,7 @@
   </main>
 
   <footer class="footer py-3">
-    <div class="container header-footer small">
+    <div class="container-lg small">
       <%= link_to 'Privacy Policy', privacy_path %>
       <%= link_to 'Terms of Use', terms_path, class: 'ml-2 ml-sm-3' %>
 
