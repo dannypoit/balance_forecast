@@ -150,49 +150,79 @@ $(document).on('turbolinks:load', function () {
     const entryRow = `
       <tr class="entry-row ${entryColorClass}">
         <td class="date-col">
-          <span ${entryIsEarliestClass} data-date data-id="${
-      entry.id
-    }">${entryDateSlashes}</span><i data-id="${
-      entry.id
-    }" id="dateSaveIcon" class="fas fa-save m-2 d-none"></i>
+          <span 
+            ${entryIsEarliestClass} 
+            data-date 
+            data-id="${entry.id}">
+            ${entryDateSlashes}
+          </span>
+          <i 
+            data-id="${entry.id}" 
+            id="dateSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
         </td>
         <td>
-          <span ${entryIsEarliestClass} data-description data-id="${
-      entry.id
-    }">${entry.description}</span><i data-id="${
-      entry.id
-    }" id="descSaveIcon" class="fas fa-save m-2 d-none">
+          <span 
+            ${entryIsEarliestClass} 
+            data-description 
+            data-id="${entry.id}">
+            ${entry.description}
+          </span>
+          <i 
+            data-id="${entry.id}" 
+            id="descSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
         </td>
         <td>
-        <span ${entryIsEarliestClass} data-frequency data-id="${entry.id}">${
-      entry.frequency
-    }</span><i data-id="${
-      entry.id
-    }" id="freqSaveIcon" class="fas fa-save m-2 d-none">
-    </td>
-        <td><span ${entryIsEarliestClass} data-amount data-id="${
-      entry.id
-    }" data-amount-date="${entry.date}" data-amount-desc="${
-      entry.description
-    }" data-amount-freq="${entry.frequency}">${formatter.format(
-      entryAmount
-    )}</span><i data-id="${
-      entry.id
-    }" id="amtSaveIcon" class="fas fa-save m-2 d-none"></td>
+          <span 
+            ${entryIsEarliestClass} 
+            data-frequency 
+            data-id="${entry.id}">
+            ${entry.frequency}
+          </span>
+          <i 
+            data-id="${entry.id}" 
+            id="freqSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
+        </td>
+        <td>
+          <span 
+            ${entryIsEarliestClass} 
+            data-amount 
+            data-id="${entry.id}" 
+            data-amount-date="${entry.date}" 
+            data-amount-desc="${entry.description}" 
+            data-amount-freq="${entry.frequency}">
+            ${formatter.format(entryAmount)}
+          </span>
+          <i 
+            data-id="${entry.id}" 
+            id="amtSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
+        </td>
         <td>
           ${formatter.format(newBalance)}
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
-          <i class="fas fa-check" data-id="${entry.id}" 
+          <i 
+            class="fas fa-check" 
+            data-id="${entry.id}" 
             data-user-id="${entry.user_id}" 
-            data-amount-to-clear="${entry.amount}" title="Clear entry">
+            data-amount-to-clear="${entry.amount}" 
+            title="Clear entry">
           </i>
-          <i class="far fa-trash-alt ml-2 mr-0" data-id="${
-            entry.id
-          }" title="Delete entry">
+          <i 
+            class="far fa-trash-alt ml-2 mr-0" 
+            data-id="${entry.id}" 
+            title="Delete entry">
           </i>
         </td>
-      </tr>`;
+      </tr>
+    `;
     return entryRow;
   }
 
@@ -349,6 +379,7 @@ $(document).on('turbolinks:load', function () {
         </select>
       `).val($freqCell.text());
       $freqCell.replaceWith($select);
+      debugger;
       const $saveIcon = $(`#freqSaveIcon[data-id="${entryId}"]`)
         .first()
         .first();
