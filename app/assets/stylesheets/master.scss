@@ -3,30 +3,25 @@
 @import "font-awesome";
 @import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400&family=Work+Sans:wght@400&family=Inter:wght@300&display=swap");
 
-* {
-  border: 1px solid lightgray;
-}
+// * {
+//   border: 1px solid lightgray;
+// }
 
 html {
   position: relative;
   min-height: 100%;
 }
 
-html,
-body {
-  height: 100%;
-}
+// this needs to be applied to all pages for vertical centering to work except root, because it breaks the sticky footer
+// html,
+// body {
+//   height: 100%;
+// }
 
 body {
   font-family: "Mulish", sans-serif;
   font-weight: 400;
   color: #555555;
-}
-
-.header-footer {
-  max-width: 1400px;
-  padding-left: 115px;
-  padding-right: 135px;
 }
 
 .navbar-brand {
@@ -64,9 +59,8 @@ a#dropdownMenuButton:hover {
   background-color: #4dc1a6;
 }
 
-.ledger {
-  max-width: 1400px;
-  padding-left: 115px;
+.alert {
+  display: inline-block;
 }
 
 table {
@@ -169,6 +163,8 @@ th.top-row-cells {
 
 td.entry-actions-cell {
   background-color: #fff;
+  width: 70px;
+  padding-right: 0;
 }
 
 #currentBalSaveIcon {
