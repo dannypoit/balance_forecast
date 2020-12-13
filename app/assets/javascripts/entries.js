@@ -183,13 +183,13 @@ $(document).on('turbolinks:load', function () {
           ${formatter.format(newBalance)}
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
-          <i class="fas fa-check" 
-            data-id="${entry.id}" 
+          <i class="fas fa-check" data-id="${entry.id}" 
             data-user-id="${entry.user_id}" 
-            data-amount-to-clear="${entry.amount}">
+            data-amount-to-clear="${entry.amount}" title="Clear entry">
           </i>
-          <i class="far fa-trash-alt ml-2 mr-0" 
-            data-id="${entry.id}">
+          <i class="far fa-trash-alt ml-2 mr-0" data-id="${
+            entry.id
+          }" title="Delete entry">
           </i>
         </td>
       </tr>`;
@@ -720,4 +720,8 @@ $(document).on('turbolinks:load', function () {
       $('.close').click();
     }, 500);
   }, 4000);
+
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 });
