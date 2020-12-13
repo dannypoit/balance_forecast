@@ -713,4 +713,11 @@ $(document).on('turbolinks:load', function () {
   loadMore60.addEventListener('click', function () {
     changeTimePeriod(60);
   });
+
+  window.setTimeout(function () {
+    $('.alert').fadeTo(500, 0);
+    this.setTimeout(function () {
+      $('.close').click();
+    }, 500);
+  }, 4000);
 });
