@@ -62,6 +62,11 @@ a#dropdownMenuButton:hover {
   background-color: #ccede5;
 }
 
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #02a781;
+}
+
 .form-control .selectpicker {
   height: 30px;
 }
@@ -223,9 +228,24 @@ td.entry-actions-cell {
 
 input,
 select {
-  border: 1px solid #dee2e6;
-  border-radius: 0.2rem;
+  // border: 1px solid #dee2e6;
   // width: 100%;
+  border-radius: 0.2rem;
+}
+
+.form-signin input[type="email"] {
+  background-color: #f6f6f6;
+  border-style: none;
+}
+
+.form-signin input[type="password"] {
+  background-color: #f6f6f6;
+  border-style: none;
+}
+
+.form-signin input[type="checkbox"] {
+  background-color: #f6f6f6;
+  border-style: none;
 }
 
 select#user_time_zone_id {
