@@ -81,7 +81,7 @@ $(document).on('turbolinks:load', function () {
 
   // convert JavaScript date to string in YYYY-MM-DD format
   const convertDateJsToStrDashes = function (jsDate) {
-    var d = new Date(jsDate),
+    let d = new Date(jsDate),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
@@ -94,7 +94,7 @@ $(document).on('turbolinks:load', function () {
 
   // convert JavaScript date to string in MM/DD/YYYY format
   const convertDateJsToStrSlashes = function (jsDate) {
-    var d = new Date(jsDate),
+    let d = new Date(jsDate),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
@@ -147,52 +147,77 @@ $(document).on('turbolinks:load', function () {
     });
 
     // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
+    // note: do NOT leave space or line breaks between span tags
     const entryRow = `
-      <tr class="entryRow ${entryColorClass}">
-        <td>
-          <span ${entryIsEarliestClass} data-date data-id="${
-      entry.id
-    }">${entryDateSlashes}</span><i data-id="${
-      entry.id
-    }" id="dateSaveIcon" class="fas fa-save m-2 d-none"></i>
+      <tr class="entry-row ${entryColorClass}">
+        <td class="date-col">
+          <span 
+            ${entryIsEarliestClass} 
+            data-date 
+            data-id="${entry.id}">${entryDateSlashes}</span>
+          <i 
+            data-id="${entry.id}" 
+            id="dateSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
         </td>
         <td>
-          <span ${entryIsEarliestClass} data-description data-id="${
-      entry.id
-    }">${entry.description}</span><i data-id="${
-      entry.id
-    }" id="descSaveIcon" class="fas fa-save m-2 d-none">
+          <span 
+            ${entryIsEarliestClass} 
+            data-description 
+            data-id="${entry.id}">${entry.description}</span>
+          <i 
+            data-id="${entry.id}" 
+            id="descSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
         </td>
         <td>
-        <span ${entryIsEarliestClass} data-frequency data-id="${entry.id}">${
-      entry.frequency
-    }</span><i data-id="${
-      entry.id
-    }" id="freqSaveIcon" class="fas fa-save m-2 d-none">
-    </td>
-        <td><span ${entryIsEarliestClass} data-amount data-id="${
-      entry.id
-    }" data-amount-date="${entry.date}" data-amount-desc="${
-      entry.description
-    }" data-amount-freq="${entry.frequency}">${formatter.format(
+          <span 
+            ${entryIsEarliestClass} 
+            data-frequency 
+            data-id="${entry.id}">${entry.frequency}</span>
+          <i 
+            data-id="${entry.id}" 
+            id="freqSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
+        </td>
+        <td>
+          <span 
+            ${entryIsEarliestClass} 
+            data-amount 
+            data-id="${entry.id}" 
+            data-amount-date="${entry.date}" 
+            data-amount-desc="${entry.description}" 
+            data-amount-freq="${entry.frequency}">${formatter.format(
       entryAmount
-    )}</span><i data-id="${
-      entry.id
-    }" id="amtSaveIcon" class="fas fa-save m-2 d-none"></td>
+    )}</span>
+          <i 
+            data-id="${entry.id}" 
+            id="amtSaveIcon" 
+            class="fas fa-save m-2 d-none">
+          </i>
+        </td>
         <td>
           ${formatter.format(newBalance)}
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
-          <i class="fas fa-check" 
+          <i 
+            class="fas fa-check" 
             data-id="${entry.id}" 
             data-user-id="${entry.user_id}" 
-            data-amount-to-clear="${entry.amount}">
+            data-amount-to-clear="${entry.amount}" 
+            title="Clear entry">
           </i>
-          <i class="far fa-trash-alt ml-2" 
-            data-id="${entry.id}">
+          <i 
+            class="far fa-trash-alt ml-2 mr-0" 
+            data-id="${entry.id}" 
+            title="Delete entry">
           </i>
         </td>
-      </tr>`;
+      </tr>
+    `;
     return entryRow;
   }
 
@@ -209,7 +234,7 @@ $(document).on('turbolinks:load', function () {
     };
 
     // add each entry row to allEntryRows variable
-    $.each(data, function (index, entry) {
+    $.each(data, function (_, entry) {
       allEntryRows += createEntryRow(entry);
     });
 
@@ -217,7 +242,7 @@ $(document).on('turbolinks:load', function () {
     $entriesTable.html(allEntryRows);
 
     // update date
-    $('.entryRow').on('click', '[data-date]', function (e) {
+    $('.entry-row').on('click', '[data-date]', function (e) {
       const entryId = $(e.target).data('id');
       const $dateCell = $(
         'span.earliest[data-date][data-id="' + entryId + '"]'
@@ -280,7 +305,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update description
-    $('.entryRow').on('click', '[data-description]', function (e) {
+    $('.entry-row').on('click', '[data-description]', function (e) {
       const entryId = $(e.target).data('id');
       const $descCell = $(
         'span.earliest[data-description][data-id="' + entryId + '"]'
@@ -332,7 +357,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update frequency
-    $('.entryRow').on('click', '[data-frequency]', function (e) {
+    $('.entry-row').on('click', '[data-frequency]', function (e) {
       const entryId = $(e.target).data('id');
       const $freqCell = $(
         'span.earliest[data-frequency][data-id="' + entryId + '"]'
@@ -393,7 +418,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update amount
-    $('.entryRow').on('click', '[data-amount]', function (e) {
+    $('.entry-row').on('click', '[data-amount]', function (e) {
       const entryId = $(e.target).data('id');
       const entryDate = $(e.target).data('amount-date');
       const entryDesc = $(e.target).data('amount-desc');
@@ -712,5 +737,16 @@ $(document).on('turbolinks:load', function () {
   });
   loadMore60.addEventListener('click', function () {
     changeTimePeriod(60);
+  });
+
+  window.setTimeout(function () {
+    $('.alert').fadeTo(500, 0);
+    this.setTimeout(function () {
+      $('.close').click();
+    }, 500);
+  }, 4000);
+
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
   });
 });

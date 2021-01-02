@@ -1,17 +1,10 @@
 @import "bootstrap";
 @import "bootstrap-select";
 @import "font-awesome";
+@import url("https://fonts.googleapis.com/css2?family=Mulish:wght@400&family=Work+Sans:wght@400&family=Inter:wght@300&display=swap");
 
 // * {
 //   border: 1px solid lightgray;
-// }
-
-// body {
-//   background-color: #edf8f5;
-// }
-
-// table {
-//   background-color: #fff;
 // }
 
 html {
@@ -19,10 +12,253 @@ html {
   min-height: 100%;
 }
 
+// this needs to be applied to all pages for vertical centering to work except root, because it breaks the sticky footer
 // html,
 // body {
 //   height: 100%;
 // }
+
+body {
+  font-family: "Mulish", sans-serif;
+  font-weight: 400;
+  color: #555;
+}
+
+.navbar-brand {
+  font-size: 2em;
+}
+
+.navbar-light .navbar-brand:hover {
+  color: #4dc1a6;
+}
+
+.navbar-light .navbar-brand {
+  color: #555;
+}
+
+a {
+  color: #555;
+}
+
+a:hover {
+  color: #4dc1a6;
+  text-decoration: none;
+}
+
+a#dropdownMenuButton {
+  color: #555;
+}
+
+a#dropdownMenuButton:hover {
+  color: #4dc1a6;
+}
+
+.dropdown-item {
+  color: #555;
+}
+
+.dropdown-item:hover {
+  color: #000;
+  background-color: #ccede5;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: #02a781;
+}
+
+.form-control .selectpicker {
+  height: 30px;
+}
+
+.btn-period {
+  color: #bbb;
+  border-color: #bbb;
+}
+
+.btn-period:hover {
+  color: #fff;
+  background-color: #4dc1a6;
+  border-color: #fff;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-bordered tr th,
+.table-bordered tr td {
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-top-style: hidden;
+  border-left-style: hidden;
+  padding: 0.75rem;
+}
+
+.table-bordered {
+  border-style: none;
+  color: #555;
+}
+
+th.current-balance-label-cell {
+  border-top-style: hidden;
+  border-left-style: hidden;
+  border-right-style: hidden;
+  color: #555;
+}
+
+th#currentBalanceCell {
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
+}
+
+th input {
+  // font-size: 1rem;
+  // width: 90px;
+  width: 120px;
+}
+
+th.top-row-cells {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+}
+
+.table-bordered thead th.top-row-cells,
+.table-bordered thead th.current-balance-label-cell {
+  border-bottom-width: 0;
+  border-right-width: 0;
+}
+
+.table-bordered thead th#currentBalanceCell {
+  border-bottom-width: 0;
+  border-left: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
+}
+
+.table-bordered thead tr.header-row th {
+  border-bottom-width: 1px;
+  border-top: 1px solid #dee2e6;
+}
+
+.table-bordered thead tr.header-row th:first-child {
+  border-left: 1px solid #dee2e6;
+}
+
+.table-striped tbody tr.new-entry-row {
+  background-color: #fff;
+}
+
+.table-bordered tr.new-entry-row td:first-child {
+  border-left-width: 1px;
+}
+
+.table-bordered tr td.date-col {
+  border-left: 1px solid #dee2e6;
+}
+
+.header-row {
+  background-color: #f2f2f2;
+  font-size: 0.9rem;
+}
+
+.table-bordered thead tr.header-row th:first-child {
+  border-top-left-radius: 0.4rem;
+}
+
+.table-bordered tbody.entries-table tr:last-child td:first-child {
+  border-bottom-left-radius: 0.4rem;
+}
+
+.table-bordered tbody.entries-table tr:last-child td:nth-last-child(2) {
+  border-bottom-right-radius: 0.4rem;
+}
+
+.table-bordered tr td.entry-actions-cell {
+  border-right-style: hidden;
+  border-bottom-style: hidden;
+  padding-right: 0;
+}
+
+td.entry-actions-cell {
+  background-color: #fff;
+  width: 51px;
+}
+
+#currentBalSaveIcon {
+  font-size: 1rem;
+}
+
+.date-col {
+  width: 180px;
+}
+
+.short-col {
+  width: 150px;
+}
+
+#entry_date {
+  width: 100%;
+  height: 30px;
+}
+
+#entry_description {
+  width: 100%;
+  height: 30px;
+}
+
+// this one can maybe be replaced with a bootstrap dropdown
+#entry_frequency {
+  width: 100%;
+  height: 30px;
+}
+
+#entry_amount {
+  width: 100%;
+  height: 30px;
+}
+
+#add-btn {
+  width: 100%;
+  // this is set to 31px because at 30px the Description input pulls the bottom border up so it is off by 1px -- so this is a temporary fix until I find a better solution
+  height: 31px;
+  padding: 0;
+}
+
+input,
+select {
+  // border: 1px solid #dee2e6;
+  // width: 100%;
+  border-radius: 0.2rem;
+}
+
+.form-signin input[type="email"] {
+  background-color: #f6f6f6;
+  border-style: none;
+}
+
+.form-signin input[type="password"] {
+  background-color: #f6f6f6;
+  border-style: none;
+}
+
+.form-signin input[type="checkbox"] {
+  background-color: #f6f6f6;
+  border-style: none;
+}
+
+select#user_time_zone_id {
+  width: 100%;
+  padding: 10px;
+  color: #555;
+}
+
+.entry-row {
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  color: #555;
+}
 
 .footer {
   position: absolute;
@@ -37,6 +273,10 @@ html {
   margin: auto;
 }
 
+.form-control {
+  padding: 0.2rem 0.4rem;
+}
+
 .form-signin .checkbox {
   font-weight: 400;
 }
@@ -46,7 +286,8 @@ html {
   box-sizing: border-box;
   height: auto;
   padding: 10px;
-  font-size: 16px;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 .form-signin .form-control:focus {
@@ -54,45 +295,41 @@ html {
 }
 
 .form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  margin-bottom: 10px;
+  // border-bottom-right-radius: 0;
+  // border-bottom-left-radius: 0;
+  color: #555;
 }
 
 .form-signin input[type="password"] {
   margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  // border-top-left-radius: 0;
+  // border-top-right-radius: 0;
+  color: #555;
 }
 
-td.entry-actions-cell {
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-bottom-style: hidden;
-  background-color: #fff; // this needs to be transparent
+.btn-blu {
+  background-color: #027ba7;
+  border-color: #027ba7;
+  color: #fff;
 }
 
-th.top-row-cells {
-  border-top-style: hidden;
-  border-right-style: hidden;
-  border-left-style: hidden;
+.btn-blu:hover {
+  color: #fff;
+  background-color: #3495b8;
+  border-color: #3495b8;
 }
 
-th.current-balance-label-cell {
-  border-top-style: hidden;
-  border-left-style: hidden;
+.btn-gree {
+  background-color: #02a781;
+  border-color: #02a781;
+  color: #fff;
 }
 
-.header-row {
-  background-color: #f2f2f2;
-}
-
-.table-striped tbody tr.new-entry-row {
-  background-color: #fff;
-}
-
-th input {
-  width: 120px;
+.btn-gree:hover {
+  color: #fff;
+  background-color: #4dc1a6;
+  border-color: #4dc1a6;
 }
 
 .past-date {
@@ -100,30 +337,31 @@ th input {
 }
 
 .credit {
-  color: #33aa33;
+  color: #02a781;
 }
 
 .in-the-red {
-  color: #cc0000;
-}
-
-.navbar-brand {
-  font-size: 2em;
+  color: #a70228;
 }
 
 .fa-check:hover {
-  color: #00ff00;
+  color: #99dbcc;
 }
 
 .fa-trash-alt:hover {
-  color: #ff3333;
+  color: #ca677e;
   font-weight: bold;
 }
 
-.copyright {
-  padding-right: 71px;
+.fa-save {
+  color: #555;
+  font-size: 1rem;
 }
 
 .fa-save:hover {
-  color: #00ff00;
+  color: #99dbcc;
+}
+
+.copyright {
+  color: #bbb;
 }
