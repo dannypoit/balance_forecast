@@ -81,7 +81,7 @@ $(document).on('turbolinks:load', function () {
 
   // convert JavaScript date to string in YYYY-MM-DD format
   const convertDateJsToStrDashes = function (jsDate) {
-    var d = new Date(jsDate),
+    let d = new Date(jsDate),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
@@ -94,7 +94,7 @@ $(document).on('turbolinks:load', function () {
 
   // convert JavaScript date to string in MM/DD/YYYY format
   const convertDateJsToStrSlashes = function (jsDate) {
-    var d = new Date(jsDate),
+    let d = new Date(jsDate),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
@@ -147,15 +147,14 @@ $(document).on('turbolinks:load', function () {
     });
 
     // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
+    // note: do NOT leave space or line breaks between span tags
     const entryRow = `
       <tr class="entry-row ${entryColorClass}">
         <td class="date-col">
           <span 
             ${entryIsEarliestClass} 
             data-date 
-            data-id="${entry.id}">
-            ${entryDateSlashes}
-          </span>
+            data-id="${entry.id}">${entryDateSlashes}</span>
           <i 
             data-id="${entry.id}" 
             id="dateSaveIcon" 
@@ -166,9 +165,7 @@ $(document).on('turbolinks:load', function () {
           <span 
             ${entryIsEarliestClass} 
             data-description 
-            data-id="${entry.id}">
-            ${entry.description}
-          </span>
+            data-id="${entry.id}">${entry.description}</span>
           <i 
             data-id="${entry.id}" 
             id="descSaveIcon" 
@@ -179,9 +176,7 @@ $(document).on('turbolinks:load', function () {
           <span 
             ${entryIsEarliestClass} 
             data-frequency 
-            data-id="${entry.id}">
-            ${entry.frequency}
-          </span>
+            data-id="${entry.id}">${entry.frequency}</span>
           <i 
             data-id="${entry.id}" 
             id="freqSaveIcon" 
@@ -195,9 +190,9 @@ $(document).on('turbolinks:load', function () {
             data-id="${entry.id}" 
             data-amount-date="${entry.date}" 
             data-amount-desc="${entry.description}" 
-            data-amount-freq="${entry.frequency}">
-            ${formatter.format(entryAmount)}
-          </span>
+            data-amount-freq="${entry.frequency}">${formatter.format(
+      entryAmount
+    )}</span>
           <i 
             data-id="${entry.id}" 
             id="amtSaveIcon" 
@@ -379,7 +374,6 @@ $(document).on('turbolinks:load', function () {
         </select>
       `).val($freqCell.text());
       $freqCell.replaceWith($select);
-      debugger;
       const $saveIcon = $(`#freqSaveIcon[data-id="${entryId}"]`)
         .first()
         .first();
