@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "vcenter" %>
+<% end %>
+
 <body style="display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-top: 40px; padding-bottom: 40px;" class="text-center">
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: "form-signin"}) do |f| %>
