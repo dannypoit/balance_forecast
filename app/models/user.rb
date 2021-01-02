@@ -7,5 +7,5 @@ class User < ApplicationRecord
   validates_presence_of :current_balance
 
   has_many :entries
-  # has_one :time_zone
+  has_one :time_zone
 end
