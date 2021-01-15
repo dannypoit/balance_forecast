@@ -1,11 +1,14 @@
 'use strict';
 
 document.addEventListener('turbolinks:load', function () {
-  // const userId = $('#currentBalance').data('user-id');
+  // get user ID from data attribute on current balance - used in AJAX requests
+  // note: this should maybe be gotten from current_user instead
   const userId = document.querySelector('#currentBalance').dataset.userId;
 
+  // get current balance and parse as float - used in calculating new entry rows
   const currentBalance = document.getElementById('currentBalance').innerText;
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+
   const $saveIcon = $('#currentBalSaveIcon');
 
   // get time zone offset for user from data attribute on currentBalance and store in const
