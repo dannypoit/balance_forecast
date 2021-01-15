@@ -1,6 +1,8 @@
 'use strict';
 
-const buildTimeZoneOffsetStr = function (timeZoneOffsetStr, timeZoneOffset) {
+const buildTimeZoneOffsetStr = function (timeZoneOffset) {
+  let timeZoneOffsetStr = String(timeZoneOffset);
+
   if (timeZoneOffset > -10 && timeZoneOffset < 0) {
     timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
       '-',
@@ -15,6 +17,8 @@ const buildTimeZoneOffsetStr = function (timeZoneOffsetStr, timeZoneOffset) {
   } else {
     timeZoneOffsetStr = '';
   }
+
+  return timeZoneOffsetStr;
 };
 
 document.addEventListener('turbolinks:load', function () {
@@ -34,26 +38,12 @@ document.addEventListener('turbolinks:load', function () {
     .timeZoneOffset;
 
   // build whole time zone string to add onto date from Rails before converting back to JS date
-  let timeZoneOffsetStr = String(timeZoneOffset);
-
-  buildTimeZoneOffsetStr(timeZoneOffsetStr, timeZoneOffset);
-
-  // if (timeZoneOffset > -10 && timeZoneOffset < 0) {
-  //   timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
-  //     '-',
-  //     '-0'
-  //   )}:00`;
-  // } else if (timeZoneOffset > 0 && timeZoneOffset < 10) {
-  //   timeZoneOffsetStr = `T00:00:00.000+0${timeZoneOffsetStr}:00`;
-  // } else if (timeZoneOffset <= -10) {
-  //   timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr}:00`;
-  // } else if (timeZoneOffset >= 10) {
-  //   timeZoneOffsetStr = `T00:00:00.000+${timeZoneOffsetStr}:00`;
-  // } else {
-  //   timeZoneOffsetStr = '';
-  // }
+  const timeZoneOffsetStr = buildTimeZoneOffsetStr(timeZoneOffset);
 
   // update current balance
+  // document
+  //   .querySelector('#currentBalanceCell')
+  //   .addEventListener('click', function () {
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
     const floatBal = parseFloat(
       currentBalance.replace('$', '').replace(',', '')
