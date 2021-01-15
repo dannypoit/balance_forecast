@@ -1,7 +1,9 @@
 'use strict';
 
-$(document).on('turbolinks:load', function () {
-  const userId = $('#currentBalance').data('user-id');
+document.addEventListener('turbolinks:load', function () {
+  // const userId = $('#currentBalance').data('user-id');
+  const userId = document.querySelector('#currentBalance').dataset.userId;
+
   const currentBalance = document.getElementById('currentBalance').innerText;
   let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
   const $saveIcon = $('#currentBalSaveIcon');
@@ -12,6 +14,7 @@ $(document).on('turbolinks:load', function () {
 
   // build whole time zone string to add onto date from Rails before converting back to JS date
   let timeZoneOffsetStr = String(timeZoneOffset);
+
   if (timeZoneOffset > -10 && timeZoneOffset < 0) {
     timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
       '-',
