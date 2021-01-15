@@ -1,23 +1,6 @@
 'use strict';
 
-document.addEventListener('turbolinks:load', function () {
-  // get user ID from data attribute on current balance - used in AJAX requests
-  // note: this should maybe be gotten from current_user instead
-  const userId = document.querySelector('#currentBalance').dataset.userId;
-
-  // get current balance and parse as float - used in calculating new entry rows
-  const currentBalance = document.getElementById('currentBalance').innerText;
-  let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
-
-  const $saveIcon = $('#currentBalSaveIcon');
-
-  // get time zone offset for user from data attribute on currentBalance and store in const
-  const timeZoneOffset = document.getElementById('currentBalance').dataset
-    .timeZoneOffset;
-
-  // build whole time zone string to add onto date from Rails before converting back to JS date
-  let timeZoneOffsetStr = String(timeZoneOffset);
-
+const buildTimeZoneOffsetStr = function (timeZoneOffsetStr, timeZoneOffset) {
   if (timeZoneOffset > -10 && timeZoneOffset < 0) {
     timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
       '-',
@@ -32,6 +15,43 @@ document.addEventListener('turbolinks:load', function () {
   } else {
     timeZoneOffsetStr = '';
   }
+};
+
+document.addEventListener('turbolinks:load', function () {
+  // get user ID from data attribute on current balance - used in AJAX requests
+  // note: this should maybe be gotten from current_user instead
+  const userId = document.querySelector('#currentBalance').dataset.userId;
+
+  // get current balance and parse as float - used in calculating new entry rows
+  const currentBalance = document.getElementById('currentBalance').innerText;
+  let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+
+  const currentBalSaveIcon = document.querySelector('#currentBalSaveIcon');
+
+  // get time zone offset for user from data attribute on currentBalance and store in const
+  // note: this should maybe be gotten from current_user instead
+  const timeZoneOffset = document.getElementById('currentBalance').dataset
+    .timeZoneOffset;
+
+  // build whole time zone string to add onto date from Rails before converting back to JS date
+  let timeZoneOffsetStr = String(timeZoneOffset);
+
+  buildTimeZoneOffsetStr(timeZoneOffsetStr, timeZoneOffset);
+
+  // if (timeZoneOffset > -10 && timeZoneOffset < 0) {
+  //   timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
+  //     '-',
+  //     '-0'
+  //   )}:00`;
+  // } else if (timeZoneOffset > 0 && timeZoneOffset < 10) {
+  //   timeZoneOffsetStr = `T00:00:00.000+0${timeZoneOffsetStr}:00`;
+  // } else if (timeZoneOffset <= -10) {
+  //   timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr}:00`;
+  // } else if (timeZoneOffset >= 10) {
+  //   timeZoneOffsetStr = `T00:00:00.000+${timeZoneOffsetStr}:00`;
+  // } else {
+  //   timeZoneOffsetStr = '';
+  // }
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
@@ -41,7 +61,7 @@ document.addEventListener('turbolinks:load', function () {
     let $input = $('<input type="number" step=".01"/>').val(floatBal);
     const $currentBalanceCell = $(this);
     $(this).replaceWith($input.select());
-    $saveIcon.toggleClass('d-none');
+    currentBalSaveIcon.style.display = 'block';
 
     const save = function () {
       const enteredBalance = $input.val();
@@ -65,9 +85,9 @@ document.addEventListener('turbolinks:load', function () {
       });
     };
 
-    $saveIcon.on('mousedown', function () {
+    currentBalSaveIcon.onmousedown = function () {
       save();
-    });
+    };
 
     $input
       .keyup(function (event) {
@@ -75,12 +95,12 @@ document.addEventListener('turbolinks:load', function () {
           save();
         } else if (event.keyCode == 27) {
           $(this).replaceWith($currentBalanceCell);
-          $saveIcon.toggleClass('d-none');
+          currentBalSaveIcon.style.display = 'none';
         }
       })
       .on('blur', function () {
         $(this).replaceWith($currentBalanceCell);
-        $saveIcon.toggleClass('d-none');
+        currentBalSaveIcon.style.display = 'none';
       })
       .focus();
   });
