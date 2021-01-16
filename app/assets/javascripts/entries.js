@@ -42,13 +42,17 @@ document.addEventListener('turbolinks:load', function () {
   const timeZoneOffsetStr = buildTimeZoneOffsetStr(timeZoneOffset);
 
   // update current balance
-  // $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
   document
     .querySelector('span#currentBalance')
     .addEventListener('click', function () {
-      let $input = $('<input type="number" step=".01"/>').val(floatBal);
+      // let $input = $('<input type="number" step=".01"/>').val(floatBal);
+      const curBalInput = document.createElement('input');
+      curBalInput.type = 'number';
+      curBalInput.step = '.01';
+      curBalInput.value = floatBal;
+
       const $currentBalanceCell = $(this);
-      $(this).replaceWith($input.select());
+      $(this).replaceWith(curBalInput.select());
       currentBalSaveIcon.style.display = 'block';
 
       const save = function () {
