@@ -28,7 +28,8 @@ document.addEventListener('turbolinks:load', function () {
 
   // get current balance and parse as float - used in calculating new entry rows
   const currentBalance = document.getElementById('currentBalance').innerText;
-  let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+  const floatBal = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+  let newBalance = floatBal;
 
   const currentBalSaveIcon = document.querySelector('#currentBalSaveIcon');
 
@@ -41,59 +42,56 @@ document.addEventListener('turbolinks:load', function () {
   const timeZoneOffsetStr = buildTimeZoneOffsetStr(timeZoneOffset);
 
   // update current balance
-  // document
-  //   .querySelector('#currentBalanceCell')
-  //   .addEventListener('click', function () {
-  $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
-    const floatBal = parseFloat(
-      currentBalance.replace('$', '').replace(',', '')
-    );
-    let $input = $('<input type="number" step=".01"/>').val(floatBal);
-    const $currentBalanceCell = $(this);
-    $(this).replaceWith($input.select());
-    currentBalSaveIcon.style.display = 'block';
+  // $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
+  document
+    .querySelector('span#currentBalance')
+    .addEventListener('click', function () {
+      let $input = $('<input type="number" step=".01"/>').val(floatBal);
+      const $currentBalanceCell = $(this);
+      $(this).replaceWith($input.select());
+      currentBalSaveIcon.style.display = 'block';
 
-    const save = function () {
-      const enteredBalance = $input.val();
-      const $span = $('<span data-current-balance id="currentBalance" />').text(
-        enteredBalance
-      );
-      $input.replaceWith($span);
+      const save = function () {
+        const enteredBalance = $input.val();
+        const $span = $(
+          '<span data-current-balance id="currentBalance" />'
+        ).text(enteredBalance);
+        $input.replaceWith($span);
 
-      const updatedBalance = document.getElementById('currentBalance')
-        .innerHTML;
+        const updatedBalance = document.getElementById('currentBalance')
+          .innerHTML;
 
-      $.post('/users/' + userId, {
-        _method: 'PUT',
-        user: {
-          current_balance: updatedBalance,
-          success: setTimeout(
-            window.location.reload.bind(window.location),
-            200
-          ),
-        },
-      });
-    };
+        $.post('/users/' + userId, {
+          _method: 'PUT',
+          user: {
+            current_balance: updatedBalance,
+            success: setTimeout(
+              window.location.reload.bind(window.location),
+              200
+            ),
+          },
+        });
+      };
 
-    currentBalSaveIcon.onmousedown = function () {
-      save();
-    };
+      currentBalSaveIcon.onmousedown = function () {
+        save();
+      };
 
-    $input
-      .keyup(function (event) {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith($currentBalanceCell);
+            currentBalSaveIcon.style.display = 'none';
+          }
+        })
+        .on('blur', function () {
           $(this).replaceWith($currentBalanceCell);
           currentBalSaveIcon.style.display = 'none';
-        }
-      })
-      .on('blur', function () {
-        $(this).replaceWith($currentBalanceCell);
-        currentBalSaveIcon.style.display = 'none';
-      })
-      .focus();
-  });
+        })
+        .focus();
+    });
 
   // convert JavaScript date to string in YYYY-MM-DD format
   const convertDateJsToStrDashes = function (jsDate) {
