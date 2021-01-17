@@ -41,25 +41,31 @@ document.addEventListener('turbolinks:load', function () {
   // build whole time zone string to add onto date from Rails before converting back to JS date
   const timeZoneOffsetStr = buildTimeZoneOffsetStr(timeZoneOffset);
 
-  // update current balance
+  // when current balance is clicked...
   document
     .querySelector('span#currentBalance')
     .addEventListener('click', function () {
-      // let $input = $('<input type="number" step=".01"/>').val(floatBal);
       const curBalInput = document.createElement('input');
       curBalInput.type = 'number';
       curBalInput.step = '.01';
       curBalInput.value = floatBal;
+      curBalInput.select();
 
-      const $currentBalanceCell = $(this);
-      $(this).replaceWith(curBalInput.select());
+      let $input = $(curBalInput); // REMOVE THIS
+
+      // const $currentBalanceCell = $(this);
+      const curBalCell = this;
+
+      // debugger;
+
+      // $(this).replaceWith($input.select());
+      this.replaceWith(curBalInput);
+
       currentBalSaveIcon.style.display = 'block';
 
       const save = function () {
         const enteredBalance = $input.val();
-        const $span = $(
-          '<span data-current-balance id="currentBalance" />'
-        ).text(enteredBalance);
+        const $span = $('<span id="currentBalance"/>').text(enteredBalance);
         $input.replaceWith($span);
 
         const updatedBalance = document.getElementById('currentBalance')
@@ -86,12 +92,12 @@ document.addEventListener('turbolinks:load', function () {
           if (event.keyCode == 13) {
             save();
           } else if (event.keyCode == 27) {
-            $(this).replaceWith($currentBalanceCell);
+            $(this).replaceWith(curBalCell);
             currentBalSaveIcon.style.display = 'none';
           }
         })
         .on('blur', function () {
-          $(this).replaceWith($currentBalanceCell);
+          $(this).replaceWith(curBalCell);
           currentBalSaveIcon.style.display = 'none';
         })
         .focus();
