@@ -56,20 +56,20 @@ document.addEventListener('turbolinks:load', function () {
       // const $currentBalanceCell = $(this);
       const curBalCell = this;
 
-      // debugger;
-
       // $(this).replaceWith($input.select());
       this.replaceWith(curBalInput);
 
       curBalSaveIcon.style.display = 'block';
 
       const save = function () {
-        const enteredBalance = $input.val();
-        const $span = $('<span id="currentBalance"/>').text(enteredBalance);
-        $input.replaceWith($span);
+        // const enteredBalance = $input.val();
+        const updatedBalance = curBalInput.value;
 
-        const updatedBalance = document.getElementById('currentBalance')
-          .innerHTML;
+        // const $span = $('<span id="currentBalance"/>').text(enteredBal);
+        // $input.replaceWith($span);
+
+        // const updatedBalance = document.getElementById('currentBalance')
+        //   .innerHTML;
 
         $.post('/users/' + userId, {
           _method: 'PUT',
