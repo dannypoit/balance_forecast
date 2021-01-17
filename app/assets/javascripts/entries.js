@@ -31,7 +31,7 @@ document.addEventListener('turbolinks:load', function () {
   const floatBal = parseFloat(currentBalance.replace('$', '').replace(',', ''));
   let newBalance = floatBal;
 
-  const currentBalSaveIcon = document.querySelector('#currentBalSaveIcon');
+  const curBalSaveIcon = document.querySelector('#currentBalSaveIcon');
 
   // get time zone offset for user from data attribute on currentBalance and store in const
   // note: this should maybe be gotten from current_user instead
@@ -61,7 +61,7 @@ document.addEventListener('turbolinks:load', function () {
       // $(this).replaceWith($input.select());
       this.replaceWith(curBalInput);
 
-      currentBalSaveIcon.style.display = 'block';
+      curBalSaveIcon.style.display = 'block';
 
       const save = function () {
         const enteredBalance = $input.val();
@@ -83,7 +83,7 @@ document.addEventListener('turbolinks:load', function () {
         });
       };
 
-      currentBalSaveIcon.onmousedown = function () {
+      curBalSaveIcon.onmousedown = function () {
         save();
       };
 
@@ -93,12 +93,12 @@ document.addEventListener('turbolinks:load', function () {
             save();
           } else if (event.keyCode == 27) {
             $(this).replaceWith(curBalCell);
-            currentBalSaveIcon.style.display = 'none';
+            curBalSaveIcon.style.display = 'none';
           }
         })
         .on('blur', function () {
           $(this).replaceWith(curBalCell);
-          currentBalSaveIcon.style.display = 'none';
+          curBalSaveIcon.style.display = 'none';
         })
         .focus();
     });
