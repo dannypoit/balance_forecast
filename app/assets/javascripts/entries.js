@@ -1,17 +1,8 @@
 'use strict';
 
-$(document).on('turbolinks:load', function () {
-  const userId = $('#currentBalance').data('user-id');
-  const currentBalance = document.getElementById('currentBalance').innerText;
-  let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
-  const $saveIcon = $('#currentBalSaveIcon');
-
-  // get time zone offset for user from data attribute on currentBalance and store in const
-  const timeZoneOffset = document.getElementById('currentBalance').dataset
-    .timeZoneOffset;
-
-  // build whole time zone string to add onto date from Rails before converting back to JS date
+const buildTimeZoneOffsetStr = function (timeZoneOffset) {
   let timeZoneOffsetStr = String(timeZoneOffset);
+
   if (timeZoneOffset > -10 && timeZoneOffset < 0) {
     timeZoneOffsetStr = `T00:00:00.000${timeZoneOffsetStr.replace(
       '-',
@@ -27,57 +18,90 @@ $(document).on('turbolinks:load', function () {
     timeZoneOffsetStr = '';
   }
 
-  // update current balance
-  $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
-    const floatBal = parseFloat(
-      currentBalance.replace('$', '').replace(',', '')
-    );
-    let $input = $('<input type="number" step=".01"/>').val(floatBal);
-    const $currentBalanceCell = $(this);
-    $(this).replaceWith($input.select());
-    $saveIcon.toggleClass('d-none');
+  return timeZoneOffsetStr;
+};
 
-    const save = function () {
-      const enteredBalance = $input.val();
-      const $span = $('<span data-current-balance id="currentBalance" />').text(
-        enteredBalance
-      );
-      $input.replaceWith($span);
+document.addEventListener('turbolinks:load', function () {
+  // get user ID from data attribute on current balance - used in AJAX requests
+  // note: this should maybe be gotten from current_user instead
+  const userId = document.querySelector('#currentBalance').dataset.userId;
 
-      const updatedBalance = document.getElementById('currentBalance')
-        .innerHTML;
+  // get current balance and parse as float - used in calculating new entry rows
+  const currentBalance = document.getElementById('currentBalance').innerText;
+  const floatBal = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+  let newBalance = floatBal;
 
-      $.post('/users/' + userId, {
-        _method: 'PUT',
-        user: {
-          current_balance: updatedBalance,
-          success: setTimeout(
-            window.location.reload.bind(window.location),
-            200
-          ),
-        },
-      });
-    };
+  const curBalSaveIcon = document.querySelector('#currentBalSaveIcon');
 
-    $saveIcon.on('mousedown', function () {
-      save();
+  // get time zone offset for user from data attribute on currentBalance and store in const
+  // note: this should maybe be gotten from current_user instead
+  const timeZoneOffset = document.getElementById('currentBalance').dataset
+    .timeZoneOffset;
+
+  // build whole time zone string to add onto date from Rails before converting back to JS date
+  const timeZoneOffsetStr = buildTimeZoneOffsetStr(timeZoneOffset);
+
+  // when current balance is clicked...
+  document
+    .querySelector('span#currentBalance')
+    .addEventListener('click', function () {
+      const curBalInput = document.createElement('input');
+      curBalInput.type = 'number';
+      curBalInput.step = '.01';
+      curBalInput.value = floatBal;
+      curBalInput.select();
+
+      let $input = $(curBalInput); // REMOVE THIS
+
+      // const $currentBalanceCell = $(this);
+      const curBalCell = this;
+
+      // $(this).replaceWith($input.select());
+      this.replaceWith(curBalInput);
+
+      curBalSaveIcon.style.display = 'block';
+
+      const save = function () {
+        // const enteredBalance = $input.val();
+        const updatedBalance = curBalInput.value;
+
+        // const $span = $('<span id="currentBalance"/>').text(enteredBal);
+        // $input.replaceWith($span);
+
+        // const updatedBalance = document.getElementById('currentBalance')
+        //   .innerHTML;
+
+        $.post('/users/' + userId, {
+          _method: 'PUT',
+          user: {
+            current_balance: updatedBalance,
+            success: setTimeout(
+              window.location.reload.bind(window.location),
+              200
+            ),
+          },
+        });
+      };
+
+      curBalSaveIcon.onmousedown = function () {
+        save();
+      };
+
+      $input
+        .keyup(function (event) {
+          if (event.keyCode == 13) {
+            save();
+          } else if (event.keyCode == 27) {
+            $(this).replaceWith(curBalCell);
+            curBalSaveIcon.style.display = 'none';
+          }
+        })
+        .on('blur', function () {
+          $(this).replaceWith(curBalCell);
+          curBalSaveIcon.style.display = 'none';
+        })
+        .focus();
     });
-
-    $input
-      .keyup(function (event) {
-        if (event.keyCode == 13) {
-          save();
-        } else if (event.keyCode == 27) {
-          $(this).replaceWith($currentBalanceCell);
-          $saveIcon.toggleClass('d-none');
-        }
-      })
-      .on('blur', function () {
-        $(this).replaceWith($currentBalanceCell);
-        $saveIcon.toggleClass('d-none');
-      })
-      .focus();
-  });
 
   // convert JavaScript date to string in YYYY-MM-DD format
   const convertDateJsToStrDashes = function (jsDate) {
