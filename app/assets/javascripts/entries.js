@@ -3,7 +3,9 @@
 $(document).on('turbolinks:load', function () {
   const userId = $('#currentBalance').data('user-id');
   const currentBalance = document.getElementById('currentBalance').innerText;
-  let newBalance = parseFloat(currentBalance.replace('$', '').replace(',', ''));
+  let newBalance = Number.parseFloat(
+    currentBalance.replace('$', '').replace(',', '')
+  );
   const $saveIcon = $('#currentBalSaveIcon');
 
   // get time zone offset for user from data attribute on currentBalance and store in const
@@ -29,7 +31,7 @@ $(document).on('turbolinks:load', function () {
 
   // update current balance
   $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
-    const floatBal = parseFloat(
+    const floatBal = Number.parseFloat(
       currentBalance.replace('$', '').replace(',', '')
     );
     let $input = $('<input type="number" step=".01"/>').val(floatBal);
@@ -107,7 +109,7 @@ $(document).on('turbolinks:load', function () {
 
   // create new table row for each entry
   function createEntryRow(entry) {
-    const entryAmount = parseFloat(entry.amount);
+    const entryAmount = Number.parseFloat(entry.amount);
     newBalance += entryAmount;
     let entryColorClass = '';
     let entryActionsClass = '';
@@ -425,7 +427,9 @@ $(document).on('turbolinks:load', function () {
       const entryFreq = $(e.target).data('amount-freq');
       const $el = $('span.earliest[data-amount][data-id="' + entryId + '"]');
       const textAmt = $el[0].innerText;
-      const decAmt = parseFloat(textAmt.replace('$', '').replace(',', ''));
+      const decAmt = Number.parseFloat(
+        textAmt.replace('$', '').replace(',', '')
+      );
       let $input = $('<input type="number" step=".01" />').val(decAmt);
       $el.replaceWith($input.select());
       const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`).first().first();
@@ -590,8 +594,9 @@ $(document).on('turbolinks:load', function () {
               const entryId = $(e.target).data('id');
               const amountToClear = $(e.target).data('amount-to-clear');
               const newClearedBalance =
-                parseFloat(currentBalance.replace('$', '').replace(',', '')) +
-                parseFloat(amountToClear);
+                Number.parseFloat(
+                  currentBalance.replace('$', '').replace(',', '')
+                ) + Number.parseFloat(amountToClear);
               const dateString = $(
                 `span[data-id="${entryId}"][data-date]`
               ).html();
