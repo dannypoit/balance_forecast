@@ -148,6 +148,12 @@ $(document).on('turbolinks:load', function () {
       currency: 'USD',
     });
 
+    const options = {
+      day: 'numeric',
+      month: 'numeric',
+      year: '2-digit',
+    };
+
     // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
     // note: do NOT leave space or line breaks between span tags
     const entryRow = `
@@ -156,7 +162,10 @@ $(document).on('turbolinks:load', function () {
           <span 
             ${entryIsEarliestClass} 
             data-date 
-            data-id="${entry.id}">${entryDateSlashes}</span>
+            data-id="${entry.id}">${new Intl.DateTimeFormat(
+      navigator.language,
+      options
+    ).format(new Date(entry.date))}</span>
           <i 
             data-id="${entry.id}" 
             id="dateSaveIcon" 
