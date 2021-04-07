@@ -108,7 +108,7 @@ $(document).on('turbolinks:load', function () {
   };
 
   // create new table row for each entry
-  function createEntryRow(entry) {
+  const createEntryRow = function (entry) {
     const entryAmount = Number.parseFloat(entry.amount);
     newBalance += entryAmount;
     let entryColorClass = '';
@@ -234,7 +234,7 @@ $(document).on('turbolinks:load', function () {
       </tr>
     `;
     return entryRow;
-  }
+  };
 
   // get all entries for current user in JSON format
   $.get('/entries').success(function (data) {
