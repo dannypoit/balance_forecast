@@ -159,7 +159,7 @@ $(document).on('turbolinks:load', function () {
       navigator.language,
       options
     ).format(entryDate);
-    const entryDateISOString = entryDate.toISOString().slice(0, 10);
+    const entryDateIsoString = entryDate.toISOString().slice(0, 10);
 
     // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
     // note: do NOT leave space or line breaks between span tags
@@ -203,7 +203,7 @@ $(document).on('turbolinks:load', function () {
             ${entryIsEarliestClass} 
             data-amount 
             data-id="${entry.id}" 
-            data-amount-date="${entryDateISOString}" 
+            data-amount-date="${entryDateIsoString}" 
             data-amount-desc="${entry.description}" 
             data-amount-freq="${entry.frequency}">${formatter.format(
       entryAmount
