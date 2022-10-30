@@ -82,6 +82,10 @@ table {
   border-spacing: 0;
 }
 
+.table-active, .table-active > th, .table-active > td {
+    background-color: rgba(0, 0, 0, 0.065);
+}
+
 .table-bordered tr th,
 .table-bordered tr td {
   border-right: var(--table-borders);
