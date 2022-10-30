@@ -1,0 +1,2 @@
+class VerticalSpacing < ApplicationRecord
+end

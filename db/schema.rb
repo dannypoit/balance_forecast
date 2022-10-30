@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_204235) do
+ActiveRecord::Schema.define(version: 2022_10_30_001207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,8 +45,15 @@ ActiveRecord::Schema.define(version: 2020_12_01_204235) do
     t.decimal "current_balance", precision: 10, scale: 2, default: "0.0"
     t.integer "months_to_display", default: 3
     t.integer "time_zone_id"
+    t.integer "vertical_spacing_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "vertical_spacings", force: :cascade do |t|
+    t.string "padding"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

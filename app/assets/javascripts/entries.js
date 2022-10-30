@@ -759,13 +759,13 @@ $(document).on('turbolinks:load', function () {
     const vsLoose = document.querySelector('#loose');
     
     vsTight.addEventListener('click', function () {
-        changeVerticalSpacing('0.25rem');
+        changeVerticalSpacing(1);
     });
     vsRelaxed.addEventListener('click', function () {
-        changeVerticalSpacing('0.5rem');
+        changeVerticalSpacing(2);
     });
     vsLoose.addEventListener('click', function () {
-        changeVerticalSpacing('0.75rem');
+        changeVerticalSpacing(3);
     });
 
     window.setTimeout(function () {

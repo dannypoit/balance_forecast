@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :vertical_spacing do
+    padding { "MyString" }
+  end
+
   factory :time_zone do
     
   end
