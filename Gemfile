@@ -71,6 +71,10 @@ gem 'font-awesome-rails'
 # Use Bootbox for better Bootstrap confirmation modals
 gem 'bootbox-rails'
 
+# Stuff to get Rails working after upgrading
 gem 'psych', '< 4.0.0'
-
 gem 'mini_racer'
+
+# ERB formatter
+gem 'erb-formatter'
+gem 'htmlbeautifier'

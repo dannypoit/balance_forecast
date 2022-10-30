@@ -84,6 +84,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
+    erb-formatter (0.3.0)
     erubi (1.11.0)
     execjs (2.8.1)
     factory_bot (6.2.1)
@@ -96,6 +97,7 @@ GEM
       railties (>= 3.2, < 8.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    htmlbeautifier (1.4.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.5)
@@ -246,8 +248,10 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   devise
+  erb-formatter
   factory_bot_rails
   font-awesome-rails
+  htmlbeautifier
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
