@@ -705,7 +705,9 @@ $(document).on('turbolinks:load', function () {
             _method: 'PUT',
             user: {
                 months_to_display: months_to_display,
-                success: setTimeout(window.location.reload(), 200),
+                success: setTimeout(function() {
+                    window.location.reload()
+                }, 1),
             },
         });
     };
@@ -744,12 +746,14 @@ $(document).on('turbolinks:load', function () {
         changeTimePeriod(60);
     });
     
-    const changeVerticalSpacing = function (vertical_spacing) {
+    const changeVerticalSpacing = function (vertical_spacing_id) {
         $.post('/users/' + userId, {
             _method: 'PUT',
             user: {
-                vertical_spacing: vertical_spacing,
-                success: setTimeout(window.location.reload(), 200),
+                vertical_spacing_id: vertical_spacing_id,
+                success: setTimeout(function() {
+                    window.location.reload()
+                }, 50)
             },
         });
     };

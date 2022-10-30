@@ -88,7 +88,7 @@ table {
   border-bottom: var(--table-borders);
   border-top-style: hidden;
   border-left-style: hidden;
-  padding: 0.75rem;
+  padding: var(--vs-padding, '0.75rem');
 }
 
 .table-bordered {

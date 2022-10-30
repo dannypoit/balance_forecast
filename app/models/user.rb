@@ -8,4 +8,5 @@ class User < ApplicationRecord
 
   has_many :entries
   has_one :time_zone
+  has_one :vertical_spacing
 end
