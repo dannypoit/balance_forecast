@@ -1,3 +1,5 @@
+<% vs_padding = VerticalSpacing.find(current_user.vertical_spacing_id).padding %>
+
 <body data-no-turbolink="true">
     <header>
         <div class="container-lg">
@@ -43,27 +45,71 @@
                                     Time period to display
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="load-more-dropdown">
-                                    <button type="button" class="dropdown-item" id="load-more-3">3 months</button>
-                                    <button type="button" class="dropdown-item" id="load-more-6">6 months</button>
-                                    <button type="button" class="dropdown-item" id="load-more-9">9 months</button>
-                                    <button type="button" class="dropdown-item" id="load-more-12">1 year</button>
-                                    <button type="button" class="dropdown-item" id="load-more-24">2 years</button>
-                                    <button type="button" class="dropdown-item" id="load-more-36">3 years</button>
-                                    <button type="button" class="dropdown-item" id="load-more-48">4 years</button>
-                                    <button type="button" class="dropdown-item" id="load-more-60">5 years</button>
+                                    <button type="button" class="dropdown-item" id="load-more-3">3 months
+                                        <% if current_user.months_to_display == 3 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-6">6 months
+                                        <% if current_user.months_to_display == 6 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-9">9 months
+                                        <% if current_user.months_to_display == 9 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-12">1 year
+                                        <% if current_user.months_to_display == 12 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-24">2 years
+                                        <% if current_user.months_to_display == 24 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-36">3 years
+                                        <% if current_user.months_to_display == 36 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-48">4 years
+                                        <% if current_user.months_to_display == 48 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="load-more-60">5 years
+                                        <% if current_user.months_to_display == 60 %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
                                 </div>
                             </div>
                         </th>
                         <th class="top-row-cells">
-                            <div class="dropdown" id="vsDropdown" data-vertical-spacing="<%= VerticalSpacing.find(current_user.vertical_spacing_id).padding %>">
+                            <div class="dropdown" id="vsDropdown" data-vertical-spacing="<%= vs_padding %>">
                                 <button class="btn btn-period btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa-solid fa-arrows-up-down mr-1"></i>
                                     Vertical spacing
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="load-more-dropdown">
-                                    <button type="button" class="dropdown-item" id="tight">Tight</button>
-                                    <button type="button" class="dropdown-item" id="relaxed">Relaxed</button>
-                                    <button type="button" class="dropdown-item" id="loose">Loose</button>
+                                    <button type="button" class="dropdown-item" id="tight">Tight
+                                        <% if vs_padding == '.25rem .5rem' %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="relaxed">Relaxed
+                                        <% if vs_padding == '.5rem .75rem' %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
+                                    <button type="button" class="dropdown-item" id="loose">Loose
+                                        <% if vs_padding == '.75rem' %>
+                                            <i class="fa-solid fa-circle-check ml-2"></i>
+                                        <% end %>
+                                    </button>
                                 </div>
                             </div>
                         </th>

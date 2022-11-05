@@ -700,6 +700,7 @@ $(document).on('turbolinks:load', function () {
         });
     });
 
+    // update time period to display
     const changeTimePeriod = function (months_to_display) {
         $.post('/users/' + userId, {
             _method: 'PUT',
@@ -707,7 +708,7 @@ $(document).on('turbolinks:load', function () {
                 months_to_display: months_to_display,
                 success: setTimeout(function() {
                     window.location.reload()
-                }, 1),
+                }, 10),
             },
         });
     };
