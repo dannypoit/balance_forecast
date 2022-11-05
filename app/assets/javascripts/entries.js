@@ -147,6 +147,17 @@ $(document).on('turbolinks:load', function () {
             style: 'currency',
             currency: 'USD',
         });
+        
+        let convertIcon = '';
+        
+        if (entry.frequency !== 'one-time' && entry.isEarliest === true) {
+            convertIcon = 
+                `<i
+                    class="fa-regular fa-calendar-xmark ml-2 mr-0" 
+                    data-id="${entry.id}" 
+                    title="Convert to One-time">
+                </i>`;
+        }
 
         // note: entry.date should not need timeZoneOffsetStr added here, because it is not being converted to JS date; it is just displayed as a string
         // note: do NOT leave space or line breaks between span tags
@@ -184,6 +195,7 @@ $(document).on('turbolinks:load', function () {
             id="freqSaveIcon" 
             class="fas fa-save m-2 d-none">
           </i>
+          ${convertIcon}
         </td>
         <td>
           <span 
@@ -217,6 +229,7 @@ $(document).on('turbolinks:load', function () {
             data-id="${entry.id}" 
             title="Delete entry">
           </i>
+          
         </td>
       </tr>
     `;
