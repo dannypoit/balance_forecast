@@ -7,11 +7,13 @@
         <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
         <script src="https://kit.fontawesome.com/5c6b9f4f60.js" crossorigin="anonymous"></script>
         <%= yield(:head) %>
-        <style>
-            :root {
-                --vs-padding: <%= VerticalSpacing.find(current_user.vertical_spacing_id).padding || '0.75rem' %>;
-            }
-        </style>
+        <% if current_user %>
+            <style>
+                :root {
+                    --vs-padding: <%= VerticalSpacing.find(current_user.vertical_spacing_id).padding || '0.75rem' %>;
+                }
+            </style>
+        <% end %>
     </head>
     <%= yield %>
 </body>
