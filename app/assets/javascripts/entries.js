@@ -206,7 +206,7 @@ $(document).on('turbolinks:load', function () {
         </td>
         <td class="entry-actions-cell pl-2 ${entryActionsClass}">
           <i 
-            class="fas fa-check" 
+            class="fa-regular fa-square-check" 
             data-id="${entry.id}" 
             data-user-id="${entry.user_id}" 
             data-amount-to-clear="${entry.amount}" 
@@ -581,7 +581,7 @@ $(document).on('turbolinks:load', function () {
         });
 
         // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
-        $('.fa-check').click(function (e) {
+        $('.fa-square-check').click(function (e) {
             bootbox.dialog({
                 message:
                     '<p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
