@@ -16,8 +16,8 @@
     </div>
   </header>
 
-  <main role="main">
-    <div class="container text-left my-5">
+  <main role="main" class="pb-5">
+    <div class="container-lg text-left my-5">
       <h2 class="mb-4">Terms and Conditions</h2>
       <p>Last updated: July 23, 2020</p>
       <p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -101,11 +101,17 @@
     </div>
   </main>
 
-  <div class="mb-4">
-    <div class="container small my-4">
-      <%= link_to 'Privacy Policy', privacy_path %>
-      <%= link_to 'Terms of Use', terms_path, class: 'ml-2 ml-sm-3' %>
+    <footer class="footer py-3 px-1">
+        <div class="container-lg small">
+            <div class="footer__legal">
+                <%= link_to 'Privacy Policy', privacy_path %>
+                <%= link_to 'Terms of Use', terms_path, class: 'ml-2 ml-sm-3' %>
+                <span class="float-right copyright">&copy; <span id="copyright-year"></span> Balance Forecast</span>
+            </div>
+        </div>
+    </footer>
 
-      <span class="text-muted float-right">&copy; 2020 Balance Forecast</span>
-    </div>
-  </div>
+<script>
+    let copyrightYear = document.getElementById('copyright-year');
+    copyrightYear.innerText = new Date().getFullYear();
+</script>

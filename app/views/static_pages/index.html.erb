@@ -6,8 +6,9 @@
             <nav class="navbar navbar-light p-0">
                 <%= link_to 'Balance Forecast', root_path, class: 'navbar-brand' %>
                 <div class="dropdown d-inline align-middle">
-                    <a type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Menu" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-2x fa-cogs"></i>
+                    <a class="d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Menu" aria-haspopup="true" aria-expanded="false">
+                        Settings
+                        <i class="fas fa-2x fa-cogs ml-1"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                         <%= link_to 'Change email or password', edit_user_registration_path(current_user), class: 'dropdown-item' %>
@@ -173,10 +174,12 @@
             </table>
         </div>
     </main>
-    <footer class="footer py-3">
+    <footer class="footer py-3 px-1">
         <div class="container-lg small">
-            <%= link_to 'Privacy Policy', privacy_path %>
-            <%= link_to 'Terms of Use', terms_path, class: 'ml-2 ml-sm-3' %>
-            <span class="float-right copyright">&copy; 2020 Balance Forecast</span>
+            <div class="footer__legal">
+                <%= link_to 'Privacy Policy', privacy_path %>
+                <%= link_to 'Terms of Use', terms_path, class: 'ml-2 ml-sm-3' %>
+                <span class="float-right copyright">&copy; <span id="copyright-year"></span> Balance Forecast</span>
+            </div>
         </div>
     </footer>

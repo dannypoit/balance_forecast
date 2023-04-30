@@ -111,7 +111,7 @@ $(document).on('turbolinks:load', function() {
     const currentDate = convertDateJsToStrSlashes(new Date());
 
     let todaysDate = document.getElementById('todays-date');
-    todaysDate.innerHTML = todaysDate.innerHTML + '<h4>' + currentDate + '</h4>';
+    todaysDate.innerHTML = todaysDate.innerHTML + '<h4 class="mb-0">' + currentDate + '</h4>';
 
     // create new table row for each entry
     function createEntryRow(entry) {
@@ -788,4 +788,7 @@ $(document).on('turbolinks:load', function() {
     $(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
+
+    let copyrightYear = document.getElementById('copyright-year');
+    copyrightYear.innerText = new Date().getFullYear();
 });
