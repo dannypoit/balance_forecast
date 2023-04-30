@@ -5,6 +5,9 @@
         <div class="container-lg">
             <nav class="navbar navbar-light p-0">
                 <%= link_to 'Balance Forecast', root_path, class: 'navbar-brand' %>
+                <div class="navbar-greeting">
+                    <span class="navbar-greeting__pre"></span><%= current_user.first_name %><span class="navbar-greeting__post"></span>
+                </div>
                 <div class="dropdown d-inline align-middle">
                     <a class="d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Menu" aria-haspopup="true" aria-expanded="false">
                         Settings

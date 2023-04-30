@@ -799,4 +799,40 @@ $(document).on('turbolinks:load', function() {
 
     let copyrightYear = document.getElementById('copyright-year');
     copyrightYear.innerText = new Date().getFullYear();
+
+    const greetings = [
+        ['Hey '],
+        ['Hi '],
+        ['Hello '],
+        ['What\'s up, ', '?'],
+        ['Yo ', '!'],
+        ['Hola '],
+        ['How\'s it going, ', '?'],
+        ['Greetings, '],
+        ['How we doing, ', '?'],
+        ['Nice to see you, '],
+        ['Look, it\'s ', '!'],
+        ['Heeeeeeeeere\'s ', '!'],
+        ['And the Oscar goes to... '],
+        ['I love you, '],
+        ['Cheers, ', '!'],
+        ['Howdy, '],
+        ['What\'s going on, ', '?'],
+        ['What\'s new, ', '?'],
+        ['Hi there, '],
+        ['Well, lookie what we have here... ', '.'],
+        ['What\'s the good word, ', '?'],
+        ['Sup, '],
+        ['Chenqui, '],
+        ['May the Force be with you, '],
+        ['', '? What the hell kinda name is that?'],
+        ['Well hello, '],
+        ['Hi, my name is ', '. No, that\'s your name.'],
+        ['', '! I thought I told you never to come in here!']
+    ];
+    const greetingPre = document.querySelector('.navbar-greeting__pre');
+    const greetingPost = document.querySelector('.navbar-greeting__post');
+    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    greetingPre.innerText = greeting[0];
+    if (greeting[1]) greetingPost.innerText = greeting[1];
 });
