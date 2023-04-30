@@ -1,6 +1,6 @@
 'use strict';
 
-$(document).on('turbolinks:load', function () {
+$(document).on('turbolinks:load', function() {
     const userId = $('#currentBalance').data('user-id');
     const currentBalance = document.getElementById('currentBalance').innerText;
     let newBalance = Number.parseFloat(
@@ -30,7 +30,7 @@ $(document).on('turbolinks:load', function () {
     }
 
     // update current balance
-    $('#currentBalanceCell').on('click', '[data-current-balance]', function () {
+    $('#currentBalanceCell').on('click', '[data-current-balance]', function() {
         const floatBal = Number.parseFloat(
             currentBalance.replace('$', '').replace(',', '')
         );
@@ -39,7 +39,7 @@ $(document).on('turbolinks:load', function () {
         $(this).replaceWith($input.select());
         $saveIcon.toggleClass('d-none');
 
-        const save = function () {
+        const save = function() {
             const enteredBalance = $input.val();
             const $span = $('<span data-current-balance id="currentBalance" />').text(
                 enteredBalance
@@ -61,12 +61,12 @@ $(document).on('turbolinks:load', function () {
             });
         };
 
-        $saveIcon.on('mousedown', function () {
+        $saveIcon.on('mousedown', function() {
             save();
         });
 
         $input
-            .keyup(function (event) {
+            .keyup(function(event) {
                 if (event.keyCode == 13) {
                     save();
                 } else if (event.keyCode == 27) {
@@ -74,7 +74,7 @@ $(document).on('turbolinks:load', function () {
                     $saveIcon.toggleClass('d-none');
                 }
             })
-            .on('blur', function () {
+            .on('blur', function() {
                 $(this).replaceWith($currentBalanceCell);
                 $saveIcon.toggleClass('d-none');
             })
@@ -82,7 +82,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // convert JavaScript date to string in YYYY-MM-DD format
-    const convertDateJsToStrDashes = function (jsDate) {
+    const convertDateJsToStrDashes = function(jsDate) {
         let d = new Date(jsDate),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
@@ -95,7 +95,7 @@ $(document).on('turbolinks:load', function () {
     };
 
     // convert JavaScript date to string in MM/DD/YYYY format
-    const convertDateJsToStrSlashes = function (jsDate) {
+    const convertDateJsToStrSlashes = function(jsDate) {
         let d = new Date(jsDate),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
@@ -107,6 +107,12 @@ $(document).on('turbolinks:load', function () {
         return [month, day, year].join('/');
     };
 
+    // note: does not need timeZoneOffsetStr added, because it is creating a new JS date, which comes in at the correct time zone
+    const currentDate = convertDateJsToStrSlashes(new Date());
+
+    let todaysDate = document.getElementById('todays-date');
+    todaysDate.innerHTML = todaysDate.innerHTML + '<h4>' + currentDate + '</h4>';
+
     // create new table row for each entry
     function createEntryRow(entry) {
         const entryAmount = Number.parseFloat(entry.amount);
@@ -115,8 +121,7 @@ $(document).on('turbolinks:load', function () {
         let entryActionsClass = '';
         let entryIsEarliestClass = '';
 
-        // note: does not need timeZoneOffsetStr added, because it is creating a new JS date, which comes in at the correct time zone
-        const currentDate = convertDateJsToStrSlashes(new Date());
+
 
         // get date from Rails, add timeZoneOffsetStr, convert to JS date, and store in const
         const entryDateSlashes = convertDateJsToStrSlashes(
@@ -224,11 +229,11 @@ $(document).on('turbolinks:load', function () {
     }
 
     // get all entries for current user in JSON format
-    $.get('/entries').success(function (data) {
+    $.get('/entries').success(function(data) {
         let allEntryRows = '';
 
         // convert date string in MM/DD/YYYY format to YYYY-MM-DD format for saving in db
-        const convertSlashesToDashes = function (dateSlashes) {
+        const convertSlashesToDashes = function(dateSlashes) {
             let dateArr = dateSlashes.split('/');
             dateArr.push(dateArr.shift());
             dateArr.push(dateArr.shift());
@@ -236,7 +241,7 @@ $(document).on('turbolinks:load', function () {
         };
 
         // add each entry row to allEntryRows variable
-        $.each(data, function (_, entry) {
+        $.each(data, function(_, entry) {
             allEntryRows += createEntryRow(entry);
         });
 
@@ -244,7 +249,7 @@ $(document).on('turbolinks:load', function () {
         $entriesTable.html(allEntryRows);
 
         // update date
-        $('.entry-row').on('click', '[data-date]', function (e) {
+        $('.entry-row').on('click', '[data-date]', function(e) {
             const entryId = $(e.target).data('id');
             const $dateCell = $(
                 'span.earliest[data-date][data-id="' + entryId + '"]'
@@ -268,7 +273,7 @@ $(document).on('turbolinks:load', function () {
                 .first();
             $saveIcon.toggleClass('d-none');
 
-            const save = function () {
+            const save = function() {
                 const $span = $('<span data-date id="updatedDateCell" />').text(
                     $input.val()
                 );
@@ -286,12 +291,12 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            $saveIcon.on('mousedown', function () {
+            $saveIcon.on('mousedown', function() {
                 save();
             });
 
             $input
-                .keyup(function (event) {
+                .keyup(function(event) {
                     if (event.keyCode == 13) {
                         save();
                     } else if (event.keyCode == 27) {
@@ -299,7 +304,7 @@ $(document).on('turbolinks:load', function () {
                         $saveIcon.toggleClass('d-none');
                     }
                 })
-                .on('blur', function () {
+                .on('blur', function() {
                     $(this).replaceWith($dateCell);
                     $saveIcon.toggleClass('d-none');
                 })
@@ -307,7 +312,7 @@ $(document).on('turbolinks:load', function () {
         });
 
         // update description
-        $('.entry-row').on('click', '[data-description]', function (e) {
+        $('.entry-row').on('click', '[data-description]', function(e) {
             const entryId = $(e.target).data('id');
             const $descCell = $(
                 'span.earliest[data-description][data-id="' + entryId + '"]'
@@ -319,7 +324,7 @@ $(document).on('turbolinks:load', function () {
                 .first();
             $saveIcon.toggleClass('d-none');
 
-            const save = function () {
+            const save = function() {
                 const $span = $(
                     '<span data-description id="updatedDescriptionCell" />'
                 ).text($input.val());
@@ -338,12 +343,12 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            $saveIcon.on('mousedown', function () {
+            $saveIcon.on('mousedown', function() {
                 save();
             });
 
             $input
-                .keyup(function (event) {
+                .keyup(function(event) {
                     if (event.keyCode == 13) {
                         save();
                     } else if (event.keyCode == 27) {
@@ -351,7 +356,7 @@ $(document).on('turbolinks:load', function () {
                         $saveIcon.toggleClass('d-none');
                     }
                 })
-                .on('blur', function () {
+                .on('blur', function() {
                     $(this).replaceWith($descCell);
                     $saveIcon.toggleClass('d-none');
                 })
@@ -359,7 +364,7 @@ $(document).on('turbolinks:load', function () {
         });
 
         // update frequency
-        $('.entry-row').on('click', '[data-frequency]', function (e) {
+        $('.entry-row').on('click', '[data-frequency]', function(e) {
             const entryId = $(e.target).data('id');
             const $freqCell = $(
                 'span.earliest[data-frequency][data-id="' + entryId + '"]'
@@ -381,7 +386,7 @@ $(document).on('turbolinks:load', function () {
                 .first();
             $saveIcon.toggleClass('d-none');
 
-            const save = function () {
+            const save = function() {
                 const $span = $(
                     '<span data-frequency id="updatedFrequencyCell" />'
                 ).text($select.val());
@@ -399,12 +404,12 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            $saveIcon.on('mousedown', function () {
+            $saveIcon.on('mousedown', function() {
                 save();
             });
 
             $select
-                .keyup(function (event) {
+                .keyup(function(event) {
                     if (event.keyCode == 13) {
                         save();
                     } else if (event.keyCode == 27) {
@@ -412,7 +417,7 @@ $(document).on('turbolinks:load', function () {
                         $saveIcon.toggleClass('d-none');
                     }
                 })
-                .on('blur', function () {
+                .on('blur', function() {
                     $(this).replaceWith($freqCell);
                     $saveIcon.toggleClass('d-none');
                 })
@@ -420,7 +425,7 @@ $(document).on('turbolinks:load', function () {
         });
 
         // update amount
-        $('.entry-row').on('click', '[data-amount]', function (e) {
+        $('.entry-row').on('click', '[data-amount]', function(e) {
             const entryId = $(e.target).data('id');
             const entryDate = $(e.target).data('amount-date');
             const entryDesc = $(e.target).data('amount-desc');
@@ -435,7 +440,7 @@ $(document).on('turbolinks:load', function () {
             const $saveIcon = $(`#amtSaveIcon[data-id="${entryId}"]`).first().first();
             $saveIcon.toggleClass('d-none');
 
-            const saveOneTime = function () {
+            const saveOneTime = function() {
                 const enteredAmount = $input.val();
                 const $span = $('<span id="updatedAmountCell" />').text(enteredAmount);
                 $input.replaceWith($span);
@@ -451,7 +456,7 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            const changeEarliestAmountOnly = function () {
+            const changeEarliestAmountOnly = function() {
                 const enteredAmount = $input.val();
                 // need to refactor
                 // see notes in changeAllRecurringAmounts
@@ -501,7 +506,7 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            const changeAllRecurringAmounts = function () {
+            const changeAllRecurringAmounts = function() {
                 const enteredAmount = $input.val();
                 // need to refactor
                 // currently it is done this way to mark the cell as updated, so the updatedAmount can be pulled from it
@@ -522,7 +527,7 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            const promptForRecurring = function () {
+            const promptForRecurring = function() {
                 bootbox.dialog({
                     message:
                         '<p>Do you want to change the earliest entry only or all entries?</p><p class="text-muted small">This is a recurring series.</p><p class="text-muted small">If you select <strong>Earliest Entry Only</strong>, that entry will be converted to one-time with the updated amount, and all subsequent entries will remain with the previous amount.</p><p class="text-muted small">If you select <strong>All Entries</strong>, all entries in the series will be updated with the new amount.</p>',
@@ -531,14 +536,14 @@ $(document).on('turbolinks:load', function () {
                         earliest: {
                             label: 'Earliest Entry Only',
                             className: 'btn-primary',
-                            callback: function () {
+                            callback: function() {
                                 changeEarliestAmountOnly();
                             },
                         },
                         all: {
                             label: 'All Entries',
                             className: 'btn-success',
-                            callback: function () {
+                            callback: function() {
                                 changeAllRecurringAmounts();
                             },
                         },
@@ -550,7 +555,7 @@ $(document).on('turbolinks:load', function () {
                 });
             };
 
-            $saveIcon.on('mousedown', function () {
+            $saveIcon.on('mousedown', function() {
                 // prompt ONLY if freq != one-time
                 if (entryFreq === 'one-time') {
                     $(this).blur(saveOneTime());
@@ -560,7 +565,7 @@ $(document).on('turbolinks:load', function () {
             });
 
             $input
-                .keyup(function (event) {
+                .keyup(function(event) {
                     if (event.keyCode == 13) {
                         // prompt ONLY if freq != one-time
                         if (entryFreq === 'one-time') {
@@ -573,7 +578,7 @@ $(document).on('turbolinks:load', function () {
                         $saveIcon.toggleClass('d-none');
                     }
                 })
-                .on('blur', function () {
+                .on('blur', function() {
                     $(this).replaceWith($el);
                     $saveIcon.toggleClass('d-none');
                 })
@@ -581,7 +586,7 @@ $(document).on('turbolinks:load', function () {
         });
 
         // clear entry - update balance and either delete (one-time) or update date to next occurence (recurring)
-        $('.fa-square-check').click(function (e) {
+        $('.fa-square-check').click(function(e) {
             bootbox.dialog({
                 message:
                     '<p>Are you sure you want to clear this entry?</p><p class="text-muted small">This entry will be removed, and its amount will be debited from or credited to your current balance. If this is a recurring series, only the first of the series will be cleared. This cannot be undone.</p>',
@@ -590,7 +595,7 @@ $(document).on('turbolinks:load', function () {
                     clear: {
                         label: 'Clear',
                         className: 'btn-success',
-                        callback: function () {
+                        callback: function() {
                             const entryId = $(e.target).data('id');
                             const amountToClear = $(e.target).data('amount-to-clear');
                             const newClearedBalance =
@@ -673,7 +678,7 @@ $(document).on('turbolinks:load', function () {
         });
 
         // delete entry
-        $('.fa-trash-alt').click(function (e) {
+        $('.fa-trash-alt').click(function(e) {
             bootbox.dialog({
                 message:
                     '<p>Are you sure you want to delete this entry?</p><p class="text-muted small">This will permanently delete this entry and any recurrences of it. This cannot be undone.</p>',
@@ -682,7 +687,7 @@ $(document).on('turbolinks:load', function () {
                     delete: {
                         label: 'Delete',
                         className: 'btn-danger',
-                        callback: function () {
+                        callback: function() {
                             const entryId = $(e.target).data('id');
                             $.ajax({
                                 type: 'DELETE',
@@ -701,7 +706,7 @@ $(document).on('turbolinks:load', function () {
     });
 
     // update time period to display
-    const changeTimePeriod = function (months_to_display) {
+    const changeTimePeriod = function(months_to_display) {
         $.post('/users/' + userId, {
             _method: 'PUT',
             user: {
@@ -722,32 +727,32 @@ $(document).on('turbolinks:load', function () {
     const loadMore48 = document.querySelector('#load-more-48');
     const loadMore60 = document.querySelector('#load-more-60');
 
-    loadMore3.addEventListener('click', function () {
+    loadMore3.addEventListener('click', function() {
         changeTimePeriod(3);
     });
-    loadMore6.addEventListener('click', function () {
+    loadMore6.addEventListener('click', function() {
         changeTimePeriod(6);
     });
-    loadMore9.addEventListener('click', function () {
+    loadMore9.addEventListener('click', function() {
         changeTimePeriod(9);
     });
-    loadMore12.addEventListener('click', function () {
+    loadMore12.addEventListener('click', function() {
         changeTimePeriod(12);
     });
-    loadMore24.addEventListener('click', function () {
+    loadMore24.addEventListener('click', function() {
         changeTimePeriod(24);
     });
-    loadMore36.addEventListener('click', function () {
+    loadMore36.addEventListener('click', function() {
         changeTimePeriod(36);
     });
-    loadMore48.addEventListener('click', function () {
+    loadMore48.addEventListener('click', function() {
         changeTimePeriod(48);
     });
-    loadMore60.addEventListener('click', function () {
+    loadMore60.addEventListener('click', function() {
         changeTimePeriod(60);
     });
-    
-    const changeVerticalSpacing = function (vertical_spacing_id) {
+
+    const changeVerticalSpacing = function(vertical_spacing_id) {
         $.post('/users/' + userId, {
             _method: 'PUT',
             user: {
@@ -758,29 +763,29 @@ $(document).on('turbolinks:load', function () {
             },
         });
     };
-    
+
     const vsTight = document.querySelector('#tight');
     const vsRelaxed = document.querySelector('#relaxed');
     const vsLoose = document.querySelector('#loose');
-    
-    vsTight.addEventListener('click', function () {
+
+    vsTight.addEventListener('click', function() {
         changeVerticalSpacing(1);
     });
-    vsRelaxed.addEventListener('click', function () {
+    vsRelaxed.addEventListener('click', function() {
         changeVerticalSpacing(2);
     });
-    vsLoose.addEventListener('click', function () {
+    vsLoose.addEventListener('click', function() {
         changeVerticalSpacing(3);
     });
 
-    window.setTimeout(function () {
+    window.setTimeout(function() {
         $('.alert').fadeTo(500, 0);
-        this.setTimeout(function () {
+        this.setTimeout(function() {
             $('.close').click();
         }, 500);
     }, 4000);
 
-    $(function () {
+    $(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
 });
