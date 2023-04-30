@@ -37,6 +37,10 @@ $(document).on('turbolinks:load', function() {
         let $input = $('<input type="number" step=".01"/>').val(floatBal);
         const $currentBalanceCell = $(this);
         $(this).replaceWith($input.select());
+        const $curBalLabel = $('#currentBalanceLabel');
+        const $tableHeader = $('.table-header');
+        $curBalLabel.css('marginRight', '30px');
+        $tableHeader.css('marginRight', '21px');
         $saveIcon.toggleClass('d-none');
 
         const save = function() {
@@ -72,11 +76,15 @@ $(document).on('turbolinks:load', function() {
                 } else if (event.keyCode == 27) {
                     $(this).replaceWith($currentBalanceCell);
                     $saveIcon.toggleClass('d-none');
+                    $curBalLabel.css('marginRight', '0');
+                    $tableHeader.css('marginRight', '51px');
                 }
             })
             .on('blur', function() {
                 $(this).replaceWith($currentBalanceCell);
                 $saveIcon.toggleClass('d-none');
+                $curBalLabel.css('marginRight', '0');
+                $tableHeader.css('marginRight', '51px');
             })
             .focus();
     });

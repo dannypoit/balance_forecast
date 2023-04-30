@@ -115,7 +115,7 @@
                 </div>
                 
                 <div class="text-right" id="currentBalanceCell">
-                    Current balance:<br />
+                    <span id="currentBalanceLabel">Current balance:</span><br />
                     <span data-current-balance data-user-id="<%= current_user.id %>" data-time-zone-offset="<%= TimeZone.find(current_user.time_zone_id).relative_to_gmt %>" id="currentBalance" class="h4"><%= number_to_currency(current_user.current_balance) %></span><i id="currentBalSaveIcon" class="fas fa-save m-2 d-none"></i>
                 </div>
             </div>

@@ -112,7 +112,11 @@ table {
 }
 
 .table-header {
-    margin: 0 51px 0.25rem 0;
+    // these are separated so that margin-right can be changed back and forth via js
+    margin-top: 0;
+    margin-right: 51px;
+    margin-bottom: 0.25rem;
+    margin-left: 0;
 
     &__buttons > div:not(:first-child) {
         padding-left: 0.25rem;
@@ -126,9 +130,29 @@ th.current-balance-label-cell {
     color: var(--dark-gray);
 }
 
-th#currentBalanceCell {
-    border-top-left-radius: 0.4rem;
-    border-top-right-radius: 0.4rem;
+#currentBalance {
+    cursor: pointer;
+}
+
+#currentBalanceCell {
+    max-width: 155px;
+}
+
+#currentBalanceCell input {
+    font-size: 1.5rem;
+    text-align: right;
+    width: calc(100% - 30px);
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    &[type="number"] {
+        -moz-appearance: textfield;
+    }
 }
 
 th input {
@@ -202,6 +226,10 @@ td.entry-actions-cell {
     width: 51px;
 }
 
+td.entry-actions-cell i {
+    cursor: pointer;
+}
+
 #currentBalSaveIcon {
     font-size: 1rem;
 }
@@ -216,6 +244,7 @@ td.entry-actions-cell {
 
 // entry date input field
 #entry_date {
+    cursor: text;
     width: 160px;
     height: 30px;
 }
@@ -226,6 +255,7 @@ td.entry-actions-cell {
 }
 
 #entry_frequency {
+    cursor: pointer;
     width: 100%;
     height: 30px;
 }
@@ -272,6 +302,10 @@ select#user_time_zone_id {
     font-family: "Inter", sans-serif;
     font-weight: 300;
     color: var(--dark-gray);
+
+    td {
+        cursor: pointer;
+    }
 }
 
 .footer {
