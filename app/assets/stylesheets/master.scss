@@ -10,9 +10,13 @@ html {
 
 body {
     --light-green: #4dc1a6;
-    --dark-gray: #555;
+    --lighter-green: #87e7d0;
+    --lightest-green: #cbfff3;
     --dark-green: #02a781;
+    --darker-green: #338c77;
+    --darkest-green: #174439;
     --dark-white: #f6f6f6;
+    --dark-gray: #555;
     --table-borders: 1px solid #dee2e6;
     font-family: "Mulish", sans-serif;
     font-weight: 400;
@@ -132,6 +136,10 @@ th.current-balance-label-cell {
 
 #currentBalance {
     cursor: pointer;
+
+    &:hover {
+        color: var(--dark-green);
+    }
 }
 
 #currentBalanceCell {
@@ -139,6 +147,8 @@ th.current-balance-label-cell {
 }
 
 #currentBalanceCell input {
+    background-color: var(--lightest-green);
+    color: var(--darker-green);
     font-size: 1.5rem;
     text-align: right;
     width: calc(100% - 30px);
@@ -231,6 +241,7 @@ td.entry-actions-cell i {
 }
 
 #currentBalSaveIcon {
+    cursor: pointer;
     font-size: 1rem;
 }
 
@@ -305,6 +316,11 @@ select#user_time_zone_id {
 
     td {
         cursor: pointer;
+
+        &:not(.entry-actions-cell):hover {
+            background-color: var(--lighter-green);
+            color: #000;
+        }
     }
 }
 
