@@ -6,11 +6,58 @@
             <nav class="navbar navbar-light p-0">
                 <%= link_to 'Balance Forecast', root_path, class: 'navbar-brand' %>
                 <div class="dropdown d-inline align-middle">
-                    <a class="d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Menu" aria-haspopup="true" aria-expanded="false">
+                    <a class="d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" title="Settings" aria-haspopup="true" aria-expanded="false">
                         Settings
                         <i class="fas fa-2x fa-cogs ml-1"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">
+                            Time Period to Display
+                        </a>
+                            <%# <a type="button" data-toggle="dropdown" title="Time Period to Display" aria-haspopup="true" aria-expanded="false"> %>
+                            <%# </a> %>
+                        <div class="dropdown-menu dropdown-submenu dropdown-submenu-left" aria-labelledby="load-more-dropdown">
+                            <button type="button" class="dropdown-item" id="load-more-3">3 months
+                                <% if current_user.months_to_display == 3 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-6">6 months
+                                <% if current_user.months_to_display == 6 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-9">9 months
+                                <% if current_user.months_to_display == 9 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-12">1 year
+                                <% if current_user.months_to_display == 12 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-24">2 years
+                                <% if current_user.months_to_display == 24 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-36">3 years
+                                <% if current_user.months_to_display == 36 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-48">4 years
+                                <% if current_user.months_to_display == 48 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                            <button type="button" class="dropdown-item" id="load-more-60">5 years
+                                <% if current_user.months_to_display == 60 %>
+                                    <i class="fa-solid fa-circle-check ml-2"></i>
+                                <% end %>
+                            </button>
+                        </div>
                         <%= link_to 'Change email or password', edit_user_registration_path(current_user), class: 'dropdown-item' %>
                         <%= link_to "Log out", destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
                     </div>
@@ -128,13 +175,13 @@
                         <th scope="col">
                             Description
                         </th>
-                        <th scope="col" class="short-col">
+                        <th scope="col" class="freq-col">
                             Frequency
                         </th>
-                        <th scope="col" class="short-col">
+                        <th scope="col" class="amt-col">
                             Amount
                         </th>
-                        <th scope="col" class="short-col">
+                        <th scope="col" class="bal-col">
                             Balance
                         </th>
                     </tr>

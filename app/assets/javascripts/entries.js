@@ -799,4 +799,15 @@ $(document).on('turbolinks:load', function() {
 
     let copyrightYear = document.getElementById('copyright-year');
     copyrightYear.innerText = new Date().getFullYear();
+
+});
+
+window.addEventListener('load', () => {
+    const allEntryCells = document.querySelectorAll('.entry-row td');
+    allEntryCells.forEach((cell) => {
+        cell.addEventListener('click', () => {
+            const span = cell.querySelector('span');
+            if (span) span.click();
+        });
+    });
 });
