@@ -405,9 +405,17 @@ select#user_time_zone_id {
 
 .form-signin {
     width: 100%;
-    max-width: 330px;
-    padding: 15px;
+    // max-width: 330px;
     margin: auto;
+}
+
+.form-container {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    padding: 1.5rem;
+    width: 100vw;
 }
 
 .form-control {

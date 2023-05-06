@@ -2,27 +2,29 @@
   <%= stylesheet_link_tag "vcenter" %>
 <% end %>
 
-<body style="display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-top: 40px; padding-bottom: 40px;" class="text-center">
+<body style="" class="text-center">
+    <div class="form-container">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-signin"}) do |f| %>
+            <h1 class="mb-4">Balance Forecast</h1>
+            <h2 class="h4 mb-3 font-weight-normal">Log in</h2>
 
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-signin"}) do |f| %>
-    <h2 class="mb-4">Balance Forecast</h2>
-    <h5 class="mb-3 font-weight-normal">Log in</h5>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control" %>
 
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control" %>
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
 
-    <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
+            <% if devise_mapping.rememberable? %>
+            <div class="field checkbox mb-3">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+            </div>
+            <% end %>
 
-    <% if devise_mapping.rememberable? %>
-      <div class="field checkbox mb-3">
-        <%= f.check_box :remember_me %>
-        <%= f.label :remember_me %>
-      </div>
-    <% end %>
+            <%= f.submit "Log in", class: "btn btn-lg btn-gree btn-block mb-4" %>
 
-    <%= f.submit "Log in", class: "btn btn-lg btn-gree btn-block mb-4" %>
+            <%= link_to "Sign up", new_user_registration_path, class: 'mr-4' %>
+            <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <%= link_to "Forgot password", new_password_path(resource_name) %>
+            <% end -%>
+        <% end %>
+    </div>
 
-    <%= link_to "Sign up", new_user_registration_path, class: 'mr-4' %>
-    <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-      <%= link_to "Forgot password", new_password_path(resource_name) %>
-    <% end -%>
-  <% end %>
