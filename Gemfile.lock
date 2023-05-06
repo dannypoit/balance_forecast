@@ -65,9 +65,9 @@ GEM
     bcrypt (3.1.18)
     bindex (0.8.1)
     bootbox-rails (0.5.0)
-    bootstrap (4.5.3)
+    bootstrap (5.2.3)
       autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.14.3, < 2)
+      popper_js (>= 2.11.6, < 3)
       sassc-rails (>= 2.0.0)
     bootstrap-select-rails (1.13.8)
     builder (3.2.4)
@@ -147,7 +147,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.5.3)
-    popper_js (1.16.1)
+    popper_js (2.11.7)
     prettier_print (1.2.1)
     psych (3.3.4)
     puma (3.12.6)
@@ -264,7 +264,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootbox-rails
-  bootstrap (~> 4.5.0)
+  bootstrap (~> 5)
   bootstrap-select-rails
   byebug
   coffee-rails (~> 4.2)

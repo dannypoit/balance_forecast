@@ -60,7 +60,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise'
 
 # Use Bootstrap for CSS framework
-gem 'bootstrap', '~> 4.5.0'
+gem 'bootstrap', '~> 5'
 
 # Use bootstrap-select-rails for dropdown menus
 gem 'bootstrap-select-rails'
