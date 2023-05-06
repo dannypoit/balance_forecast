@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+TimeZone.destroy_all
+
+TimeZone.create!(name: 'est', description: 'Eastern Standard Time', relative_to_gmt: '-5')
+
+p "Created #{TimeZone.count} time zones."
