@@ -91,7 +91,7 @@ a#dropdownMenuButton:hover {
     left: auto;
 }
 
-.dropdown-menu > a:hover > .dropdown-submenu {
+.dropdown-menu > .dropdown-submenu-container:hover > .dropdown-submenu {
     display: block;
 }
 
