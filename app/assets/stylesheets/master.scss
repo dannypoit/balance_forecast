@@ -46,11 +46,11 @@ body {
 
 a {
     color: var(--dark-gray);
+    text-decoration: none;
 }
 
 a:hover {
     color: var(--light-green);
-    text-decoration: none;
 }
 
 a#dropdownMenuButton {
