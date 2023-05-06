@@ -23,7 +23,7 @@ RSpec.describe EntriesController, type: :controller do
         } 
       }
       entry2 = Entry.last
-      entry1.update_attributes(description: "Arbitrary description update")
+      entry1.update(description: "Arbitrary description update")
       get :index
       expect(response).to have_http_status(:success)
       response_value = ActiveSupport::JSON.decode(@response.body)

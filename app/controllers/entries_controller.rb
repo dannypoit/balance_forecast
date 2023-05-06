@@ -101,7 +101,7 @@ class EntriesController < ApplicationController
     entry = Entry.find_by_id(params[:id])
     return render_not_found if entry.blank?
     return render_not_found(:forbidden) if entry.user != current_user
-    entry.update_attributes(entry_params)
+    entry.update(entry_params)
     if entry.valid?
       render json: entry
     else

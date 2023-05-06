@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     user = User.find_by_id(current_user.id)
     return render_not_found if user.blank?
     return render_not_found(:forbidden) if user != current_user
-    user.update_attributes(user_params)
+    user.update(user_params)
     if user.valid?
       redirect_to root_path
     else
