@@ -16,42 +16,42 @@
                                 Time Period to Display
                             </a>
                             <div class="dropdown-menu dropdown-submenu dropdown-submenu-left" aria-labelledby="load-more-dropdown">
-                                <button type="button" class="dropdown-item" id="load-more-3">3 months
+                                <button type="button" class="dropdown-item" id="load-more-3">3 Months
                                     <% if current_user.months_to_display == 3 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-6">6 months
+                                <button type="button" class="dropdown-item" id="load-more-6">6 Months
                                     <% if current_user.months_to_display == 6 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-9">9 months
+                                <button type="button" class="dropdown-item" id="load-more-9">9 Months
                                     <% if current_user.months_to_display == 9 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-12">1 year
+                                <button type="button" class="dropdown-item" id="load-more-12">1 Year
                                     <% if current_user.months_to_display == 12 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-24">2 years
+                                <button type="button" class="dropdown-item" id="load-more-24">2 Years
                                     <% if current_user.months_to_display == 24 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-36">3 years
+                                <button type="button" class="dropdown-item" id="load-more-36">3 Years
                                     <% if current_user.months_to_display == 36 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-48">4 years
+                                <button type="button" class="dropdown-item" id="load-more-48">4 Years
                                     <% if current_user.months_to_display == 48 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
                                 </button>
-                                <button type="button" class="dropdown-item" id="load-more-60">5 years
+                                <button type="button" class="dropdown-item" id="load-more-60">5 Years
                                     <% if current_user.months_to_display == 60 %>
                                         <i class="fa-solid fa-circle-check ml-2"></i>
                                     <% end %>
@@ -108,10 +108,10 @@
                 </div>
             <% end %>
             <div class="table-header d-flex justify-content-between align-items-end">
-                <div id="todays-date">Today's date:<br /></div>
+                <div id="todays-date">Today's Date:<br /></div>
                                 
                 <div class="text-right" id="currentBalanceCell">
-                    <span id="currentBalanceLabel">Current balance:</span><br />
+                    <span id="currentBalanceLabel">Current Balance:</span><br />
                     <span data-current-balance data-user-id="<%= current_user.id %>" data-time-zone-offset="<%= TimeZone.find(current_user.time_zone_id).relative_to_gmt %>" id="currentBalance" class="h4"><%= number_to_currency(current_user.current_balance) %></span><i id="currentBalSaveIcon" class="fas fa-save m-2 d-none"></i>
                 </div>
             </div>

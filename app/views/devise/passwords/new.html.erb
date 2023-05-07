@@ -5,16 +5,17 @@
 <body style="display: -ms-flexbox; display: flex; -ms-flex-align: center; align-items: center; padding-top: 40px; padding-bottom: 40px;" class="text-center">
   
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'form-signin' }) do |f| %>
-    <h2 class="mb-4">Balance Forecast</h2>
-    <h5 class="mb-3 font-weight-normal">Forgot your password?</h5>
+    <h1 class="h2 mb-4">Balance Forecast</h1>
+    <h2 class="h5 mb-3 font-weight-normal">Reset Password</h2>
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "form-control mb-4" %>
 
-    <%= f.submit "Send reset instructions", class: 'btn btn-lg btn-gree btn-block mb-4' %>
+    <%= f.submit "Send Reset Instructions", class: 'btn btn-lg btn-gree btn-block mb-4' %>
 
-    <%= link_to "Sign up", new_user_registration_path, class: 'mr-4' %>
+    <%= link_to "Sign Up", new_user_registration_path, class: 'mr-4' %>
 
-    <%= link_to "Log in", new_user_session_path %>
+    <%= link_to "Log In", new_user_session_path %>
   <% end %>
   
